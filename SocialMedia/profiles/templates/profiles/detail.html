@@ -1,896 +1,866 @@
-{% extends 'main/navbar2.html' %}
 {% load static %}
-
-
-
-
-
-
-
-
-
-{% block title %}
-Trang cá nhân
-{% endblock %}
-
-
-
-
-
-
-
-
-
-
-
-{% block css %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Trang cá nhân</title>
+    
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
+integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
+integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.0/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.0/dist/jquery.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
 
 <style>
 
 
-    /* Main styling for the profile page */
-    .edit-comment ul li i {
-        font-weight: bold;
-    }
-
-    /* llllllllllllllllll */
-
-    .btnXoa {
-        padding: var(--btn-padding);
-        border-radius: var(--boder-radius);
-        background: var(--color-danger);
-        color: var(--color-white);
-        font-weight: bold;
-    }
-
-    .liked-by {
-        display: flex;
-        margin-top: 10px;
-    }
-
-    .liked-by span {
-        border-radius: 50%;
-        display: block;
-        height: 1.4rem;
-        width: 1.4rem;
-        overflow: hidden;
-        margin-left: -.6rem;
-        border: 2px solid var(--color-white);
-    }
-
-    .liked-by span:first-child {
-        margin: 0;
-    }
-
-    .liked-by p {
-        margin-left: .5rem;
-    }
-
-    .liked {
-        font-weight: bold !important;
-        color: var(--color-danger);
-        transform: scale(1.1);
-    }
-
-    .like-btn {
-        background: var(--color-white);
-    }
-
-    .caption span {
-        font-size: 0.8rem;
-        margin-left: 12px;
-    }
-
-    .caption .edit-comment {
-        position: relative;
-        margin-right: 30px;
-    }
-
-    .caption .edit-comment img {
-        width: 1.6rem;
-    }
-
-    .edit-comment:hover .edit-item {
-        transform: scale(1);
-    }
-
-    .edit-comment .edit-item li {
-        display: flex;
-        gap: .5rem;
-        align-items: center;
-        font-size: 1rem;
-        color: var(--color-gray);
-        transition: 300ms ease all;
-    }
-
-    .edit-comment .edit-item {
-        background: var(--color-white);
-        padding: var(--card-padding);
-        border-radius: var(--card-boder-radius);
-        display: flex;
-        flex-direction: column;
-        gap: 0.7rem;
-        position: absolute;
-        right: 0;
-        box-shadow: 0 0 0.2rem var(--color-primary);
-        top: 2.4rem;
-        transform: scale(0);
-        transition: 300ms all ease;
-        transform-origin: top right;
-    }
-
-    .edit-comment .edit-item li:hover {
-        color: var(--color-dark);
-    }
-
-    .edit-comment .edit-item li:last-child:hover {
-        color: var(--color-danger);
-    }
-
-    .comment {
-        width: 80%;
-        border: 1px solid black;
-        border-radius: 25px;
-        height: 55px;
-        margin-top: 10px;
-        padding: 15px 15px 15px 20px;
-        resize: none;
-        overflow: hidden;
-    }
-
-    .btnSend {
-        width: 15%;
-        margin-top: -10px;
-        border-radius: 50px;
-        background: hsl(252, 75%, 60%);
-        padding-bottom: 15px;
-        color: white;
-        font-weight: bold;
-        border: 1px solid white;
-        float: left;
-        height: 55px;
-        margin-top: 10px;
-        margin-left: 10px;
-    }
-
-    .comment-main {
-        display: flex;
-        margin-bottom: 20px;
-    }
-
-    .caption {
-        margin-top: 10px;
-        background: #faebd7;
-        padding: 10px 10px 10px 30px;
-        border-radius: 50px;
-        margin-bottom: 10px;
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .caption i {
-        font-weight: bold;
-    }
-
-    .caption img {
-        width: 100%;
-        display: block
-    }
-
-    .caption p {
-        margin-bottom: 0rem;
-    }
-
-    .info-user small img {
-        margin-top: 0px;
-    }
-
-        {
-        % comment %
-    }
-
-    đếm số lượng image {
-        % endcomment %
-    }
-
-    .image-count {
-
-
-        /* Điều chỉnh vị trí này để phù hợp */
-        background-color: rgba(0, 0, 0, 0.5);
-        /* Màu nền làm mờ */
-        color: white;
-        /* Màu chữ */
-        padding: 5px 10px;
-        /* Điều chỉnh padding để phù hợp */
-        font-size: 1em;
-        /* Điều chỉnh cỡ chữ */
-        font-weight: bold;
-        /* Chữ đậm */
-        border-radius: 15px;
-        /* Bo góc của số lượng */
-        z-index: 2;
-    }
-
-    .imglist,
-    .image-container {
-        width: 100%;
-        margin-top: 10px;
-        margin-bottom: 10px;
-    }
-
-    .imglist img,
-    .image-container a img {
-        max-height: fit-content;
-    }
-
-        {
-        % comment %
-    }
-
-    .video-count {
-        height: 30px;
-        margin-left: -45px;
-        margin-top: 10px;
-        background-color: rgba(0, 0, 0, 0.5);
-        color: white;
-        padding: 5px 10px;
-        font-size: 1em;
-        font-weight: bold;
-        border-radius: 15px;
-        z-index: 2;
-    }
-
-    .image-container {
-        position: relative;
-        display: inline-block;
-    }
-
-    .image-container a {
-        display: block;
-    }
-
-    .image-container img {
-        display: block;
-        /* Loại bỏ khoảng trắng dưới hình ảnh */
-        width: 100%;
-        /* Giả sử bạn muốn hình ảnh chiếm toàn bộ chiều rộng của container */
-        vertical-align: middle;
-        border-radius: 10px;
-        /* Bo góc của hình ảnh như trong ví dụ */
-    }
-
-    .image-count {
-        position: absolute;
-        top: 10px;
-        /* Điều chỉnh vị trí này để phù hợp */
-        right: 10px;
-        /* Điều chỉnh vị trí này để phù hợp */
-        background-color: rgba(0, 0, 0, 0.5);
-        /* Màu nền làm mờ */
-        color: white;
-        /* Màu chữ */
-        padding: 5px 10px;
-        /* Điều chỉnh padding để phù hợp */
-        font-size: 1em;
-        /* Điều chỉnh cỡ chữ */
-        font-weight: bold;
-        /* Chữ đậm */
-        border-radius: 15px;
-        /* Bo góc của số lượng */
-        z-index: 2;
-    }
-
-    /* Thêm hiệu ứng làm mờ khi di chuột qua */
-    .image-container:hover img {
-        opacity: 0.7;
-    }
-
-    .form-edit-post label[for="id_content"],
-    .form-edit-post label[for='id_visibility'] {
-        font-weight: bold;
-        font-size: 1rem;
-    }
-
-    .form-edit-post label[for='id_visibility'] {
-        font-weight: bold;
-        font-size: 1rem;
-        margin-right: 60px;
-    }
-
-    .form-edit-post label[for='id_image'] {
-        font-weight: bold;
-        font-size: 1rem;
-        margin-right: 80px;
-    }
-
-    #id_image {
-        margin-top: 20px;
-        margin-bottom: 20px;
-        width: 80%;
-    }
-
-    .form-edit-post #id_content {
-        margin-left: 75px;
-        margin-top: 30px;
-        max-height: 10rem;
-        max-width: 650px;
-        min-width: 649px;
-        font-weight: bold;
-        border-radius: var(--boder-radius);
-        padding: 15px 10px 0px 25px;
-        background: #e8e4f1;
-        display: table-cell;
-    }
-
-    #id_visibility {
-        margin-bottom: 45px;
-        width: 80%;
-        border: 1px solid rgb(196, 196, 196);
-        padding: 10px;
-        font-weight: bold;
-        background: #f6f1f1;
-        border-radius: var(--card-boder-radius);
-    }
-
-    .h1-editpost {
-        font-weight: bold;
-        font-size: 3rem;
-    }
-
-    .auther_comment {
-        display: none;
-        margin-bottom: 5px;
-    }
-
-    .input-edit-comment {
-        border: 1px solid var(--color-dark);
-        border-radius: var(--card-boder-radius);
-        padding: var(--card-padding);
-        width: 90%;
-        font-weight: bold;
-        display: none;
-        margin-bottom: 10px;
-    }
-
-    .edit-input-comment {
-        display: flex;
-    }
-
-    .btn-send {
-        float: left;
-        width: 10%;
-        border: 1px solid var(--color-white);
-        border-radius: var(--boder-radius);
-        background: var(--color-primary);
-        color: var(--color-white);
-        font-weight: bold;
-        font-size: 1rem;
-        max-height: 50px;
-        margin-left: 10px;
-    }
-
-    /* llllllllllllllllll */
-
-    .profile-page {
-        font-family: Arial, sans-serif;
-        color: #333;
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 20px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    .cover-image img {
-        width: 100%;
-        height: 200px;
-        object-fit: cover;
-    }
-
-    .profile-info {
-        text-align: center;
-        padding: 20px;
-    }
-
-    .avatar img {
-        width: 150px;
-        height: 150px;
-        border-radius: 50%;
-        border: 3px solid #ddd;
-        margin-top: -100px;
-        background: #fff;
-    }
-
-    h1,
-    h2 {
-        margin: 10px 0;
-    }
-
-    .bio {
-        margin: 10px 0;
-        font-style: italic;
-    }
-
-    .location,
-    .gender,
-    .birthday {
-        font-size: 0.9em;
-        color: #666;
-    }
-
-    .friends-list h3 {
-        margin-top: 20px;
-        color: #333;
-    }
-
-    .friends-list ul {
-        list-style: none;
-        padding: 0;
-    }
-
-    .friends-list li {
-        margin: 5px 0;
-    }
-
-    /* Add more styles as needed */
-    /* post list */
-    .posts-list ul {
-        list-style: none;
-        padding: 0;
-    }
-
-    .posts-list li.post {
-        background-color: #f9f9f9;
-        padding: 15px;
-        margin-bottom: 10px;
-        border-radius: 5px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    .post-content img {
-        max-width: 100%;
-        height: inherit;
-        border-radius: 5px;
-    }
-
-    .post-stats {
-        margin-top: 10px;
-        font-size: 0.9em;
-        color: #666;
-    }
-
-    .post-visibility {
-        font-size: 0.9em;
-        color: #666;
-        margin-top: 5px;
-    }
-
-    .post-comments {
-        margin-top: 10px;
-        background-color: #fff;
-        border-radius: 5px;
-        padding: 10px;
-    }
-
-    .post-comments p {
-        margin: 5px 0;
-        font-size: 0.9em;
-    }
-
-    /* Friend list */
-    .friends-list .card {
-        margin-bottom: 20px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    .friends-list .card-img-top {
-        width: 100%;
-        height: 150px;
-        object-fit: cover;
-    }
-
-    .friends-list .card-title {
-        margin-top: 10px;
-        font-size: 1em;
-        font-weight: bold;
-    }
-
-        {
-        % comment %
-    }
-
-    bài viết gần đây {
-        % endcomment %
-    }
-
-    body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: #e8e4f1;
-    }
-
-    .posts-list {
-        font-family: Arial, sans-serif;
-        color: #333;
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 20px;
-        background: white;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        margin-top: 30px;
-    }
-
-    .post-content .post-img-user {
-        border-radius: 50%;
-        border: 2px solid rgb(186, 182, 182);
-        width: 60px;
-        height: 60px;
-        object-fit: fill;
-        overflow: hidden;
-    }
-
-    .user-post {
-        display: flex;
-        margin-bottom: 10px;
-    }
-
-    .post-img {
-        margin-top: -20px;
-    }
-
-    .info-user {
-        float: right;
-        margin-left: 20px;
-        font-size: 1rem;
-        margin-top: 10px;
-    }
-
-    .info-user h4 {
-        font-weight: bold;
-    }
-
-    .info-user small {
-        color: hsl(225, 15%, 60%, 1);
-    }
-
-    .post-content i {
-        font-weight: normal;
-    }
-
-    .comment {
-        width: 80%;
-        border: 1px solid black;
-        border-radius: 25px;
-        height: 55px;
-        margin-top: 10px;
-        padding: 15px 15px 15px 20px;
-        resize: none;
-        overflow: hidden;
-    }
-
-    .btnSend {
-        width: 15%;
-        margin-top: -10px;
-        border-radius: 50px;
-        background: hsl(252, 75%, 60%);
-        padding-bottom: 15px;
-        color: white;
-        font-weight: bold;
-        border: 1px solid white;
-        float: left;
-        height: 55px;
-        margin-top: 10px;
-        margin-left: 10px;
-    }
-
-    .comment-main {
-        display: flex;
-        margin-bottom: 20px;
-    }
-
-    .caption {
-        background: #faebd7;
-        padding: 10px 10px 10px 30px;
-        border-radius: 50px;
-        margin-bottom: 10px;
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .caption p {
-        margin-bottom: 0rem;
-    }
-
-    .info-user small img {
-        margin-top: 0px;
-    }
-
-        {
-        % comment %
-    }
-
-    Css nav {
-        % endcomment %
-    }
-
-    *,
-    *::before,
-    *::after {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        outline: none;
-        text-decoration: none;
-        list-style: none;
-        border: none;
-    }
-
-    :root {
-        --primary-color-hue: 252;
-        --color-dark-light-theme: 15%;
-        --color-light-light-theme: 92%;
-        --color-white-light-theme: 100%;
-        --color-white: hsl(255, 30%, var(--color-white-light-theme));
-        --color-light: hsl(255, 30%, var(--color-light-light-theme));
-        --color-gray: hsl(255, 15%, 60%);
-        --color-primary: hsl(var(--primary-color-hue), 75%, 60%);
-        --color-secondary: hsl(255, 100%, 90%);
-        --color-success: hsl(120, 95%, 60%);
-        --color-danger: hsl(0, 95%, 60%);
-        --color-dark: hsl(255, 30%, var(--color-dark-light-theme));
-        --color-black: hsl(255, 30%, 8%);
-
-        --boder-radius: 2rem;
-        --card-boder-radius: 1rem;
-        --search-padding: .6rem 1rem;
-        --card-padding: 1rem;
-        --btn-padding: .6rem 2rem;
-    }
-
-    body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        color: var(--color-dark);
-        background: var(--color-light);
-    }
-
-    /* img {
-        display: block;
-        width: 100%;
-    } */
-
-    .logo img {
-        border-radius: 50%;
-        max-width: 50px;
-        max-height: 50px;
-    }
-
-    nav {
-        width: 100%;
-        position: fixed;
-        top: 0;
-        z-index: 10;
-        padding: .7rem 0;
-        background: var(--color-white);
-    }
-
-    .nav-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .container {
-        width: 90%;
-        margin: 0 auto;
-    }
-
-    nav .search-bar {
-        padding: var(--search-padding);
-        background: var(--color-light);
-        border-radius: var(--boder-radius);
-    }
-
-    nav .search-bar input[type="search"] {
-        background: transparent;
-        width: 30vw;
-        margin-left: 1rem;
-        font-size: .9rem;
-        color: var(--color-dark);
-    }
-
-    nav .search-bar input[type="search"]::placeholder {
-        color: var(--color-gray);
-    }
-
-    /**/
-    .profile-picture {
-        display: none;
-        width: 3rem;
-        aspect-ratio: 1/1;
-        border-radius: 50%;
-        overflow: hidden;
-    }
-
-    /**/
-    .logo img {
-        border-radius: 50%;
-        max-width: 50px;
-        max-height: 50px;
-    }
-
-    nav {
-        width: 100%;
-        position: fixed;
-        top: 0;
-        z-index: 10;
-        padding: .7rem 0;
-        background: var(--color-white);
-    }
-
-    .nav-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    nav .search-bar {
-        padding: var(--search-padding);
-        background: var(--color-light);
-        border-radius: var(--boder-radius);
-    }
-
-    nav .search-bar input[type="search"] {
-        background: transparent;
-        width: 30vw;
-        margin-left: 1rem;
-        font-size: .9rem;
-        color: var(--color-dark);
-    }
-
-    nav .search-bar input[type="search"]::placeholder {
-        color: var(--color-gray);
-    }
-
-    .add-post {
-        display: flex;
-        align-items: center;
-        gap: 2rem;
-    }
-
-    .popup>div {
-        display: flex;
-    }
-
-    .profile-popup-box>div {
-        height: 10rem;
-        width: 10rem;
-        border-radius: 50%;
-        overflow: hidden;
-        margin-top: 2rem;
-    }
-
-    .popup-box {
-        width: fit-content;
-        height: max-content;
-        background: var(--color-white);
-        padding: 3rem;
-        border-radius: var(--card-boder-radius);
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .btn {
-        padding: var(--btn-padding);
-        display: inline-block;
-        cursor: pointer;
-        border-radius: var(--boder-radius);
-        font-size: 0.9rem;
-        font-weight: 500;
-        transform: 300ms ease all;
-    }
-
-    .btn:hover {
-        opacity: 0.75;
-    }
-
-    .btn-primary {
-        background: var(--color-primary);
-        color: var(--color-white);
-    }
-
-    .btn-primary a {
-        color: var(--color-white);
-    }
-
-    .btn-lg {
-        padding: 1rem 0;
-        width: 100%;
-        text-align: center;
-        margin-top: 1rem;
-    }
-
-    .popup {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        position: fixed;
-        justify-content: center;
-        top: 0;
-        left: 0px;
-        z-index: 11;
-        background: #000000ba;
-        display: none;
-    }
-
-    .popup .close {
-        font-size: 1.6rem;
-        color: var(--color-white);
-        margin-left: 0.5rem;
-        margin-top: -1rem;
-    }
-
-    .popup .close i {
-        font-weight: bold;
-    }
-
-    .profile-page {
-        margin-top: 165px;
-        background-color: var(--color-white);
-    }
-    .btn-message {
-        padding: 0.6rem 2rem;
-        background-color: #4CAF50; /* Màu xanh lá */
-        color: white;
-        border-radius: 5px;
-        margin-left: 10px; /* Khoảng cách với nút bên cạnh */
-        font-size: 1rem;
-        text-decoration: none; /* Loại bỏ gạch chân nếu là thẻ <a> */
-        display: inline-block; /* Để hiển thị như một nút */
-        transition: background-color 0.3s;
-    }
-
-    .btn-message:hover {
-        background-color: #388E3C; /* Màu khi hover */
-    }
-
-        {
-        % comment %
-    }
-
-    end css nav {
-        % endcomment %
-    }
+/* Main styling for the profile page */
+.edit-comment ul li i {
+    font-weight: bold;
+}
+
+/* llllllllllllllllll */
+
+.btnXoa {
+    padding: var(--btn-padding);
+    border-radius: var(--boder-radius);
+    background: var(--color-danger);
+    color: var(--color-white);
+    font-weight: bold;
+}
+
+.liked-by {
+    display: flex;
+    margin-top: 10px;
+}
+
+.liked-by span {
+    border-radius: 50%;
+    display: block;
+    height: 1.4rem;
+    width: 1.4rem;
+    overflow: hidden;
+    margin-left: -.6rem;
+    border: 2px solid var(--color-white);
+}
+
+.liked-by span:first-child {
+    margin: 0;
+}
+
+.liked-by p {
+    margin-left: .5rem;
+}
+
+.liked {
+    font-weight: bold !important;
+    color: var(--color-danger);
+    transform: scale(1.1);
+}
+
+.like-btn {
+    background: var(--color-white);
+}
+
+.caption span {
+    font-size: 0.8rem;
+    margin-left: 12px;
+}
+
+.caption .edit-comment {
+    position: relative;
+    margin-right: 30px;
+}
+
+.caption .edit-comment img {
+    width: 1.6rem;
+}
+
+.edit-comment:hover .edit-item {
+    transform: scale(1);
+}
+
+.edit-comment .edit-item li {
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+    font-size: 1rem;
+    color: var(--color-gray);
+    transition: 300ms ease all;
+}
+
+.edit-comment .edit-item {
+    background: var(--color-white);
+    padding: var(--card-padding);
+    border-radius: var(--card-boder-radius);
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    position: absolute;
+    right: 0;
+    box-shadow: 0 0 0.2rem var(--color-primary);
+    top: 2.4rem;
+    transform: scale(0);
+    transition: 300ms all ease;
+    transform-origin: top right;
+}
+
+.edit-comment .edit-item li:hover {
+    color: var(--color-dark);
+}
+
+.edit-comment .edit-item li:last-child:hover {
+    color: var(--color-danger);
+}
+
+.comment {
+    width: 80%;
+    border: 1px solid black;
+    border-radius: 25px;
+    height: 55px;
+    margin-top: 10px;
+    padding: 15px 15px 15px 20px;
+    resize: none;
+    overflow: hidden;
+}
+
+.btnSend {
+    width: 15%;
+    margin-top: -10px;
+    border-radius: 50px;
+    background: hsl(252, 75%, 60%);
+    padding-bottom: 15px;
+    color: white;
+    font-weight: bold;
+    border: 1px solid white;
+    float: left;
+    height: 55px;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.comment-main {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.caption {
+    margin-top: 10px;
+    background: #faebd7;
+    padding: 10px 10px 10px 30px;
+    border-radius: 50px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.caption i {
+    font-weight: bold;
+}
+
+.caption img {
+    width: 100%;
+    display: block
+}
+
+.caption p {
+    margin-bottom: 0rem;
+}
+
+.info-user small img {
+    margin-top: 0px;
+}
+
+    {
+    % comment %
+}
+
+đếm số lượng image {
+    % endcomment %
+}
+
+.image-count {
+
+
+    /* Điều chỉnh vị trí này để phù hợp */
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Màu nền làm mờ */
+    color: white;
+    /* Màu chữ */
+    padding: 5px 10px;
+    /* Điều chỉnh padding để phù hợp */
+    font-size: 1em;
+    /* Điều chỉnh cỡ chữ */
+    font-weight: bold;
+    /* Chữ đậm */
+    border-radius: 15px;
+    /* Bo góc của số lượng */
+    z-index: 2;
+}
+
+.imglist,
+.image-container {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.imglist img,
+.image-container a img {
+    max-height: fit-content;
+}
+
+    {
+    % comment %
+}
+
+.video-count {
+    height: 30px;
+    margin-left: -45px;
+    margin-top: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 5px 10px;
+    font-size: 1em;
+    font-weight: bold;
+    border-radius: 15px;
+    z-index: 2;
+}
+
+.image-container {
+    position: relative;
+    display: inline-block;
+}
+
+.image-container a {
+    display: block;
+}
+
+.image-container img {
+    display: block;
+    /* Loại bỏ khoảng trắng dưới hình ảnh */
+    width: 100%;
+    /* Giả sử bạn muốn hình ảnh chiếm toàn bộ chiều rộng của container */
+    vertical-align: middle;
+    border-radius: 10px;
+    /* Bo góc của hình ảnh như trong ví dụ */
+}
+
+.image-count {
+    position: absolute;
+    top: 10px;
+    /* Điều chỉnh vị trí này để phù hợp */
+    right: 10px;
+    /* Điều chỉnh vị trí này để phù hợp */
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Màu nền làm mờ */
+    color: white;
+    /* Màu chữ */
+    padding: 5px 10px;
+    /* Điều chỉnh padding để phù hợp */
+    font-size: 1em;
+    /* Điều chỉnh cỡ chữ */
+    font-weight: bold;
+    /* Chữ đậm */
+    border-radius: 15px;
+    /* Bo góc của số lượng */
+    z-index: 2;
+}
+
+/* Thêm hiệu ứng làm mờ khi di chuột qua */
+.image-container:hover img {
+    opacity: 0.7;
+}
+
+.form-edit-post label[for="id_content"],
+.form-edit-post label[for='id_visibility'] {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.form-edit-post label[for='id_visibility'] {
+    font-weight: bold;
+    font-size: 1rem;
+    margin-right: 60px;
+}
+
+.form-edit-post label[for='id_image'] {
+    font-weight: bold;
+    font-size: 1rem;
+    margin-right: 80px;
+}
+
+#id_image {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 80%;
+}
+
+.form-edit-post #id_content {
+    margin-left: 75px;
+    margin-top: 30px;
+    max-height: 10rem;
+    max-width: 650px;
+    min-width: 649px;
+    font-weight: bold;
+    border-radius: var(--boder-radius);
+    padding: 15px 10px 0px 25px;
+    background: #e8e4f1;
+    display: table-cell;
+}
+
+#id_visibility {
+    margin-bottom: 45px;
+    width: 80%;
+    border: 1px solid rgb(196, 196, 196);
+    padding: 10px;
+    font-weight: bold;
+    background: #f6f1f1;
+    border-radius: var(--card-boder-radius);
+}
+
+.h1-editpost {
+    font-weight: bold;
+    font-size: 3rem;
+}
+
+.auther_comment {
+    display: none;
+    margin-bottom: 5px;
+}
+
+.input-edit-comment {
+    border: 1px solid var(--color-dark);
+    border-radius: var(--card-boder-radius);
+    padding: var(--card-padding);
+    width: 90%;
+    font-weight: bold;
+    display: none;
+    margin-bottom: 10px;
+}
+
+.edit-input-comment {
+    display: flex;
+}
+
+.btn-send {
+    float: left;
+    width: 10%;
+    border: 1px solid var(--color-white);
+    border-radius: var(--boder-radius);
+    background: var(--color-primary);
+    color: var(--color-white);
+    font-weight: bold;
+    font-size: 1rem;
+    max-height: 50px;
+    margin-left: 10px;
+}
+
+/* llllllllllllllllll */
+
+.profile-page {
+    font-family: Arial, sans-serif;
+    color: #333;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.cover-image img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.profile-info {
+    text-align: center;
+    padding: 20px;
+}
+
+.avatar img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 3px solid #ddd;
+    margin-top: -100px;
+    background: #fff;
+}
+
+h1,
+h2 {
+    margin: 10px 0;
+}
+
+.bio {
+    margin: 10px 0;
+    font-style: italic;
+}
+
+.location,
+.gender,
+.birthday {
+    font-size: 0.9em;
+    color: #666;
+}
+
+.friends-list h3 {
+    margin-top: 20px;
+    color: #333;
+}
+
+.friends-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.friends-list li {
+    margin: 5px 0;
+}
+
+/* Add more styles as needed */
+/* post list */
+.posts-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.posts-list li.post {
+    background-color: #f9f9f9;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.post-content img {
+    max-width: 100%;
+    height: inherit;
+    border-radius: 5px;
+}
+
+.post-stats {
+    margin-top: 10px;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.post-visibility {
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 5px;
+}
+
+.post-comments {
+    margin-top: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.post-comments p {
+    margin: 5px 0;
+    font-size: 0.9em;
+}
+
+/* Friend list */
+.friends-list .card {
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.friends-list .card-img-top {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.friends-list .card-title {
+    margin-top: 10px;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+    {
+    % comment %
+}
+
+bài viết gần đây {
+    % endcomment %
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #e8e4f1;
+}
+
+.posts-list {
+    font-family: Arial, sans-serif;
+    color: #333;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
+}
+
+.post-content .post-img-user {
+    border-radius: 50%;
+    border: 2px solid rgb(186, 182, 182);
+    width: 60px;
+    height: 60px;
+    object-fit: fill;
+    overflow: hidden;
+}
+
+.user-post {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.post-img {
+    margin-top: -20px;
+}
+
+.info-user {
+    float: right;
+    margin-left: 20px;
+    font-size: 1rem;
+    margin-top: 10px;
+}
+
+.info-user h4 {
+    font-weight: bold;
+}
+
+.info-user small {
+    color: hsl(225, 15%, 60%, 1);
+}
+
+.post-content i {
+    font-weight: normal;
+}
+
+.comment {
+    width: 80%;
+    border: 1px solid black;
+    border-radius: 25px;
+    height: 55px;
+    margin-top: 10px;
+    padding: 15px 15px 15px 20px;
+    resize: none;
+    overflow: hidden;
+}
+
+.btnSend {
+    width: 15%;
+    margin-top: -10px;
+    border-radius: 50px;
+    background: hsl(252, 75%, 60%);
+    padding-bottom: 15px;
+    color: white;
+    font-weight: bold;
+    border: 1px solid white;
+    float: left;
+    height: 55px;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.comment-main {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.caption {
+    background: #faebd7;
+    padding: 10px 10px 10px 30px;
+    border-radius: 50px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.caption p {
+    margin-bottom: 0rem;
+}
+
+.info-user small img {
+    margin-top: 0px;
+}
+
+    {
+    % comment %
+}
+
+Css nav {
+    % endcomment %
+}
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+    text-decoration: none;
+    list-style: none;
+    border: none;
+}
+
+:root {
+    --primary-color-hue: 252;
+    --color-dark-light-theme: 15%;
+    --color-light-light-theme: 92%;
+    --color-white-light-theme: 100%;
+    --color-white: hsl(255, 30%, var(--color-white-light-theme));
+    --color-light: hsl(255, 30%, var(--color-light-light-theme));
+    --color-gray: hsl(255, 15%, 60%);
+    --color-primary: hsl(var(--primary-color-hue), 75%, 60%);
+    --color-secondary: hsl(255, 100%, 90%);
+    --color-success: hsl(120, 95%, 60%);
+    --color-danger: hsl(0, 95%, 60%);
+    --color-dark: hsl(255, 30%, var(--color-dark-light-theme));
+    --color-black: hsl(255, 30%, 8%);
+
+    --boder-radius: 2rem;
+    --card-boder-radius: 1rem;
+    --search-padding: .6rem 1rem;
+    --card-padding: 1rem;
+    --btn-padding: .6rem 2rem;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--color-dark);
+    background: var(--color-light);
+}
+
+/* img {
+    display: block;
+    width: 100%;
+} */
+
+.logo img {
+    border-radius: 50%;
+    max-width: 50px;
+    max-height: 50px;
+}
+
+nav {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 10;
+    padding: .7rem 0;
+    background: var(--color-white);
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.container {
+    width: 90%;
+    margin: 0 auto;
+}
+
+nav .search-bar {
+    padding: var(--search-padding);
+    background: var(--color-light);
+    border-radius: var(--boder-radius);
+}
+
+nav .search-bar input[type="search"] {
+    background: transparent;
+    width: 30vw;
+    margin-left: 1rem;
+    font-size: .9rem;
+    color: var(--color-dark);
+}
+
+nav .search-bar input[type="search"]::placeholder {
+    color: var(--color-gray);
+}
+
+/**/
+.profile-picture {
+    display: none;
+    width: 3rem;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+/**/
+.logo img {
+    border-radius: 50%;
+    max-width: 50px;
+    max-height: 50px;
+}
+
+nav {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 10;
+    padding: .7rem 0;
+    background: var(--color-white);
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav .search-bar {
+    padding: var(--search-padding);
+    background: var(--color-light);
+    border-radius: var(--boder-radius);
+}
+
+nav .search-bar input[type="search"] {
+    background: transparent;
+    width: 30vw;
+    margin-left: 1rem;
+    font-size: .9rem;
+    color: var(--color-dark);
+}
+
+nav .search-bar input[type="search"]::placeholder {
+    color: var(--color-gray);
+}
+
+.add-post {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.popup>div {
+    display: flex;
+}
+
+.profile-popup-box>div {
+    height: 10rem;
+    width: 10rem;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-top: 2rem;
+}
+
+.popup-box {
+    width: fit-content;
+    height: max-content;
+    background: var(--color-white);
+    padding: 3rem;
+    border-radius: var(--card-boder-radius);
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.btn {
+    padding: var(--btn-padding);
+    display: inline-block;
+    cursor: pointer;
+    border-radius: var(--boder-radius);
+    font-size: 0.9rem;
+    font-weight: 500;
+    transform: 300ms ease all;
+}
+
+.btn:hover {
+    opacity: 0.75;
+}
+
+.btn-primary {
+    background: var(--color-primary);
+    color: var(--color-white);
+}
+
+.btn-primary a {
+    color: var(--color-white);
+}
+
+.btn-lg {
+    padding: 1rem 0;
+    width: 100%;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.popup {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    position: fixed;
+    justify-content: center;
+    top: 0;
+    left: 0px;
+    z-index: 11;
+    background: #000000ba;
+    display: none;
+}
+
+.popup .close {
+    font-size: 1.6rem;
+    color: var(--color-white);
+    margin-left: 0.5rem;
+    margin-top: -1rem;
+}
+
+.popup .close i {
+    font-weight: bold;
+}
+
+.profile-page {
+    margin-top: 165px;
+    background-color: var(--color-white);
+}
+.btn-message {
+    padding: 0.6rem 2rem;
+    background-color: #4CAF50; /* Màu xanh lá */
+    color: white;
+    border-radius: 5px;
+    margin-left: 10px; /* Khoảng cách với nút bên cạnh */
+    font-size: 1rem;
+    text-decoration: none; /* Loại bỏ gạch chân nếu là thẻ <a> */
+    display: inline-block; /* Để hiển thị như một nút */
+    transition: background-color 0.3s;
+}
+
+.btn-message:hover {
+    background-color: #388E3C; /* Màu khi hover */
+}
+
+    {
+    % comment %
+}
+
+end css nav {
+    % endcomment %
+}
 </style>
-{% endblock css %}
-
-
-
-
-
-
-
-
-
-
-
-{% block content %}
-
+</head>
+<body>
+   
 <div class="profile-page">
     <div class="cover-image">
         {% if object.cover %}
@@ -1465,5 +1435,38 @@ thằng đang đăng nhập ko nằm trong danh sách bạn nè -->
     {% endif %}
 </div>
 
+</body>
+</html>
 
-{% endblock content %}
+
+
+
+{% comment %} -------- {% endcomment %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
