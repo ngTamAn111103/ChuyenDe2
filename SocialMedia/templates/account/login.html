@@ -1,0 +1,25 @@
+{% extends 'main/navbar.html' %}
+
+{% block title %}
+Đăng nhập
+{% endblock %}
+
+{% block content %}
+
+<body class="login">
+  <div class="form-containerlogin">
+    <h1 class="h1-login">Login</h1>
+    <form action="" method="POST">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <div class="containerlogin">
+        <button type="submit" class="btn btn-success button-login">Login</button>
+      </div>
+    </form>
+    <a href="{% url 'sendemail:main_forgot_password_view' %}" class="btn btn-success button-login">Quên mật khẩu</a>
+    <p >Chưa có tài khoản? <a href="{% url 'signup' %}">Đăng ký ngay</a></p>
+
+  </div>
+  
+</body>
+{% endblock %}

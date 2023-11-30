@@ -1,0 +1,1241 @@
+{% extends 'main/navbar.html' %}
+
+{% block title %} Trang cá nhân {% endblock %}
+
+{% load static %} <!-- Thêm dòng này để load static tag -->
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.0/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<style>
+    .video-count {
+        height: 30px;
+        margin-left: -45px;
+        margin-top: 10px;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        padding: 5px 10px;
+        font-size: 1em;
+        font-weight: bold;
+        border-radius: 15px;
+        z-index: 2;
+    }
+
+    .image-container {
+        display: inline-block; /* Hoặc block, tùy thuộc vào layout của bạn */
+        margin: 10px; /* Khoảng cách giữa các hình ảnh */
+    }
+    
+    .image-container a {
+        display: block;
+    }
+    
+    .image-container img {
+        display: block; /* Loại bỏ khoảng trắng dưới hình ảnh */
+        width: 100%; /* Giả sử bạn muốn hình ảnh chiếm toàn bộ chiều rộng của container */
+        vertical-align: middle;
+        border-radius: 10px; /* Bo góc của hình ảnh như trong ví dụ */
+    }
+    
+    .image-count {
+        top: 10px; /* Điều chỉnh vị trí này để phù hợp */
+        right: 10px; /* Điều chỉnh vị trí này để phù hợp */
+        background-color: rgba(0, 0, 0, 0.5); /* Màu nền làm mờ */
+        color: white; /* Màu chữ */
+        padding: 5px 10px; /* Điều chỉnh padding để phù hợp */
+        font-size: 1em; /* Điều chỉnh cỡ chữ */
+        font-weight: bold; /* Chữ đậm */
+        border-radius: 15px; /* Bo góc của số lượng */
+        z-index: 2;
+    }
+    
+    /* Thêm hiệu ứng làm mờ khi di chuột qua */
+    .image-container:hover img {
+        opacity: 0.7;
+    }
+    {% comment %} Noti sangs ddenf {% endcomment %}
+    .notification-box .green-active {
+        position: unset;
+        margin-top: 18px;
+        margin-left: 20px;
+    }
+
+    
+</style>
+{% endblock %}
+
+{% block content %}
+
+<main>
+    <div class="myprofile">
+        <div class="img_cover">
+            {% if profile.cover %}
+            <img src="{{ profile.cover.url }}" alt="Ảnh bìa">
+            {% else %}
+            <img src="{%static 'images/cover_macdinh.jpg'%}" alt="Ảnh bìa">
+            {% endif %}
+        </div>
+        <style>
+            .myprofile {
+                padding: var(--card-padding);
+                border-radius: var(--card-boder-radius);
+                padding-bottom: 40px;
+                height: 400px;
+                margin: 1rem 1rem;
+                background-size: cover;
+            }
+
+            .img_cover {
+                width: 100%;
+                height: 375px;
+            }
+
+            .img_cover img {
+                width: 100%;
+                height: inherit;
+            }
+        </style>
+    </div>
+    <div class="container main-container">
+        <div class="main-left">
+            <!------------------Profile Start------------------>
+            <a class="profile" style="margin-left: 0px;">
+                <div class="profile-picture" id="my-profile-picture">
+                    <img src="{{profile.avatar.url}}" alt="">
+                </div>
+                <div class="profile-handle">
+                    <h4>{{profile.username}}</h4>
+                    <p class="text-gry">
+                        {{profile.bio}}
+                    </p>
+                </div>
+            </a>
+            <!------------------Profile End------------------>
+
+            <!------------------Start Aside Bar------------------>
+            <aside>
+                <a class="menu-item active">
+                    <span><img src="{%static 'images/svg/home.svg'%}" alt="home.svg"></span>
+                    <h3>My profile</h3>
+                </a>
+                <a class="menu-item" id="Change-box">
+                    <span><img src="{%static 'images/svg/profile.svg'%}" alt="profile.svg"></span>
+                    <h3>Profile</h3>
+                    <span><img src="{%static 'images/svg/drop-right.svg'%}" alt="drop-right.svg"></span>
+                    <div class="change-box">
+                        <div id="Change-Profile">
+                            <div class="profile-picture">
+                                <span><img src="{%static 'images/svg/change-profile.svg'%}" alt="change-profile.svg"></span>
+                            </div>
+
+                            <div class="change-body">
+                                <h3>Change Profile</h3>
+                            </div>
+                        </div>
+                        <div id="Change-Password">
+                            <div class="profile-picture">
+                                <span><img src="{%static 'images/svg/key-solid.svg'%}" alt="key-solid.svg"></span>
+                            </div>
+                            <div class="change-body">
+                                <h3>Change Password</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <style>
+                        .change-box {
+                            width: 17rem;
+                            height: 110px;
+                            left: 110%;
+                            position: absolute;
+                            top: 0;
+                            background: var(--color-white);
+                            border-radius: var(--card-boder-radius);
+                            padding: var(--card-padding);
+                            box-shadow: var(--color-primary) 0 0 1rem;
+                            z-index: 9;
+                            display: none;
+                        }
+
+                        .change-box>div .profile-picture {
+                            border-radius: 0px;
+                            margin-left: 25px;
+                        }
+
+                        .change-box>div .profile-picture img {
+                            margin-left: 0px;
+                        }
+
+                        .change-box>div h3 {
+                            color: var(--color-primary);
+                            margin-left: 10px;
+                        }
+
+                        .change-box::before {
+                            content: '';
+                            width: 1.2rem;
+                            height: 1.2rem;
+                            background: var(--color-white);
+                            position: absolute;
+                            left: -.6rem;
+                            transform: rotate(45deg);
+                        }
+
+                        .change-box>div {
+                            display: flex;
+                            align-items: start;
+                        }
+
+                        .change-box .profile-picture {
+                            width: 2.6rem;
+                        }
+.change-box .change-body {
+                            margin-top: 2px;
+                        }
+                    </style>
+                    <script>
+                        document.getElementById('Change-Profile').addEventListener('click', () => {
+                            window.location.href = "{%url 'profiles:change_profile'%}";
+                        });
+                        document.getElementById('Change-Password').addEventListener('click', () => {
+                            window.location.href = "{%url 'profiles:change_password'%}";
+                        });
+                        document.getElementById('Change-box').addEventListener('click', () => {
+                            document.querySelector('.change-box').style.display = 'block';
+                        });
+                        document.querySelectorAll('.close').forEach(AllCloser => {
+                            AllCloser.addEventListener('click', () => {
+                                document.querySelector('.add-post-popup').style.display = 'none'
+                                document.querySelector('.theme-customize').style.display = 'none'
+                            })
+                        });
+                    </script>
+                </a>
+                
+
+                {% comment %} <a class="menu-item" id="Notify-box">
+                    <span><img src="{%static 'images/svg/bell.svg'%}" alt=""></span>
+                    <small class="notfy-counter" id="ntCounter1">5+</small>
+                    <h3>Notification</h3>
+                    <!------------------Notification Box Start------------------>
+                    <div class="notification-box">
+                        <div>
+                            <div class="profile-picture">
+                                <img src="images/user.jpg" alt="">
+                            </div>
+
+                            <div class="notifition-body">
+                                <b>Maria</b> accepted your friend request
+                                <small class="text-gry">1 DAYS AGO</small>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="profile-picture">
+                                <img src="images/user.jpg" alt="">
+                            </div>
+                            <div class="notifition-body">
+                                <b>Jhon Evan</b> commented on your post
+                                <small class="text-gry">2 HOUR AGO</small>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="profile-picture">
+                                <img src="images/user.jpg" alt="">
+                            </div>
+                            <div class="notifition-body">
+                                <b>Emaliy Benjamin</b> like your on post
+                                <small class="text-gry">JUST NOW</small>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="profile-picture">
+                                <img src="images/user.jpg" alt="">
+                            </div>
+                            <div class="notifition-body">
+                                <b>Mark Trump</b> and <b>10 other</b> like on your post
+                                <small class="text-gry">TODAYS</small>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="profile-picture">
+                                <img src="images/user.jpg" alt="">
+                            </div>
+                            <div class="notifition-body">
+                                <b>Evrahim Alli</b> and <b>5 other</b> commented on your post
+                                <small class="text-gry">3 DAYS AGO</small>
+                            </div>
+                        </div>
+                    </div>
+                    <!------------------Notification Box End------------------>
+                </a> {% endcomment %}
+
+                <a class="menu-item" id="Notify-box">
+                    <span><img src="{%static 'images/svg/bell.svg'%}" alt=""></span>
+                    <!-- Có cái chưa đọc -->
+
+                    {% if len_my_notifications > 0 %}
+                    
+                    <small class="notfy-counter" id="ntCounter1">{{len_my_notifications}}</small>
+                    <!-- <h1>!=0</h1> -->
+                    <!-- đã đọc hết -->
+                    {%else%}
+                    <small class="notfy-counter" id="ntCounter1" style="display: none;"></small>
+
+                    {%endif%}
+                    <h3>Notification</h3>
+                    <!------------------Notification Box Start------------------>
+                    <div class="notification-box">
+
+                        {% for noti in my_notifications|slice:":5"%}
+                        <a style="color: black;" href="{% url 'posts:detail_post' post_id=noti.post.id%}">
+                            <div class="liked-by" style="color: black;">
+                                <div class="img-avata">
+                                    <img class="avatar-main" src="{{noti.from_user.avatar.url}}"
+                                        alt="{{noti.from_user.avatar.url}}">
+
+                                        {% if noti.notification_type == 'like' %}
+                                        <img class="avatar-extra" src="{%static 'images/like.jpg'%}" alt="">
+                                    
+                                        {% elif noti.notification_type == 'comment' %}
+                                        <i data-visualcompletion="css-img" class="x1b0d499 xl1xv1r" style="height: 28px; width: 28px; background-image: url(&quot;https://static.xx.fbcdn.net/rsrc.php/v3/yi/r/9RLwYBQ66u8.png?_nc_eui2=AeHgr8T8LPpjrgVKKwbrVbCABSzrhJRriJkFLOuElGuImVtDeSlGOWZiuPzbyStdoMh-9kYs-ujyI4sc_MOwfilA&quot;); background-position: 0px -986px; background-size: auto; background-repeat: no-repeat; display: inline-block;"></i>
+                                        {% endif %}
+                                </div>
+                                <p>
+                                    <b>{{noti.from_user.first_name}}
+                                        {{noti.from_user.last_name}}</b>
+                                    {{noti}}<span>{{noti.get_time_elapsed}} giây trước</span>
+
+                                </p>
+                                {% if noti.is_read == False %}
+                                <div class="green-active"></div>
+                            {% endif %}
+                            </div>
+                        </a>
+                        {% endfor %}
+
+
+
+
+
+                    </div>
+                    <!------------------Notification Box End------------------>
+                </a>
+
+
+                {% comment %} Noti mới {% endcomment %}
+                <div class="notification">
+                    {% for noti in my_notifications %}
+                    <a href="{% url 'posts:detail_post' post_id=noti.post.id%}">
+                        <div class="item-notification">
+                        <div class="liked-by">
+                            <span style="width: 50px;height: 50px;"><img src={{noti.from_user.avatar.url}}
+                                    alt={{noti.from_user.avatar.url}}></span>
+                                {% comment %} ảnh like hoặc cmt {% endcomment %}
+
+                                {% if noti.notification_type == "comment" %}
+                                <span style="margin-top: 30px; margin-left: -20px;"><img src="{%static 'images/svg/comment.svg'%}" alt="{%static 'images/svg/comment.svg'%}"></span>
+                                {% else %}
+                                <span style="margin-top: 30px; margin-left: -20px;"><img src="{%static 'images/like.jpg'%}" alt="{%static 'images/like.jpg'%}"></span>
+                                {% endif %}
+
+                            <p style="margin-top: 5%;"><b>{{noti.from_user.first_name}} {{noti.from_user.last_name}}</b>
+                            </p>
+                            <div class="green-active" style="margin-top: 8%;margin-left:8%;"></div>
+                            
+                        </div>
+                        <p> {{noti}}<br> <span class="time-noti">{{noti.get_time_elapsed}}</span></p>
+                    </div>
+                    </a>
+                    {% endfor %}
+                    <style>
+
+                        .item-notification .liked-by p b{
+                            font-size: 1.2rem;
+                            font-weight: bold;
+                        }
+                        .item-notification .time-noti{
+                            font-weight: lighter;
+                            font-size: 0.7rem;
+                        }
+                        .item-notification p {
+                            color: black;
+                            font-weight: 500;
+                            height: auto;
+                        }
+
+                        a .item-notification p b {
+                            color: black;
+                        }
+
+                        .noti-body{
+                            border-radius: none ;
+                            display: block;
+                            height: 1.4rem;
+                            width: 1.4rem;
+                            overflow: hidden;
+                            margin-left: -0.6rem;
+                            border: 2px solid var(--color-white);
+                        }
+
+                        .item-notification .liked-by span {
+                            border-radius: none;
+                            display: block;
+                            height: 1.4rem;
+                            width: 1.4rem;
+                            overflow: hidden;
+                            border: 2px solid var(--color-white);
+                        }
+
+                        .liked-by span img {
+                            width: 100%;
+                            height: 100%;
+                        }
+
+
+                        .item-notification {
+                            height: max-content;
+                            padding: 10px;
+                            margin-bottom: 10px;
+                            width: 100%;
+                            border-radius: 15px;
+                        }
+.notification .green-active {
+                            position: unset;
+                            margin-top: 9px;
+                        }
+
+                        .notification {
+                            border: 1px solid white;
+                            border-radius: 25px;
+                            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                            font-weight: bold;
+                            display: none;
+                            width: 100%;
+                        }
+                    </style>
+                    <script>
+                        document.getElementById('Notify-box').addEventListener('click', () => {
+                            document.querySelector('.notification').style.display = 'block';
+                        });
+                    </script>
+                    </div>
+                {% comment %} End noti mới {% endcomment %}
+                <a class="menu-item" id="messageMenu">
+                    <span><img src="{%static 'images/svg/messages.svg'%}" alt="{%static 'images/svg/bell.svg'%}"></span>
+                    <small class="notfy-counter" id="notifyCoutner2">3</small>
+                    <h3>Message</h3>
+                </a>
+
+                <a class="menu-item" id="theme">
+                    <span><img src="{%static 'images/svg/palette.svg'%}" alt=""></span>
+                    <h3>Theme</h3>
+                </a>
+                <a style="color: #211b32;" class="menu-item" href="{%url 'logout'%}">
+                    <span><img src="{%static 'images/svg/right-from-bracket-solid.svg'%}" alt=""></span>
+                    <h3>Log out</h3>
+                </a>
+
+                <!------------------Add Post Btn------------------>
+
+
+            </aside>
+            <label for="add-post" class="btn btn-primary btn-lg">Create Group</label>
+            <!------------------End Aside Bar------------------>
+        </div>
+        <div class="main-middle">
+            <div class="middle-container">
+                <!--=================Post Input Start=================-->
+                <div class="feeds">
+                    {%for post in my_posts%}
+                    <div class="page">
+                        <!-- Modal delete post -->
+                        <div class="popup delete_post{{post.id}}">
+                            <div>
+                                <div class="popup-box delete_post-popup-box">
+                                    <h1>Bạn có muốn xóa bài viết không?</h1>
+                                    <!-----------------Font Size----------------->
+
+                                    <!----------------Primary Colors---------------->
+
+                                    <!----------------Background Colors---------------->
+                                    <form action="" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="post_del_id" value="{{post.id}}">
+                                        <button type="submit" class="btnXoa">Delete</button>
+                                    </form>
+                                </div>
+                                <span class="close close_{{post.id}}"><i class="fa fa-close"></i></span>
+                            </div>
+                        </div>
+                        <!-- Model edit post -->
+                        <div class="popup edit_post{{post.id}}">
+                            <div>
+                                <div class="popup-box edit_post-popup-box">
+                                    <h1>Edit post</h1>
+                                    <!-- <form action="" enctype="multipart/form-data" method="post">
+                                    {%csrf_token%}
+                                    <h1>Content: {{post.content}}</h1>
+                                    {{edit_p_form.as_p}}
+                                    <input type="hidden" name="post_edit_id" value="{{post.id}}">
+                                    <button type="submit">Update</button>
+                                </form> -->
+                                    <form action="{%url 'profiles:edit_post'%}" enctype="multipart/form-data" method="post" class="form-edit-post">
+                                        {%csrf_token%}
+                                        <p><label for="id_content">Content:</label> <textarea name="content" cols="40"
+                                                rows="10" required="" id="id_content">{{post.content}}</textarea></p>
+                                        <p><label for="id_image">Image:</label>
+                                            <input type="file" name="image" id="id_image" multiple>
+                                        </p>
+                                        <p>
+                                            <label for="id_visibility">Visibility:</label>
+                                            <select name="visibility" id="id_visibility">
+                                                {%if post.visibility == "Public"%}
+                                                <option value="Public" selected="">Công khai</option>
+                                                <option value="Friend">Bạn bè</option>
+                                                {%else%}
+                                                <option value="Public">Công khai</option>
+                                                <option value="Friend" selected="">Bạn bè</option>
+                                                {%endif%}
+
+                                            </select>
+                                        </p>
+                                        <input type="hidden" name="post_edit_id" value="{{post.id}}">
+                                        <button type="submit" class="btnSua">Update</button>
+                                    </form>
+                                </div>
+                                <span class="close close_{{post.id}}"><i class="fa fa-close"></i></span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="feed myfeed">
+                        <!-- Feed Top -->
+                        <div class="feed-top">
+                            <div class="user">
+                                <div class="profile-picture">
+                                    <img src="{{post.author.avatar.url}}" alt="{{post.author.avatar.url}}">
+                                </div>
+                                <div class="info">
+                                    <h3>{{post.author.first_name}} {{post.author.last_name}}</h3>
+                                    <div class="time text-gry">
+
+                                        <small>{{post.author.country}},
+                                            <span>{{post.get_time_elapsed}}</span>
+                                            {% if post.visibility == "Public" %}
+                                            <img src="{%static 'images/public_post.png'%}"
+                                                alt="{%static 'images/public_post.png'%}"
+                                                style="width: 15px; display: inline-block;">
+                                            {%else%}
+                                            <img src="{%static 'images/friend_post.png'%}"
+                                                alt="{%static 'images/friend_post.png'%}"
+                                                style="width: 15px; display: inline-block">
+                                            {%endif%}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="edit">
+                                <img src="{%static 'images/svg/three-dots.svg'%}"
+                                    alt="{%static 'images/svg/three-dots.svg'%}">
+                                <ul class="edit-menu">
+                                    <li id="icon_edit{{post.id}}"><i class="fa fa-pen"></i>Edit</li>
+                                    <li id="icon_delete{{post.id}}"><i class="fa fa-trash"></i>Delete</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <script>
+                            document.querySelector('#icon_delete{{post.id}}').addEventListener('click', () => {
+                                document.querySelector('.delete_post{{post.id}}').style.display = 'flex'
+                            });
+                            document.querySelector('#icon_edit{{post.id}}').addEventListener('click', () => {
+                                document.querySelector('.edit_post{{post.id}}').style.display = 'flex'
+
+                            });
+                            document.querySelectorAll('.close_{{post.id}}').forEach(AllCloser => {
+                                AllCloser.addEventListener('click', () => {
+
+
+                                    document.querySelector('.delete_post{{post.id}}').style.display = 'none'
+                                    document.querySelector('.edit_post{{post.id}}').style.display = 'none'
+
+                                })
+                            });
+                        </script>
+                        <!-- Nội dung -->
+                        <p>{{post.content}}</p>
+                        
+                            <!-- Hình ảnh -->
+                            <!-- Có hình ảnh -->
+                            {%if post.num_images_post != 0%}
+                            <p class="imglist">
+                                <!-- Duy nhất 1 ảnh -->
+                                {%if post.num_images_post == 1 %}
+                                {%for image in post.images.all %}
+                                <!-- Kiểm tra image là video -->
+                                {% if image.get_image_extension == ".MP4" or post.get_image_extension == ".MOV"%}
+                                <a href="{{ image.image.url }}" data-fancybox="gallery{{ post.id }}" data-caption="1/1">
+                                    <video width="250px" controls>
+                                        <source src="{{image.url}}" type="video/mp4">
+                                        <source src="{{image.image.url}}" type="video/ogg">
+                                        Your browser does not support HTML video.
+                                    </video>
+                                </a>
+                                <!-- Duy nhất 1 hình ảnh -->
+                                {%else%}
+
+                                <a href="{{ image.image.url }}" data-fancybox="gallery{{ post.id }}" data-caption="1/1">
+                                    <img src="{{image.image.url}}" alt="{{image.image.url}}">
+                                </a>
+                                {%endif%}
+                                {%endfor%}
+                                <!-- Nhiều hơn 1 ảnh -->
+                                {%else%}
+
+                                <!-- Duyệt danh sách hình ảnh -->
+                                {%for image in post.images.all %}
+                                    <!-- Do đây là 1/n
+                                            lấy hình đầu tiên bỏ ra cho xem -->
+                                    {%if forloop.counter == 1 %}
+                                        {% if image.get_image_extension == ".MP4" or post.get_image_extension == ".MOV"%}
+                                            <a href="{{ image.image.url }}" data-fancybox="gallery{{ post.id }}"
+                                                data-caption="{{forloop.counter}}/{{post.num_images_post}}">
+                                                <video width="250px" controls>
+                                                    <source src="{{image.url}}" type="video/mp4">
+                                                    <source src="{{image.image.url}}" type="video/ogg">
+                                                    Your browser does not support HTML video.
+                                                </video>
+                                            </a>
+
+                                        {%else%}
+                                            <a href="{{ image.image.url }}" data-fancybox="gallery{{ post.id }}"
+                                                data-caption="{{forloop.counter}}/{{post.num_images_post}}">
+                                                <img src="{{image.image.url}}" alt="{{image.image.url}}">
+                                            </a>
+                                        {%endif%}
+
+                                    <!-- hình 2/n 
+                                    hiển thị số lượng hình còn lại-->
+                                    {%elif forloop.counter == 2 %}
+                                        {% if image.get_image_extension == ".MP4" or post.get_image_extension == ".MOV"%}
+                                                <a href="{{ image.image.url }}" data-fancybox="gallery{{ post.id }}"
+                                                    data-caption="{{forloop.counter}}/{{post.num_images_post}}" style="display: inline-flex;">
+                                                    <video  width="250px" controls >
+                                                        <source src="{{image.url}}" type="video/mp4">
+                                                        <source src="{{image.image.url}}" type="video/ogg">
+                                                       
+                                                    </video>
+                                                    <span class="video-count">+{{post.num_images_post|add:"-2"}}</span>
+
+                                                </a>
+
+                                        {%else%}
+                                            <div class="image-container">
+<a href="{{ image.image.url }}" data-fancybox="gallery{{ post.id }}" data-caption="{{forloop.counter}}/{{post.num_images_post}}">
+                                                    <img src="{{image.image.url}}" alt="{{image.image.url}}" >
+                                                    <span class="image-count">+{{post.num_images_post|add:"-2"}}</span>
+                                                </a>
+                                            </div>
+                                            
+                                        {%endif%}
+                                    <!-- ẩn phần còn lại-->
+                                    {%else%}
+                                    {% if image.get_image_extension == ".MP4" or post.get_image_extension == ".MOV"%}
+                                            <a href="{{ image.image.url }}" data-fancybox="gallery{{ post.id }}"
+                                                data-caption="{{forloop.counter}}/{{post.num_images_post}}">
+                                                <video width="250px" controls hidden>
+                                                    <source src="{{image.url}}" type="video/mp4">
+                                                    <source src="{{image.image.url}}" type="video/ogg">
+                                                    Your browser does not support HTML video.
+                                                </video>
+                                            </a>
+
+                                        {%else%}
+                                            <a href="{{ image.image.url }}" data-fancybox="gallery{{ post.id }}"
+                                                data-caption="{{forloop.counter}}/{{post.num_images_post}}" hidden>
+                                                <img src="{{image.image.url}}" alt="{{image.image.url}}" >
+                                            </a>
+                                        {%endif%}
+                                    {%endif%}
+
+
+                                {%endfor%}
+                                {%endif%}
+                            </p>
+                            {%endif%}
+
+
+
+                            <script>
+                                $('[data-fancybox]').fancybox({
+                                    // Options will go here
+                                    buttons: [
+                                        'close'
+                                    ],
+                                    wheel: false,
+                                    transitionEffect: "slide",
+                                    // thumbs          : false,
+                                    // hash            : false,
+                                    loop: true,
+                                    // keyboard        : true,
+                                    toolbar: false,
+                                    // animationEffect : false,
+                                    // arrows          : true,
+                                    clickContent: false
+                                });
+                            </script>
+                        <!-- Feed Action Aria -->
+                        <div class="action-button">
+                            <div class="interaction-button">
+
+                                <!-- nút like: Tâm An-->
+                                <form action="{% url 'profiles:liked_my_post' %}" method="POST" class="like-form{{post.id}}"
+                                    id="{{post.id}}">
+                                    {%csrf_token%}
+                                    <input type="hidden" name="post_id" value="{{post.id}}">
+                                    <!-- Nếu người dùng chưa có trong danh sách like bài viết -->
+                                    <button type="submit" class="like-btn{{post.id}}">
+                                        <span>
+                                            {%if profile not in post.liked.all%}
+                                            <i class="fa fa-heart"></i>
+                                            {%else%}
+                                            <span><i class="fa fa-heart liked"></i></span>
+                                            {%endif%}
+                                        </span>
+                                    </button>
+                                </form>
+                                {% comment %} form cmt {% endcomment %}
+                                <form action="{%url 'posts:commented'%}" method="post" class="form-comment form-comment{{post.id}}" id="{{post.id}}">
+                                    {%csrf_token%}
+                                    {{c_form.as_p}}
+                                    <input type="hidden" name="post_id" value="{{post.id}}">
+                                    <button type="submit" name="submit_c_form" class="btn btn-primary btn-send-main"><i
+                                            class="fa-regular fa-paper-plane"></i></button>
+                                </form>
+
+                                <!-- Like + cmt: Thành -->
+                                <!-- <span><i class="fa fa-heart"></i></span> -->
+                                <!-- <span><i class="fa fa-comment-dots"></i></span> -->
+                            </div>
+                        </div>
+                        <!-- Like By -->
+                        <div class="liked-by liked-by{{post.id}}">
+                            <!-- Chưa thằng nào like -->
+                            {% if post.num_likes == 0 %}
+
+                            <!-- 1 thằng like -->
+                            {% elif post.num_likes == 1 %}
+
+                            <span><img src="{{post.get_likes.first.avatar.url}}"
+                                    alt="{{post.get_likes.first.avatar.url}}"></span>
+                            <p><b>{{post.get_likes.first.first_name}} {{post.get_likes.first.last_name}}</b></p>
+                            <!-- Nhiều thằng like -->
+                            {% else%}
+
+                            <span><img src="{{post.get_likes.first.avatar.url}}"
+                                    alt="{{post.get_likes.first.avatar.url}}"></span>
+                            {% for like in post.get_likes %}
+                            {% if forloop.counter == 2 %}
+                            <!-- Lấy phần tử thứ 2 -->
+                            <span><img src="{{like.avatar.url}}" alt="{%static 'images/user1.jpeg'%}"></span>
+                            {% endif %}
+                            {% endfor %}
+
+                            <p><b>{{post.get_likes.first.first_name}} {{post.get_likes.first.last_name}}</b>
+                                and <b>{{ post.num_likes|add:"-1" }}
+                                    comments other</b></p>
+                            {% endif %}
+
+                        </div>
+                        {% comment %} js của like không cần load trang {% endcomment %}
+                        <script>
+                            $(document).on('submit', '.like-form{{post.id}}', function(e){
+                                e.preventDefault();
+                                const post_id = $(this).attr('id'); 
+                                const url = $(this).attr('action');
+                                
+                                // Gửi request AJAX
+                                $.ajax({
+                                    type: 'POST',
+                                    url: url,
+                                    data: {
+                                        'post_id': post_id,
+                                        'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+                                    },
+                                    success: function(response) {
+                                        // Tìm icon trong nút like
+                                        const icon = $('.like-btn' + post_id).find('i.fa-heart');
+
+                                        // Cập nhật class dựa trên giá trị response
+                                        if (response.value =='Like'){
+                                            icon.addClass('liked');
+                                            console.log("Đã like");
+                                        } else {
+                                            icon.removeClass('liked');
+                                        }
+                            
+                                        // Cập nhật số lượng likes
+                                        $('.like-count' + post_id).text(response.likes);
+
+
+
+
+
+                                        // Cập nhật phần hiển thị người dùng đã like
+                                        const likedByDiv = $('.liked-by{{post.id}}');
+                                        let htmlContent = '';
+
+                                        // Kiểm tra sự tồn tại của response.liked_users và nó phải là một mảng
+                                        if (response.liked_users && Array.isArray(response.liked_users)) {
+                                            if (response.likes == 0) {
+                                                console.log(0)
+                                                // Không có ai like
+                                                htmlContent = '';
+                                            } else if (response.likes == 1) {
+                                                console.log(1)
+                                                // 1 người like
+                                                const user = response.liked_users[0];
+                                                htmlContent = `
+                                                    <span><img src="${user.avatar_url}" alt="${user.first_name} ${user.last_name}"></span>
+                                                    <p><b>${user.first_name} ${user.last_name}</b></p>
+                                                `;
+} else {
+                                                // Nhiều người like
+                                                const firstUser = response.liked_users[0];
+                                                const secondUser = response.liked_users[1];
+                                                htmlContent = `
+                                                    <span><img src="${firstUser.avatar_url}" alt="${firstUser.first_name} ${firstUser.last_name}"></span>
+                                                    <span><img src="${secondUser.avatar_url}" alt="${secondUser.first_name} ${secondUser.last_name}"></span>
+                                                    <p><b>${firstUser.first_name} ${firstUser.last_name}</b> and <b>${response.likes - 1} others</b></p>
+                                                `;
+                                            }
+                                        } else {
+                                            // Trường hợp không có dữ liệu người dùng liked
+                                            htmlContent = ''; // Hoặc bạn có thể hiển thị một thông báo mặc định
+                                        }
+
+                                        likedByDiv.html(htmlContent);
+
+                                    },
+                                    error: function(response) {
+                                        console.log('Error:', response);
+                                    }
+                                });
+                            });
+                            
+                        
+                            
+                        </script>
+{% comment %} Container chứa toàn bộ comment của 1 bài viết {% endcomment %}
+                        <!-- Caption -->
+                        <div class="container-comment{{post.id}}">
+                    
+                        {%for cmt in post.comment_set.all|slice:":2"%}
+                        <div class="caption caption{{cmt.id}}"
+                            style="background-color: antiquewhite; margin-bottom: 10px;">
+                            <!-- <div class="title">Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                                Qui recusandae impedit aliquam non, velit alias maxime tenetur fuga et numquam.</div> -->
+                            <p>
+                                <b>{{cmt.user.first_name}} {{cmt.user.last_name}}</b><span>{{cmt.get_time_comment}}</span>
+                                <br>
+                                {{cmt.body}}
+                            </p>
+                            {% if cmt.user.username.id == request.user.id %}
+                            <div class="edit-comment">
+                                <img src="{%static 'images/svg/three-dots.svg'%}"
+                                    alt="{%static 'images/svg/three-dots.svg'%}">
+                                <ul class="edit-item" style="z-index: 1;">
+                                    <li class="icon_edit_comment  icon_edit_comment{{cmt.id}}"><i class="fa fa-pen"></i>
+                                        Edit</li>
+                                    <li id="icon_delete_comment{{cmt.id}}"><i class="fa fa-trash"></i> Delete</li>
+                                </ul>
+                            </div>
+                            {% elif post.author.username.id == request.user.id %}
+                                    <div class="edit-comment">
+                                        <img src="{%static 'images/svg/three-dots.svg'%}"
+                                            alt="{%static 'images/svg/three-dots.svg'%}">
+                                        <ul class="edit-item" style="z-index: 1;">
+                                            <li class="icon_edit_comment  icon_edit_comment{{cmt.id}}"><i
+                                                    class="fa fa-pen"></i> Edit</li>
+                                            <li id="icon_delete_comment{{cmt.id}}"><i class="fa fa-trash"></i> Delete
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                            {%endif%}
+                            <div class="page">
+
+
+                                <!-- modal delete cmt -->
+
+                                <div class="popup delete_cmt{{cmt.id}}">
+                                    <div>
+                                        <div class="popup-box delete_cmt-popup-box">
+                                            <h1>Bạn có muốn xóa bình luận không?</h1>
+
+                                            <form action="" method="post">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="cmt_del_id" value="{{cmt.id}}">
+                                                <button type="submit" class="btnXoa">Delete</button>
+                                            </form>
+                                        </div>
+                                        <span class="close close_{{cmt.id}}"><i class="fa fa-close"></i></span>
+                                    </div>
+                                </div>
+                                <!-- ja modal delete cmt -->
+                                <script>
+                                    document.querySelector('#icon_delete_comment{{cmt.id}}').addEventListener('click', () => {
+                                        document.querySelector('.delete_cmt{{cmt.id}}').style.display = 'flex'
+                                    });
+
+                                    document.querySelectorAll('.close_{{cmt.id}}').forEach(AllCloser => {
+                                        AllCloser.addEventListener('click', () => {
+
+
+                                            document.querySelector('.delete_cmt{{cmt.id}}').style.display = 'none'
+                                            document.querySelector('.edit_cmt{{cmt.id}}').style.display = 'none'
+
+                                        })
+                                    });
+                                </script>
+
+
+                            </div>
+                        </div>
+                        <!-- Sau khi nhấn edit > hiển thị đoạn này lên -->
+                        <b class="auther_comment auther_comment{{cmt.id}}">{{cmt.user.first_name}}
+                            {{cmt.user.last_name}}</b>
+
+                        <form action="" method="post">
+                            {%csrf_token%}
+                            <div class="edit-input-comment">
+
+
+                                <input name="body" required id="id_body"
+                                    class="input-edit-comment input-edit-comment{{cmt.id}}" type="text"
+                                    placeholder="Edit comment" value="{{cmt.body}}">
+
+
+                                <button type="submit" style="font-weight: bold; display: none;"
+                                    class="btn-send btn-send{{cmt.id}}"><i
+                                        class="fa-regular fa-paper-plane"></i></button>
+                            </div>
+                            <input type="hidden" name="edit_cmt_id" value="{{cmt.id}}">
+                        </form>
+
+
+
+
+                        <!-- js edit cmt -->
+                        <script>
+                            document.querySelectorAll('.icon_edit_comment{{cmt.id}}').forEach((iconEditComment, index) => {
+                                iconEditComment.addEventListener('click', () => {
+                                    const caption = document.querySelectorAll('.caption{{cmt.id}}')[index];
+                                    const autherComment = document.querySelectorAll('.auther_comment{{cmt.id}}')[index];
+                                    const inputEditComment = document.querySelectorAll('.input-edit-comment{{cmt.id}}')[index];
+                                    const btnSend = document.querySelectorAll('.btn-send{{cmt.id}}')[index];
+                                    caption.style.display = 'none'; autherComment.style.display = 'flex';
+                                    inputEditComment.style.display = 'flex';
+                                    btnSend.style.display = 'block';
+                                });
+                            });
+                        </script>
+                        {%endfor%}
+
+{% comment %} Đóng div, chứa toàn bị commnet {% endcomment %}
+
+                    </div>
+
+
+
+
+                    {% comment %} js không cần load trang {% endcomment %}
+                    <script>
+                        function createNewComment(userName, commentText) {
+                            var commentHtml = `
+                                <div class="caption" style="background-color: antiquewhite; margin-bottom: 10px;">
+                                    <p>
+                                        <b>${userName}</b><span>0 giây trước</span>
+                                        <br>
+                                        ${commentText}
+                                    </p>
+                                    <div class="edit-comment">
+                                        <img src="/static/images/svg/three-dots.svg" alt="/static/images/svg/three-dots.svg">
+                                        <ul class="edit-item" style="z-index: 1;">
+                                            <li class="icon_edit_comment  icon_edit_comment144"><i class="fa fa-pen"></i> Edit</li>
+                                            <li id="icon_delete_comment144"><i class="fa fa-trash"></i> Delete</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            `;
+                           
+                        
+                            return commentHtml;
+                        }
+                        
+                        $(document).on('submit', '.form-comment{{post.id}}', function(e){
+                            e.preventDefault();
+                            const post_id = $(this).attr('id'); 
+                            const url = $(this).attr('action');
+                            var bodyInput = $(this).find('input[name="body"]').val(); // Lấy giá trị từ input có tên là "body"
+                            var csrfToken = $(this).find('input[name="csrfmiddlewaretoken"]').val(); // Lấy CSRF token
+                    
+                            // Gửi AJAX request
+                            $.ajax({
+                                type: 'POST',
+                                url: url,
+                                data: {
+                                    'body': bodyInput,
+                                    'post_id': post_id,
+                                    'csrfmiddlewaretoken': csrfToken
+                                },
+                                success: function(response) {
+                                    //Tạo 1 cái cặp thẻ bình luận mới
+                                    var newComment = createNewComment(response.user_name_commented, bodyInput);
+                                    // Thêm bình luận mới vào danh sách
+                                    $('.container-comment{{post.id}}').prepend(newComment);
+                    
+                                    // Xóa trường nhập liệu
+                                    $('input[name="body"]').val('');
+                                },
+                                error: function(error) {
+console.error("Có lỗi xảy ra: ", error);
+                                }
+                            });
+                            
+                      
+                            
+                        });
+                        </script>
+
+
+
+                    </div>
+
+
+                    {% endfor %}
+
+                </div>
+            </div>
+            <div class="main-right"></div>
+        </div>
+        <div class="main-right">
+            <div class="messages">
+                <!------------------Message Top-------------------->
+                <div class="message-top">
+                    <h4>Friend</h4>
+                    {% comment %} Truyền slug của thằng đang đăng nhập: Để lấy danh sách bạn bè của mình {% endcomment %}
+                    <a href="{% url 'profiles:friends' slug=profile.slug %}" class="btn btn-success">All my friens</a>
+
+                </div>
+                <!-- Search Bar -->
+                <div class="message-search-bar">
+                    <i class="fa fa-search"></i>
+                    <input type="search" placeholder="Search friend..." id="message-search">
+                </div>
+                <!------------Messag------------>
+                {% for i in friend_list|slice:":2"%}
+                <a href="{% url 'profiles:profile_detail_view' slug=i.slug %}">
+                    <div class="message">
+                        <div class="profile-picture">
+                            <img src="{{i.avatar.url}}" alt="{{i.avtar.url}}">
+                            <div class="green-active"></div>
+                        </div>
+                        <div class="message-body">
+                            <h5>{{i.first_name}} {{i.last_name}}</h5>
+                            <p class="text-gry">
+                                {{i.bio}}
+                            </p>
+                        </div>
+                    </div>
+                </a>
+                <br>
+                {%endfor%}
+            </div>
+            <!-- <div class="firend-rquest">
+                <h4>Request</h4>
+                <div class="request">
+                    <div class="info">
+                        <div class="profile-picture">
+                            <img src="images/user1.jpeg" alt="">
+                        </div>
+                        <div>
+                            <h5>Mark Danele</h5>
+                            <p class="text-gry">
+                                4 mutual firend
+                            </p>
+                            <small class="text-gry alert">You have accept fridend request</small>
+                        </div>
+                    </div>
+                    <div class="action">
+                        <div class="btn btn-primary" id="Accept">
+                            Accept
+                        </div>
+                        <div class="btn btn-danger" id="Delete">
+                            Delete
+                        </div>
+                    </div>
+                </div>
+                <div class="request">
+                    <div class="info">
+                        <div class="profile-picture">
+                            <img src="images/user1.jpeg" alt="">
+                        </div>
+                        <div>
+                            <h5>Mark Danele</h5>
+                            <p class="text-gry">
+                                4 mutual firend
+                            </p>
+                            <small class="text-gry alert">You have accept fridend request</small>
+                        </div>
+                    </div>
+                    <div class="action">
+                        <div class="btn btn-primary" id="Accept">
+                            Accept
+                        </div>
+                        <div class="btn btn-danger" id="Delete">
+                            Delete
+                        </div>
+                    </div>
+                </div>
+                <div class="request">
+                    <div class="info">
+                        <div class="profile-picture">
+                            <img src="images/user1.jpeg" alt="">
+                        </div>
+                        <div>
+                            <h5>Mark Danele</h5>
+                            <p class="text-gry">
+                                4 mutual firend
+                            </p>
+                            <small class="text-gry alert">You have accept fridend request</small>
+                        </div>
+                    </div>
+                    <div class="action">
+                        <div class="btn btn-primary" id="Accept">
+                            Accept
+                        </div>
+                        <div class="btn btn-danger" id="Delete">
+                            Delete
+                        </div>
+                    </div>
+                </div>
+                <div class="request">
+                    <div class="info">
+                        <div class="profile-picture">
+                            <img src="images/user1.jpeg" alt="">
+                        </div>
+                        <div>
+                            <h5>Mark Danele</h5>
+                            <p class="text-gry">
+                                4 mutual firend
+                            </p>
+                            <small class="text-gry alert">You have accept fridend request</small>
+                        </div>
+                    </div>
+                    <div class="action">
+                        <div class="btn btn-primary" id="Accept">
+                            Accept
+                        </div>
+                        <div class="btn btn-danger" id="Delete">
+                            Delete
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+    </div>
+</main>
+<div class="popup add-post-popup">
+    <div>
+        <form class="popup-box add-post-popup">
+            <h1>Add New Post</h1>
+            <div class="row post-title">
+                <label>Title</label>
+                <input type="text" placeholder="What's on your mind?" id="add-post">
+            </div>
+            <div class="row post-img">
+                <img src="" alt="" id="postIMg">
+                <label for="feed-pic-upload" class="feed-upload-button">
+                    <span><i class="fa fa-add"></i></span>
+                    Upload A Picture</label>
+                <input type="file" accept="images/jpg, images/png, images/jpeg" id="feed-pic-upload">
+                <input type="submit" class="btn btn-primary btn-lg" value="Add Post">
+            </div>
+        </form>
+        <span class="close"><i class="fa fa-close"></i></span>
+    </div>
+</div>
+<div class="popup theme-customize">
+    <div>
+        <div class="popup-box theme-customize-popup-box">
+            <h1>Coustomize Your Theme</h1>
+            <p>Manege Your Font Size, Color, and Background</p>
+            <!-----------------Font Size----------------->
+            <div class="font-size">
+                <h4>Font-Size</h4>
+                <div>
+                    <div>
+                        <h6>Aa</h6>
+                    </div>
+                    <div class="choose-size">
+                        <span class="font-size-1"></span>
+                        <span class="font-size-2 active"></span>
+                        <span class="font-size-3"></span>
+                        <span class="font-size-4"></span>
+                        <span class="font-size-5"></span>
+                    </div>
+                    <div>
+                        <h3>Aa</h3>
+                    </div>
+                </div>
+            </div>
+            <!----------------Primary Colors---------------->
+            <div class="colors">
+                <h4>Color</h4>
+                <div class="choose-color">
+                    <span class="color-1 active"></span>
+                    <span class="color-2 "></span>
+                    <span class="color-3 "></span>
+                    <span class="color-4 "></span>
+                    <span class="color-5 "></span>
+                </div>
+            </div>
+            <!----------------Background Colors---------------->
+            <div class="background">
+                <h4>Background</h4>
+                <div class="choose-bg">
+                    <div class="bg1 active">
+                        <span></span>
+                        <h5>Light</h5>
+                    </div>
+                    <div class="bg2">
+                        <span></span>
+                        <h5>Dark</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span class="close"><i class="fa fa-close"></i></span>
+    </div>
+</div>
+<!--  -->
+
+<!-- <div class="popup profile-popup">
+  <div>
+      <div class="popup-box profile-popup-box">
+          <h1>{{profile.username}}</h1>
+          <p>{{profile.bio}}</p>
+          <div id="my-profile-picture">
+              <img src="{{profile.avatar.url}}" alt="{{profile.avatar.url}}">
+          </div>
+          <label for="profile-upload" class="btn btn-primary btn-lg"><a href="profile.html">View Profile</a></label>
+          <button class="btn btn-primary btn-lg"><a href="loginandregister.html">Log Out</a></button>
+      </div>
+      <span class="close"><i class="fa fa-close"></i></span>
+  </div>
+</div> -->
+{% endblock %}

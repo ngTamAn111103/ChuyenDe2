@@ -1,0 +1,69 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lời Mời Kết Bạn</title>
+    <!-- Kết nối với Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- Thêm các thư viện CSS tùy chỉnh tại đây -->
+    <style>
+        .button-group {
+            display: flex; /* Sắp xếp các nút ngang hàng */
+            gap: 10px; /* Khoảng cách giữa các nút */
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Lời Mời Kết Bạn</h1>
+        {% if is_empty %}
+            <div class="col-12">
+                <p>Không có lời mời kết bạn nào.</p>
+            </div>
+        {% else %}
+            {% for user in qs %}
+                <div class="mb-3">
+                    <div class="card">
+                        <div class="row no-gutters">
+                            <div class="col-md-4">
+                                <img src="{{ user.avatar.url }}" class="card-img" alt="Avatar của {{ user.username }}">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ user.username }}</h5>
+                                    <p class="card-text">{{ user.bio }}</p>
+                                    <div class="button-group">
+                                        <a href="{% url 'profiles:profile_detail_view' slug=user.slug %}" class="btn btn-primary">
+                                            <img src="{%static 'images/svg/profile.svg'%}" alt="{%static 'images/svg/profile.svg'%}" style="width: 15px;">
+                                            See Profile
+                                            
+                                        </a>
+                                        <form action="{% url 'profiles:accept_invite' %}" method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="profile_pk" value="{{ user.pk }}">
+                                            <button class="btn btn-success" type="submit">
+                                                <img src="{%static 'images/svg/check-solid.svg'%}" alt="{%static 'images/svg/check-solid.svg'%}" style="width: 15px;">
+                                                Accept</button>
+                                        </form>
+                                        <form action="{% url 'profiles:reject_invite' %}" method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="profile_pk" value="{{ user.pk }}">
+                                            <button class="btn btn-danger" type="submit"><img src="{%static 'images/svg/x-solid.svg'%}" alt="{%static 'images/svg/x-solid.svg'%}" style="width: 15px;">
+                                                Delete</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <!-- Kết nối với Bootstrap JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

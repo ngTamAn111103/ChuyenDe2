@@ -1,0 +1,270 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% block title %}
+        {% endblock %}
+    </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+            text-decoration: none;
+            list-style: none;
+            border: none;
+        }
+    
+        :root {
+            --primary-color-hue: 252;
+            --color-dark-light-theme: 15%;
+            --color-light-light-theme: 92%;
+            --color-white-light-theme: 100%;
+            --color-white: hsl(255, 30%, var(--color-white-light-theme));
+            --color-light: hsl(255, 30%, var(--color-light-light-theme));
+            --color-gray: hsl(255, 15%, 60%);
+            --color-primary: hsl(var(--primary-color-hue), 75%, 60%);
+            --color-secondary: hsl(255, 100%, 90%);
+            --color-success: hsl(120, 95%, 60%);
+            --color-danger: hsl(0, 95%, 60%);
+            --color-dark: hsl(255, 30%, var(--color-dark-light-theme));
+            --color-black: hsl(255, 30%, 8%);
+    
+            --boder-radius: 2rem;
+            --card-boder-radius: 1rem;
+            --search-padding: .6rem 1rem;
+            --card-padding: 1rem;
+            --btn-padding: .6rem 2rem;
+        }
+    
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--color-dark);
+            background: var(--color-light);
+        }
+    
+        /* img {
+            display: block;
+            width: 100%;
+        } */
+    
+        .logo img {
+            border-radius: 50%;
+            max-width: 50px;
+            max-height: 50px;
+        }
+    
+        nav {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            z-index: 10;
+            padding: .7rem 0;
+            background: var(--color-white);
+        }
+    
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    
+        .container {
+            width: 90%;
+            margin: 0 auto;
+        }
+    
+        nav .search-bar {
+            padding: var(--search-padding);
+            background: var(--color-light);
+            border-radius: var(--boder-radius);
+        }
+    
+        nav .search-bar input[type="search"] {
+            background: transparent;
+            width: 30vw;
+            margin-left: 1rem;
+            font-size: .9rem;
+            color: var(--color-dark);
+        }
+    
+        nav .search-bar input[type="search"]::placeholder {
+            color: var(--color-gray);
+        }
+    
+        .profile-picture {
+            width: 3rem;
+            aspect-ratio: 1/1;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+    
+        .logo img {
+            border-radius: 50%;
+            max-width: 50px;
+            max-height: 50px;
+        }
+    
+        nav {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            z-index: 10;
+            padding: .7rem 0;
+            background: var(--color-white);
+        }
+    
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    
+        nav .search-bar {
+            padding: var(--search-padding);
+            background: var(--color-light);
+            border-radius: var(--boder-radius);
+        }
+    
+        nav .search-bar input[type="search"] {
+            background: transparent;
+            width: 30vw;
+            margin-left: 1rem;
+            font-size: .9rem;
+            color: var(--color-dark);
+        }
+    
+        nav .search-bar input[type="search"]::placeholder {
+            color: var(--color-gray);
+        }
+    
+        .add-post {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+    
+        .popup>div {
+            display: flex;
+        }
+    
+        .profile-popup-box>div {
+            height: 10rem;
+            width: 10rem;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-top: 2rem;
+        }
+    
+        .popup {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            position: fixed;
+            justify-content: center;
+            top: 0;
+            z-index: 11;
+            background: #000000ba;
+            display: none;
+        }
+    
+        .popup-box {
+            width: fit-content;
+            height: max-content;
+            background: var(--color-white);
+            padding: 3rem;
+            border-radius: var(--card-boder-radius);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+        }
+    
+        .btn {
+            padding: var(--btn-padding);
+            display: inline-block;
+            cursor: pointer;
+            border-radius: var(--boder-radius);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transform: 300ms ease all;
+        }
+    
+        .btn:hover {
+            opacity: 0.75;
+        }
+    
+        .btn-primary {
+            background: var(--color-primary);
+            color: var(--color-white);
+        }
+    
+        .btn-primary a {
+            color: var(--color-white);
+        }
+    
+        .btn-lg {
+            padding: 1rem 0;
+            width: 100%;
+            text-align: center;
+            margin-top: 1rem;
+        }
+    
+        .popup .close {
+            font-size: 1.6rem;
+            color: var(--color-white);
+            margin-left: 0.5rem;
+            margin-top: -1rem;
+        }
+        .profile-page {
+            margin-top: 165px;
+            background-color: var(--color-white);
+        }
+    </style>
+
+</head>
+<body>
+    <nav>
+        <!-- Logo -->
+        <div class="container nav-container">
+            <div class="logo">
+                <a href="/">
+    
+                    <img src="{% static 'images/logo.jpg' %}" alt="logo.jpg">
+                </a>
+            </div>
+            <!-- Tìm kiếm -->
+    
+            <div class="search-bar">
+                <i class="fa fa-search"></i>
+                <input type="search" name="key" placeholder="Search on...">
+            </div>
+    
+            <!-- Ảnh cá nhân -->
+            <div class="add-post">
+                <div class="profile-picture" id="my-profile-picture">
+                    {% if user.is_authenticated %}
+                    <img src="{{profile.avatar.url}}" alt="{{profile.avatar}}">
+                    {% else %}
+                    <img src="{% static 'images/user.jpg' %}" alt="avatar.jpg">
+                    {% endif %}
+                </div>
+            </div>
+    
+        </div>
+    </nav>
+    {% block content %}{% endblock content %}
+
+</body>
+</html>

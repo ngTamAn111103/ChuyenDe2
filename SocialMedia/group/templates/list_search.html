@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        
+        .navbar-search {
+            position: fixed;
+            right: 0;
+            top: 0;
+            width: 200px;
+            background-color: #333;
+            color: white;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .nav-btn {
+            padding: 10px;
+            text-decoration: none;
+            color: white;
+            background-color: #666;
+            border: none;
+            text-align: center;
+            margin: 10px;
+            border-radius: 5px;
+        }
+        
+        .search-results {
+            margin-left: auto;
+            margin-right: 220px; /* Để chừa chỗ cho navbar-search */
+            padding: 20px;
+            width: 100%;
+        }
+        
+        .search-item {
+            display: flex;
+            align-items: center;
+            background-color: #f2f2f2;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .search-info {
+            flex-grow: 1;
+        }
+        
+        .name {
+            margin: 0;
+            color: #333;
+        }
+        
+        .description {
+            font-size: 14px;
+            color: #555;
+        }
+        
+        .detail-btn {
+            padding: 5px 10px;
+            background-color: #0056b3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        {% comment %} css ko có kq tìm kiếm {% endcomment %}
+
+    h1 {
+        font-size: 24px;
+        color: #0056b3; /* Màu xanh đậm */
+        margin-bottom: 15px;
+    }
+
+    .no-results {
+        background-color: #ffdddd; /* Màu nền đỏ nhạt */
+        border-left: 6px solid #f44336; /* Dải màu đỏ bên trái */
+        margin-bottom: 15px;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .detail-btn {
+        transition: background-color 0.3s ease;
+    }
+
+    .detail-btn:hover {
+        background-color: #003366; /* Màu nền đậm hơn khi hover */
+    }
+
+    </style>
+</head>
+<body>
+    {% comment %} <div class="navbar-search">
+        <a href="#" class="nav-btn">Tất cả</a>
+        <a href="#" class="nav-btn">Mọi người</a>
+        <a href="#" class="nav-btn">Nhóm</a>
+        <a href="#" class="nav-btn">Bài viết</a>
+    </div> {% endcomment %}
+    <div class="search-results">
+        <!-- Ví dụ về một kết quả tìm kiếm -->
+        <h1>User</h1>
+        {% if list_user.count %}
+        {% for item in list_user %}
+        <div class="search-item">
+            <img class="avatar" src="{{item.avatar.url}}" alt="Avatar">
+            <div class="search-info">
+                <h3 class="name">{{item.first_name}} {{item.last_name}}</h3>
+                <p class="description">{{item.bio}}</p>
+            </div>
+            <a href="{% url 'profiles:profile_detail_view' slug=item.slug %}">
+
+                <button class="detail-btn">Chi tiết</button>
+            </a>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p class="no-results">No users found matching your search criteria.</p>
+        {% endif %}
+
+        <!-- Ví dụ về một kết quả tìm kiếm -->
+        <h1>Group</h1>
+        {% if list_group %}
+        {% for item in list_group %}
+        <div class="search-item">
+            <img class="avatar" src="{{item.avatar.url}}" alt="Avatar">
+            <div class="search-info">
+                <h3 class="name">{{item.name}}</h3>
+                <p class="description">{{item.description}}</p>
+            </div>
+            <a href="{% url 'group:detail_group' slug=item.slug %}">
+
+                <button class="detail-btn">Chi tiết</button>
+            </a>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p class="no-results">No groups found matching your search criteria.</p>
+        {% endif %}
+        <!-- Thêm các kết quả tìm kiếm khác ở đây -->
+    </div>
+</body>
+</html>

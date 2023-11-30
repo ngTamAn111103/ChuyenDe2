@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <title>Group Members</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
+    
+    header {
+        background-color: #333;
+        color: white;
+        text-align: center;
+        padding: 10px 0;
+    }
+    
+    .members h2 {
+        color: #333;
+    }
+    
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+    
+    ul li {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        padding: 8px;
+        margin-bottom: 5px;
+    }
+    
+    ul li:hover {
+        background-color: #f8f8f8;
+    }
+    /* Phần còn lại của mã CSS giữ nguyên */
+
+.member-info {
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+.info h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.info p {
+  margin: 0;
+  font-size: 12px;
+  color: #666;
+}
+
+.profile-button {
+  margin-left: auto;
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 15px;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.profile-button:hover {
+  background-color: #45a049;
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Group Members</h1>
+    </header>
+    <!-- Phần còn lại của mã giữ nguyên -->
+
+<section class="members">
+  <h2>Admins</h2>
+  <ul>
+    {% for item in admins_info  %}
+
+        <li>
+            <div class="member-info">
+                <img src="{{item.profile.avatar.url}}" alt="Nguyen Van A" class="avatar">
+                <div class="info">
+                    <h3>{{item.profile.first_name}} {{item.profile.last_name}}</h3>
+                    <p>{{item.joined_at}}</p>
+                </div>
+                <a href="{% url 'profiles:profile_detail_view' slug=item.profile.slug %}" class="profile-button">See Profile</a>
+            </div>
+        </li>
+    {% endfor %}
+     
+
+  </ul>
+
+  <!-- Phần danh sách Members tương tự -->
+  <h2>My Friends</h2>
+  <ul>
+    {% for item in friends_in_group  %}
+
+        <li>
+            <div class="member-info">
+                <img src="{{item.profile.avatar.url}}" alt="Nguyen Van A" class="avatar">
+                <div class="info">
+                    <h3>{{item.profile.first_name}} {{item.profile.last_name}}</h3>
+                    <p>{{item.joined_at}}</p>
+                </div>
+                <a href="{% url 'profiles:profile_detail_view' slug=item.profile.slug %}" class="profile-button">See Profile</a>
+            </div>
+        </li>
+    {% endfor %}
+     
+  </ul>
+
+  <!-- Phần danh sách Members tương tự -->
+  <h2>Members</h2>
+  <ul>
+    {% for item in all_members_info  %}
+
+    <li>
+        <div class="member-info">
+            <img src="{{item.profile.avatar.url}}" alt="Nguyen Van A" class="avatar">
+            <div class="info">
+                <h3>{{item.profile.first_name}} {{item.profile.last_name}}</h3>
+                <p>{{item.joined_at}}</p>
+            </div>
+            <a href="{% url 'profiles:profile_detail_view' slug=item.profile.slug %}" class="profile-button">See Profile</a>
+        </div>
+    </li>
+{% endfor %}
+  </ul>
+
+  <!-- Phần danh sách Members tương tự -->
+</section>
+
+<!-- Phần còn lại của mã giữ nguyên -->
+
+</body>
+</html>

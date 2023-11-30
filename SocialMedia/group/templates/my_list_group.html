@@ -1,0 +1,445 @@
+{% comment %} {% extends 'main/navbar.html' %} {% endcomment %}
+{% load static%}
+{% comment %} Code for ra những group đã tham gia {% endcomment %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+
+        /* ======================================== */
+        :root {
+            --primary-color-hue: 252;
+            --color-dark-light-theme: 15%;
+            --color-light-light-theme: 92%;
+            --color-white-light-theme: 100%;
+            --color-white: hsl(255, 30%, var(--color-white-light-theme));
+            --color-light: hsl(255, 30%, var(--color-light-light-theme));
+            --color-gray: hsl(255, 15%, 60%);
+            --color-primary: hsl(var(--primary-color-hue), 75%, 60%);
+            --color-secondary: hsl(255, 100%, 90%);
+            --color-success: hsl(120, 95%, 60%);
+            --color-danger: hsl(0, 95%, 60%);
+            --color-dark: hsl(255, 30%, var(--color-dark-light-theme));
+            --color-black: hsl(255, 30%, 8%);
+    
+            --boder-radius: 2rem;
+            --card-boder-radius: 1rem;
+            --search-padding: .6rem 1rem;
+            --card-padding: 1rem;
+            --btn-padding: .6rem 2rem;
+        }
+    
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--color-dark);
+            background: var(--color-light);
+        }
+    
+        /* img {
+            display: block;
+            width: 100%;
+        } */
+    
+        .logo img {
+            border-radius: 50%;
+            max-width: 50px;
+            max-height: 50px;
+        }
+    
+        nav {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            z-index: 10;
+            padding: .7rem 0;
+            background: var(--color-white);
+        }
+    
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    
+        .container {
+            width: 90%;
+            margin: 0 auto;
+        }
+    
+        nav .search-bar {
+            padding: var(--search-padding);
+            background: var(--color-light);
+            border-radius: var(--boder-radius);
+        }
+    
+        nav .search-bar input[type="search"] {
+            background: transparent;
+            width: 30vw;
+            margin-left: 1rem;
+            font-size: .9rem;
+            color: var(--color-dark);
+        }
+    
+        nav .search-bar input[type="search"]::placeholder {
+            color: var(--color-gray);
+        }
+    
+        .profile-picture {
+            width: 3rem;
+            aspect-ratio: 1/1;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+    
+        .logo img {
+            border-radius: 50%;
+            max-width: 50px;
+            max-height: 50px;
+        }
+    
+        nav {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            z-index: 10;
+            padding: .7rem 0;
+            background: var(--color-white);
+        }
+    
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    
+        nav .search-bar {
+            padding: var(--search-padding);
+            background: var(--color-light);
+            border-radius: var(--boder-radius);
+        }
+    
+        nav .search-bar input[type="search"] {
+            background: transparent;
+            width: 30vw;
+            margin-left: 1rem;
+            font-size: .9rem;
+            color: var(--color-dark);
+        }
+    
+        nav .search-bar input[type="search"]::placeholder {
+            color: var(--color-gray);
+        }
+    
+        .add-post {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+    
+        .popup>div {
+            display: flex;
+        }
+    
+        .profile-popup-box>div {
+            height: 10rem;
+            width: 10rem;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-top: 2rem;
+        }
+    
+        .popup {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            position: fixed;
+            justify-content: center;
+            top: 0;
+            z-index: 11;
+            background: #000000ba;
+            display: none;
+        }
+    
+        .popup-box {
+            width: fit-content;
+            height: max-content;
+            background: var(--color-white);
+            padding: 3rem;
+            border-radius: var(--card-boder-radius);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+        }
+    
+        .btn {
+            padding: var(--btn-padding);
+            display: inline-block;
+            cursor: pointer;
+            border-radius: var(--boder-radius);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transform: 300ms ease all;
+        }
+    
+        .btn:hover {
+            opacity: 0.75;
+        }
+    
+        .btn-primary {
+            background: var(--color-primary);
+            color: var(--color-white);
+        }
+    
+        .btn-primary a {
+            color: var(--color-white);
+        }
+    
+        .btn-lg {
+            padding: 1rem 0;
+            width: 100%;
+            text-align: center;
+            margin-top: 1rem;
+        }
+    
+        .popup .close {
+            font-size: 1.6rem;
+            color: var(--color-white);
+            margin-left: 0.5rem;
+            margin-top: -1rem;
+        }
+        .profile-page {
+            margin-top: 165px;
+            background-color: var(--color-white);
+        } 
+        /* ======================================== */
+        .group-card {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .avatar img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+
+        .info {
+            flex-grow: 1;
+        }
+
+        .name {
+            margin: 0;
+            font-size: 1.2em;
+        }
+
+        .bio {
+            margin: 0;
+            color: #666;
+        }
+
+        .action-btn {
+            background-color: blue;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .action-btn:hover {
+            background-color: darkblue;
+        }
+
+            {
+            % comment %
+        }
+
+        modal tạo gr {
+            % endcomment %
+        }
+
+        /* Thêm CSS cho modal và nút */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 40%;
+            border-radius: 25px;
+            box-shadow:  2px 2px 4px 2px rgba(0, 0, 0, 0.2);;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+            {
+            % comment %
+        }
+
+        modal tạo gr {
+            % endcomment %
+        }
+    </style>
+    <style>
+        body{
+            background: #e8e4f1;
+            margin: 0px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .main{
+            margin: 8px;
+        }
+        .btnCreateGroup{
+            margin-top: 10px;
+            margin-bottom: 20px;
+            padding: 15px 20px;
+            border-radius: 25px;
+            background: hsl(252, 75%, 60%);
+            border: none;
+            font-size: 1.1rem;
+            color: white;
+            font-weight: bold;
+        }
+        .btnSeeGroup{
+            padding: 10px 15px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: white;
+            background: hsl(252, 75%, 60%);
+        }
+
+    </style> 
+</head>
+
+<body>
+    <h1 style="text-align: center;margin-top: 80px;padding-top: 20px;padding-bottom: 20px;background: black;color: white;">My group joined</h1>
+    <div class="main">
+        {% comment %} <h1 style="text-align: left;margin-top: 0px;padding-top: 20px; ">My group joined</h1> {% endcomment %}
+        
+        <button id="createGroupBtn" class="btn btnCreateGroup">Create New Group</button>
+        <!-- Modal tạo nhóm mới -->
+        <div id="createGroupModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2 style="text-align: center;">Create New Group</h2>
+                <form action="{% url 'group:create_group' %}" method="post" style="text-align: center;">
+                    {% csrf_token %}
+                    <label for="newGroupName" style="font-size: 1.1rem;font-weight: bold; text-align: left;">Name:</label>
+                    <input type="text" id="newGroupName" name="name" required style="margin-left: 45px;width: 75%; border-radius: 25px;height: 35px; max-height: max-content;border: 1px solid black; padding: 10px 10px;">
+                    <br>
+                    <label for="newGroupDescription" style="font-size: 1.1rem;font-weight: bold; text-align: left;margin-right: 15px">Description:</label>
+                    <textarea id="newGroupDescription" name="description" required style="margin-right: 10px;width: 75%; margin-top: 15px; resize: none;height: 30px; line-height: 30px;border: 1px solid black;border-radius: 25px; padding: 10px 10px;"></textarea>
+                    <br>
+                    <label for="newGroupVisibility" style="font-size: 1.1rem;font-weight: bold; text-align: left;">Visibility:</label>
+                    <select id="newGroupVisibility" name="visibility" style= "width: 79%; margin-top: 10px;margin-left: 25px; height: max-content;border-radius: 25px;font-size: 0.9rem; font-weight: bold;padding-left: 10px; padding: 10px 10px;">
+                        <option value="Public">Public</option>
+                        <option value="Private">Private</option>
+                    </select>
+                    <br>
+                    <button type="submit" class="btn" style="margin-top: 20px;
+                    border-radius: 25px; padding: .9rem 1rem;font-weight: bold;color: white;border: none; background: hsl(252, 75%, 60%);font-size: 1rem;">Create Group</button>
+                </form>
+            </div>
+        </div>
+
+        {% for group in groups_joined %}
+        <div class="group-card">
+            <div class="avatar">
+                <img src="{{group.avatar.url}}" alt="Avatar">
+            </div>
+            <div class="info">
+                <h3 class="name">{{group.name}}</h3>
+                <p class="bio">{{group.description}}</p>
+            </div>
+            <a href="{% url 'group:detail_group' slug=group.slug %}"><button class="action-btn btnSeeGroup">See group</button></a>
+        </div>
+        {% endfor %}
+
+        <h1 style="text-align: center;margin-top: 80px;padding-top: 20px;padding-bottom: 20px;background: black;color: white;">Group not joined</h1>
+        {% for group in groups_not_joined %}
+        <div class="group-card">
+            <div class="avatar">
+                <img src="{{group.avatar.url}}" alt="Avatar">
+            </div>
+            <div class="info">
+                <h3 class="name">{{group.name}}</h3>
+                <p class="bio">{{group.description}}</p>
+            </div>
+            <a href="{% url 'group:detail_group' slug=group.slug %}"><button class="action-btn"
+                    style="background-color: #28a745;">See group</button></a>
+        </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        // Get the modal
+        var createModal = document.getElementById("createGroupModal");
+
+        // Get the button that opens the modal
+        var createBtn = document.getElementById("createGroupBtn");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks the button, open the modal 
+        createBtn.onclick = function () {
+            createModal.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function () {
+            createModal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == createModal) {
+                createModal.style.display = "none";
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>

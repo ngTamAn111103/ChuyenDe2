@@ -1,0 +1,122 @@
+<!-- Trang này sẽ dùng để link cdn, css, js,.... 
+    Đồng thời code thanh navbar     
+-->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% block title %}{% endblock title %}
+    </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+
+    {% block css %}{% endblock %}
+    <style>
+        :root {
+            --primary-color-hue: 252;
+            --color-dark-light-theme: 15%;
+            --color-light-light-theme: 92%;
+            --color-white-light-theme: 100%;
+            --color-white: hsl(255, 30%, var(--color-white-light-theme));
+            --color-light: hsl(255, 30%, var(--color-light-light-theme));
+            --color-gray: hsl(255, 15%, 60%);
+            --color-primary: hsl(var(--primary-color-hue), 75%, 60%);
+            --color-secondary: hsl(255, 100%, 90%);
+            --color-success: hsl(120, 95%, 60%);
+            --color-danger: hsl(0, 95%, 60%);
+            --color-dark: hsl(255, 30%, var(--color-dark-light-theme));
+            --color-black: hsl(255, 30%, 8%);
+
+            --boder-radius: 2rem;
+            --card-boder-radius: 1rem;
+            --search-padding: .6rem 1rem;
+            --card-padding: 1rem;
+            --btn-padding: .6rem 2rem;
+        }
+
+        .btn-primary {
+            background: var(--color-primary);
+            color: var(--color-white);
+        }
+
+        .btn-primary a {
+            color: var(--color-white);
+        }
+
+        .form-search{
+            display: flex;
+        }
+
+        .btnSearch {
+            border-radius: var(--boder-radius);
+            padding: var(--btn-padding);
+            font-weight: bold;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Start Navbar -->
+    <nav>
+        <!-- Logo -->
+        <div class="container nav-container">
+            <div class="logo">
+                <a href="/">
+
+                    <img src="{% static 'images/logo.jpg' %}" alt="logo.jpg">
+                </a>
+            </div>
+            <!-- Tìm kiếm -->
+
+                <form action="{% url 'group:search'  %}" method="GET" class="form-search">
+                    <div class="search-bar">
+                        <i class="fa fa-search"></i>
+                        <input type="search" name="key" placeholder="Search on...">
+                        <button type="submit" class="btnSearch btn-primary">Tìm kiếm</button>
+                    </div>
+                </form>
+
+            <!-- Ảnh cá nhân -->
+            <div class="add-post">
+                <div class="profile-picture" id="my-profile-picture">
+                    {% if user.is_authenticated %}
+                    <img src="{{profile.avatar.url}}" alt="{{profile.avatar}}">
+                    {% else %}
+                    <img src="{% static 'images/avatar_default.jpg' %}" alt="avatar.jpg">
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </nav>
+    <!-- End Navbar -->
+
+
+
+    <!------------------Start Main Section------------------>
+
+    {% block content %}
+
+    {% endblock content %}
+
+    <!------------------End Main Section------------------>
+
+
+
+    <script src="{% static 'js_Thanh/javascript.js' %}"></script>
+
+    {% block js %}{% endblock js %}
+</body>
+
+</html>

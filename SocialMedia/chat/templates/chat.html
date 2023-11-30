@@ -1,0 +1,784 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Application</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 20%;
+            background-color: #f4f4f4;
+            padding: 10px;
+            overflow-y: auto;
+        }
+
+        .chat {
+            width: 60%;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .details {
+            width: 20%;
+            background-color: #f4f4f4;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-y: auto;
+        }
+
+        .friend {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .message {
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+        }
+
+        .my-message {
+            align-self: flex-end;
+            background-color: #dcf8c6;
+        }
+
+        .their-message {
+            align-self: flex-start;
+            background-color: #ffffff;
+        }
+
+        .input-area {
+            display: flex;
+            padding: 10px;
+        }
+
+        .input-area input[type="text"] {
+            flex-grow: 1;
+            padding: 10px;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+        }
+
+        .input-area input[type="submit"] {
+            padding: 10px 20px;
+            border: none;
+            background-color: #576b95;
+            color: white;
+            border-radius: 10px;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .username {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .bio {
+            text-align: center;
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .profile-button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #576b95;
+            color: white;
+            border-radius: 10px;
+            text-decoration: none;
+        }
+
+        .friend {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .friend-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .friend-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .friend-name {
+            font-weight: bold;
+        }
+
+        .last-message {
+            font-size: 0.8em;
+            color: #666;
+        }
+
+        .timestamp {
+            font-size: 0.8em;
+            color: #666;
+            margin-left: 10px;
+        }
+        .unread {
+            font-weight: bold;
+            color: #576b95;
+        }
+        {% comment %} css input image {% endcomment %}
+        .input-area input[type="file"] {
+            padding: 10px;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: #ffffff;
+            color: #576b95;
+            cursor: pointer;
+        }
+        
+        .input-area input[type="file"]::file-selector-button {
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            background-color: #576b95;
+            color: white;
+            cursor: pointer;
+        }
+        {% comment %} Button block {% endcomment %}
+        .block-button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #ff6347; /* Màu đỏ nhẹ */
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        {% comment %} css model thêm thành viên mới  + tạo nhóm{% endcomment %}
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+        
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+            border-radius: 4px;
+        }
+        
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        .group-name-input,
+        .search-member-input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .member-list {
+            margin-top: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .member-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .member-item .avatar {
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        .member-name {
+            margin-left: 5px;
+        }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .modal-button,
+        .modal-close-button,
+        .modal-create-button {
+            padding: 10px 20px;
+            margin-right: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .modal-button {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        .modal-close-button {
+            background-color: #f44336;
+            color: white;
+        }
+        
+        .modal-create-button {
+            background-color: #2196F3;
+            color: white;
+        }
+        
+        .modal-button:hover,
+        .modal-close-button:hover,
+        .modal-create-button:hover {
+            opacity: 0.8;
+        }
+        {% comment %} Hình thành viên bên cạnh đoạn chat {% endcomment %}
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+        }
+        
+        .message {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .my-message {
+            justify-content: flex-end;
+        }
+        
+        .their-message {
+            justify-content: flex-start;
+        }
+        
+        .chat-avatar {
+            width: 30px; /* or your preferred size */
+            height: 30px; /* or your preferred size */
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .message-text {
+            background-color: #f1f0f0; /* Light grey background */
+            padding: 8px 12px; /* Some padding around text */
+            border-radius: 16px; /* Rounded corners for chat bubble */
+            max-width: 80%; /* Max width of text */
+            overflow-wrap: break-word; /* Ensures the text wraps */
+        }
+        
+        .input-area {
+            display: flex;
+            padding: 10px;
+            align-items: center;
+        }
+        
+        .input-area input[type="text"],
+        .input-area input[type="submit"] {
+            padding: 10px;
+            margin: 0 5px; /* Adds a small space between input elements */
+        }
+        
+        .input-area input[type="text"] {
+            flex-grow: 1;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+        }
+        
+        .input-area input[type="submit"] {
+            background-color: #576b95;
+            color: white;
+            border: none;
+            border-radius: 10px;
+        }
+        
+        .input-area input[type="submit"]:disabled {
+            background-color: #ccc;
+        }
+        
+        /* Additional styles for disabled input */
+        .input-area input[type="text"]:disabled {
+            background-color: #eee;
+        }
+        
+        {% comment %}  css Sửa xóa nhóm {% endcomment %}
+        .modal-button {
+            padding: 10px 20px;
+            margin-top: 10px;
+            border: none;
+            background-color: #576b95;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            display: block; /* ensures the buttons don't sit side by side */
+            width: 90%; /* or the width you prefer */
+            margin: 10px auto; /* centers the button */
+        }
+        
+        .group-avatar-input {
+            display: block;
+            margin: 10px auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            width: calc(100% - 22px); /* adjusts for padding and border */
+        }
+        .btn_giaiTanNhom{
+            background: #e70002;
+        }
+        
+
+        
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        {% comment %} Danh sách chatroom  {% endcomment %}
+        {% for chatroom in my_chatrooms %}
+        <a href="{% url 'chat:chat-page' slug=chatroom.slug %}" style="color: black;" >
+
+            <div class="friend">
+                {% comment %} Chat 1-1 {% endcomment %}
+                {% if chatroom.group_chat == False %}
+                {% comment %} Duyệt danh sách thành viên {% endcomment %}
+                {% for member in chatroom.participants.all %}
+                {% comment %} Nếu là đối phương {% endcomment %}
+                {% if member != profile %}
+                <img src="{{member.avatar.url}}" alt="Avatar" class="friend-avatar">
+                <div class="friend-info">
+                    <div class="friend-name">{{member.first_name}} {{member.last_name}}</div>
+                    <div class="last-message" id="last-message-{{ chatroom.slug }}">
+                        {% if chatroom.last_message %}
+                            {{ chatroom.last_message.text }} - {{ chatroom.last_message.timestamp|timesince }} ago
+                        {% else %}
+                            No messages
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+                {% comment %} Chat 1-1 {% endcomment %}
+                {% if chatroom.group_chat == True %}
+                <img src="{{chatroom.avatar_room.url}}" alt="{{chatroom.avatar_room.url}}" class="friend-avatar">
+                <div class="friend-info">
+                    <div class="friend-name">{{chatroom.name}}</div>
+                    <div class="last-message" id="last-message-{{ chatroom.slug }}">
+                        {% if chatroom.last_message %}
+                            {{ chatroom.last_message.text }} - {{ chatroom.last_message.timestamp|timesince }} ago
+                        {% else %}
+                            No messages
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+                
+                
+                
+                
+                {% comment %} <div class="friend-info">
+                    <div class="friend-name">Friend 2</div>
+                    <div class="last-message">I'll call you later - 30m ago</div>
+                </div> {% endcomment %}
+            </div>
+        </a>
+        {% endfor %}
+        
+        <!-- ... other friends ... -->
+    </div>
+    {% comment %} <div class="chat">
+        <!-- Chat Content -->
+        <div class="chat-container" id="id_chat_item_container" style="display: contents;">
+
+            {% for message in messages %}
+            {% if message.sender == profile %}
+            <div class="my-message message">{{ message.text }}</div>
+            {% else %}
+            <div class="their-message message">{{ message.text }}</div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    
+        <!-- Input Area -->
+       {% if block_chatroom is none %}
+       <div class="input-area">
+        <input type="file" id="id_image_input" accept="image/*" name="image_file" multiple>
+        <input type="text" placeholder="Type a message..." name="text" id="id_message_send_input">
+        <input type="submit" value="Send" id="id_message_send_button">
+     </div>
+        {% else %}
+        <div class="input-area">
+            <input type="file" id="id_image_input" accept="image/*" name="image_file" multiple disabled>
+            <input type="text" placeholder="Type a message..." name="text" id="id_message_send_input" disabled>
+            <input type="submit" value="Send" id="id_message_send_button">
+         </div>
+        {% endif %}
+    </div> {% endcomment %}
+
+    <div class="chat">
+       
+        <!-- Chat Content -->
+        <div class="chat-container" id="id_chat_item_container">
+            {% for message in messages %}
+            <div class="{% if message.sender == profile %}my-message{% else %}their-message{% endif %} message">
+                {% if message.sender.avatar %}
+                <img src="{{ message.sender.avatar.url }}" alt="Avatar" class="chat-avatar">
+                {% else %}
+                <img src="{% static 'path/to/default/avatar/image.jpg' %}" alt="Avatar" class="chat-avatar">
+                {% endif %}
+                <span class="message-text">{{ message.text }}</span>
+            </div>
+            {% endfor %}
+        </div>
+
+    
+        <!-- Input Area -->
+        <div class="input-area">
+            {% if block_chatroom is none %}
+            <input type="file" id="id_image_input" accept="image/*" name="image_file" multiple>
+            <input type="text" placeholder="Type a message..." name="text" id="id_message_send_input">
+            <input type="submit" value="Send" id="id_message_send_button">
+            {% else %}
+            <input type="text" placeholder="Messaging is blocked" name="text" id="id_message_send_input" disabled>
+            <input type="submit" value="Send" id="id_message_send_button" disabled>
+            {% endif %}
+        </div>
+    </div>
+    
+
+    
+    <script>
+        {% comment %} const chatSocket = new WebSocket("ws://" + window.location.host + "/"); {% endcomment %}
+        const roomSlug = '{{chatroom.slug}}';  // Thay 'your-room-slug' với slug thực tế của phòng chat
+        const chatSocket = new WebSocket("ws://" + window.location.host + "/ws/chat/" + roomSlug + "/");
+
+        chatSocket.onopen = function (e) {
+            console.log("The connection was setup successfully !");
+
+        };
+        chatSocket.onclose = function (e) {
+            console.log("Something unexpected happened !");
+        };
+        
+
+        document.querySelector("#id_message_send_input").focus();
+        {% comment %} Nút nhấn enter {% endcomment %}
+        document.querySelector("#id_message_send_input").onkeyup = function (e) {
+            if (e.keyCode == 13) {  // 13 là mã cho phím Enter
+                document.querySelector("#id_message_send_button").click();
+                // Xóa nội dung input sau khi nhấn Enter
+                e.target.value = "";
+                
+            }
+            
+        };
+       
+        
+        document.querySelector("#id_message_send_button").onclick = function (e) {
+            var messageInput = document.querySelector("#id_message_send_input");
+            var messageText = messageInput.value;
+            var profileId = '{{profile.id}}';
+
+            if (messageText.trim() !== "") {
+                chatSocket.send(JSON.stringify({
+                    message: messageText,
+                    username: "{{request.user.username}}",
+                    slug: '{{chatroom.slug}}',
+                    profileId: profileId,
+
+
+
+                    
+                }));
+                
+                // Xóa nội dung trong input
+                messageInput.value = "";
+                
+            
+            }
+        };
+        
+        chatSocket.onmessage = function (e) {
+            const data = JSON.parse(e.data);
+            const chatContainer = document.querySelector("#id_chat_item_container");
+            const messageElement = document.createElement("div");
+            messageElement.classList.add("message");
+            
+            // Determine if the message is from the current user or from others
+            if (data.username === "{{ request.user.username }}") {
+                messageElement.classList.add("my-message");
+            } else {
+                messageElement.classList.add("their-message");
+            }
+        
+           
+        
+            // Create and append the message text
+            const messageText = document.createElement("span");
+            messageText.classList.add("message-text");
+            messageText.textContent = data.message;
+        
+            // Append avatar and text to message element
+            messageElement.appendChild(messageText);
+        
+            // Append message element to chat container
+            chatContainer.appendChild(messageElement);
+            
+            // Scroll to the new message
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        };
+        
+
+
+        
+        </script>
+    
+
+
+    <div class="details">
+
+        {% comment %} Chat 1-1 {% endcomment %}
+        {% if chatroom.group_chat == False %}
+        {% comment %} Duyệt danh sách thành viên {% endcomment %}
+        {% for member in chatroom.participants.all %}
+        {% comment %} Nếu là đối phương {% endcomment %}
+        {% if member != profile %}
+        <img src="{{member.avatar.url}}" alt="Avatar" class="avatar">
+        <div class="username">{{member.first_name}} {{member.last_name}}</div>
+        <div class="bio">{{member.bio}}</div>
+        <a href="{% url 'profiles:profile_detail_view' slug=member.slug %}" class="profile-button">View Profile</a>
+
+
+<!-- Nút để mở modal -->
+<!-- Modal Trigger Button -->
+<button id="openModalButton" class="modal-button" style="margin-top: 20px;">Tạo Nhóm Mới</button>
+
+<!-- Modal Structure -->
+<div id="createGroupModal" class="modal">
+  <div class="modal-content">
+    <span class="close-button">&times;</span>
+    <h3>Tạo nhóm</h3>
+    <form id="createGroupForm" method="POST" action="{% url 'chat:new_groupchat' %}">
+        {% csrf_token %}
+      <input type="text" placeholder="Nhập tên nhóm..." name="groupName" class="group-name-input">
+      <div class="member-list">
+        {% for friend in my_friends %}
+        <label class="member-item">
+            <input type="checkbox" name="member" value="{{friend.profile.id}}">
+            <img src="{{friend.profile.avatar.url}}" alt="{{friend.profile.avatar.url}}" class="avatar"> 
+            <span class="member-name">{{friend.profile.first_name}} {{friend.profile.last_name}}</span>
+          </label>
+        {% endfor %}
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="modal-close-button">Hủy</button>
+        <button type="submit" class="modal-create-button">Tạo nhóm</button>
+      </div>
+    </form>
+  </div>
+</div>
+<script>// Get the modal
+    var modal = document.getElementById('createGroupModal');
+    
+    // Get the button that opens the modal
+    var btn = document.getElementById('openModalButton');
+    
+    // Get the element that closes the modal
+    var span = document.getElementsByClassName('close-button')[0];
+
+    var cancelButton = document.getElementsByClassName('modal-close-button')[0];
+
+    // When the user clicks on "Hủy" button, close the modal
+    cancelButton.onclick = function() {
+        modal.style.display = 'none';
+    }
+    // When the user clicks the button, open the modal 
+    btn.onclick = function() {
+        modal.style.display = 'block';
+    }
+    
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = 'none';
+    }
+    
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    }
+    </script>
+
+
+        {% comment %} Nếu có trường block {% endcomment %}
+        {% if block_chatroom %}
+        {% comment %} Nếu tao là thằng block {% endcomment %}
+        {% if block_chatroom.profile_block == profile %}
+            <form action="{% url 'chat:block_chatroom' %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="block-button">Mở block</button>
+                <input type="hidden" name="chatroom_id" value="{{chatroom.id}}">
+            </form> 
+        {% else %}
+        <button type="submit" class="block-button">Your messages are blocked</button>
+        {% endif %}
+
+        {% comment %} Không có trường block: Cả 2 thằng đều có thể block nhau {% endcomment %}
+        {% else %}
+        <form action="{% url 'chat:block_chatroom' %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="block-button" hidden>Block</button>
+            <input type="hidden" name="chatroom_id" value="{{chatroom.id}}">
+        </form> 
+        {% endif %}
+        
+
+        
+
+       
+
+        {% endif %}
+        {% endfor %}
+        {% else %}
+         <!-- Chat Partner's Details -->
+         <img src="{{chatroom.avatar_room.url}}" alt="{{chatroom.avatar_room.url}}" class="friend-avatar">
+
+         <div class="username">{{chatroom.name}}</div>
+         <button id="editGroupButton" class="modal-button">Sửa Thông Tin Nhóm</button>
+         {% if is_admin %}
+            <button id="dissolveGroupButton" class="modal-button btn_giaiTanNhom">Giải Tán Nhóm</button>
+        {% endif %}
+
+     
+<!-- Modal Edit Group -->
+<div id="editGroupModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h3>Sửa thông tin nhóm</h3>
+        <form id="editGroupForm" method="POST" action="{% url 'chat:update_groupchat' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="text" placeholder="Tên nhóm..." name="groupName" class="group-name-input" value="{{chatroom.name}}">
+            <input type="file" name="avatar_room" id="avatar_room" class="group-avatar-input">
+
+
+            <input type="hidden" name="chatroom_id" value="{{chatroom.id}}" multiple>
+
+            <div class="modal-footer">
+                <button type="button" class="modal-close-button">Hủy</button>
+                <button type="submit" class="modal-create-button">Lưu Thay Đổi</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Dissolve Group -->
+<div id="dissolveGroupModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h3>Bạn có chắc chắn muốn giải tán nhóm này không?</h3>
+        <form action="{% url 'chat:delete_groupchat' %}" method="post">
+{% csrf_token %}
+            <div class="modal-footer">
+                <input type="hidden" name="chatroom_id" value="{{chatroom.id}}">
+                <button type="button" class="modal-close-button">Hủy</button>
+                <button type="submit" class="modal-create-button">Giải Tán Nhóm</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    // JavaScript to handle modal opening and closing
+document.addEventListener('DOMContentLoaded', (event) => {
+    // Edit Group Modal
+    const editGroupButton = document.getElementById('editGroupButton');
+    const editGroupModal = document.getElementById('editGroupModal');
+    editGroupButton.onclick = () => {
+        editGroupModal.style.display = 'block';
+    };
+
+    // Dissolve Group Modal
+    const dissolveGroupButton = document.getElementById('dissolveGroupButton');
+    const dissolveGroupModal = document.getElementById('dissolveGroupModal');
+    dissolveGroupButton.onclick = () => {
+        dissolveGroupModal.style.display = 'block';
+    };
+
+    // Close Modals
+    document.querySelectorAll('.close-button').forEach(button => {
+        button.onclick = () => {
+            button.closest('.modal').style.display = 'none';
+        };
+    });
+
+    // Close on outside click
+    window.onclick = (event) => {
+        if (event.target.classList.contains('modal')) {
+            event.target.style.display = 'none';
+        }
+    };
+});
+
+</script>
+
+        {% endif %}
+
+        
+    </div>
+    
+</body>
+
+</html>

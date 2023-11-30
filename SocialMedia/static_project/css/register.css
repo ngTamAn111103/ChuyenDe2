@@ -1,0 +1,79 @@
+/* Sửa toàn bộ 14.10.2023 */
+.register {
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-size: 1rem;
+    background: url('../images/background_login.avif') center no-repeat;
+    background-size: cover;
+}
+.register label{
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+.h1-register {
+    font-size: 3rem;
+    font-weight: bold;
+    text-align: center;
+    color: var(--color-white);
+}
+
+#id_first_name,#id_last_name,#id_password1,#id_password2,#id_birthday,#id_password_old,#id_password_old,#id_email{
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    box-sizing: border-box;
+    border: 1px solid var(--color-white);
+    border-radius: var(--card-boder-radius);
+}
+select{
+    border: 1px solid var(--color-white);
+    border-radius: var(--card-boder-radius);
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    box-sizing: border-box;
+}   
+
+.btn-register {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: var(--card-boder-radius);
+    cursor: pointer;
+    width: 100%;
+}
+
+.btn-register:hover {
+    opacity: 0.8;
+}
+
+.containerregister {
+    padding: 16px;
+}
+
+.form-containerregister {
+    width: 800px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: var(--card-boder-radius);
+}
+
+
+
+#id_first_name,#id_last_name,#id_password1,#id_password2,
+#id_country,#id_gender,#id_birthday {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    border: 1px solid var(--color-white-light-theme);
+    box-sizing: border-box;
+}

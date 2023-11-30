@@ -1,0 +1,1407 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết bài viết</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+    <style>
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+            text-decoration: none;
+            list-style: none;
+            border: none;
+        }
+
+        :root {
+            --primary-color-hue: 252;
+            --color-dark-light-theme: 15%;
+            --color-light-light-theme: 92%;
+            --color-white-light-theme: 100%;
+            --color-white: hsl(255, 30%, var(--color-white-light-theme));
+            --color-light: hsl(255, 30%, var(--color-light-light-theme));
+            --color-gray: hsl(255, 15%, 60%);
+            --color-primary: hsl(var(--primary-color-hue), 75%, 60%);
+            --color-secondary: hsl(255, 100%, 90%);
+            --color-success: hsl(120, 95%, 60%);
+            --color-danger: hsl(0, 95%, 60%);
+            --color-dark: hsl(255, 30%, var(--color-dark-light-theme));
+            --color-black: hsl(255, 30%, 8%);
+
+            --boder-radius: 2rem;
+            --card-boder-radius: 1rem;
+            --search-padding: .6rem 1rem;
+            --card-padding: 1rem;
+            --btn-padding: .6rem 2rem;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--color-dark);
+            background: var(--color-light);
+            /* overflow: hidden; */
+        }
+
+        .post .post-content .edit {
+            position: relative;
+        }
+
+        .edit .edit-menu {
+            background: var(--color-white);
+            padding: var(--card-padding);
+            border-radius: var(--card-boder-radius);
+            display: flex;
+            flex-direction: column;
+            gap: .7rem;
+            position: absolute;
+            right: 0;
+            box-shadow: 0 0 .2rem var(--color-primary);
+            transform: scale(0);
+            transition: 300ms all ease;
+            transform-origin: top right;
+        }
+
+        .edit img {
+            width: 100%;
+            display: block;
+        }
+
+        .edit:hover .edit-menu {
+            transform: scale(1);
+        }
+
+        .edit .edit-menu li {
+            display: flex;
+            gap: .5rem;
+            align-items: center;
+            font-size: 1rem;
+            color: var(--color-gray);
+            transition: 300ms ease all;
+        }
+
+        .edit .edit-menu li:hover {
+            color: var(--color-dark);
+
+        }
+
+        .edit .edit-menu li:last-child:hover {
+            color: var(--color-danger);
+        }
+
+        .popup {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            position: fixed;
+            justify-content: center;
+            top: 0;
+            z-index: 11;
+            background: #000000ba;
+            display: none;
+        }
+
+        .popup>div {
+            display: flex;
+        }
+
+        .popup-box {
+            width: fit-content;
+            height: max-content;
+            background: var(--color-white);
+            padding: 3rem;
+            border-radius: var(--card-boder-radius);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .profile-popup-box>div {
+            height: 10rem;
+            width: 10rem;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-top: 2rem;
+        }
+
+        #profile-upload {
+            display: none;
+        }
+
+        .profile-popup-box h1 {
+            line-height: 1.8;
+        }
+
+        .popup .close {
+            font-size: 1.6rem;
+            color: var(--color-white);
+            margin-left: .5rem;
+            margin-top: -1rem;
+        }
+
+        .container {
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        img {
+            display: block;
+            width: 100%;
+        }
+
+        .profile-picture {
+            width: 3rem;
+            aspect-ratio: 1/1;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .profile-picture:hover {
+            opacity: 0.75;
+        }
+
+        .btn {
+            padding: var(--btn-padding);
+            display: inline-block;
+            cursor: pointer;
+            border-radius: var(--boder-radius);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transform: 300ms ease all;
+        }
+
+        .btn:hover {
+            opacity: 0.75;
+        }
+
+        .btn-primary {
+            background: var(--color-primary);
+            color: var(--color-white);
+        }
+
+        .btn-primary a {
+            color: var(--color-white);
+        }
+
+        .text-bold {
+            font-weight: 500;
+        }
+
+        .text-gry {
+            color: var(--color-gray);
+        }
+
+            {
+            % comment %
+        }
+
+        bài viết gần đây {
+            % endcomment %
+        }
+
+        .liked-by {
+            display: flex;
+            margin-top: 10px;
+        }
+
+        .liked-by span {
+            border-radius: 50%;
+            display: block;
+            height: 1.4rem;
+            width: 1.4rem;
+            overflow: hidden;
+            margin-left: -.6rem;
+            border: 2px solid var(--color-white);
+        }
+
+        .liked-by span:first-child {
+            margin: 0;
+        }
+
+        .liked-by p {
+            margin-left: .5rem;
+        }
+
+        .liked {
+            font-weight: bold !important;
+            color: var(--color-danger);
+            transform: scale(1.1);
+        }
+
+        .like-btn {
+            background: var(--color-white);
+        }
+
+
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #e8e4f1;
+        }
+
+        .posts-list {
+            font-family: Arial, sans-serif;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+        }
+
+        .post-content .post-img-user {
+            border-radius: 50%;
+            border: 2px solid rgb(186, 182, 182);
+            width: 60px;
+            height: 60px;
+            object-fit: fill;
+            overflow: hidden;
+        }
+
+        .user-post {
+            display: flex;
+            margin-bottom: 10px;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .main-user-info {
+            display: flex;
+        }
+
+        .post-img {
+            margin-top: -20px;
+        }
+
+        .info-user {
+            float: right;
+            margin-left: 20px;
+            font-size: 1rem;
+            margin-top: 10px;
+        }
+
+        .info-user h4 {
+            font-weight: bold;
+        }
+
+        .info-user small {
+            color: hsl(225, 15%, 60%, 1);
+        }
+
+        .post-content i {
+            font-weight: normal;
+        }
+
+        .edit-menu i {
+            font-weight: bold;
+        }
+
+        .popup {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            position: fixed;
+            justify-content: center;
+            top: 0;
+            left: 0;
+            z-index: 11;
+            background: #000000ba;
+            display: none;
+        }
+
+        .popup>div {
+            display: flex;
+        }
+
+        .popup-box {
+            width: fit-content;
+            height: max-content;
+            background: var(--color-white);
+            padding: 3rem;
+            border-radius: var(--card-boder-radius);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .profile-popup-box>div {
+            height: 10rem;
+            width: 10rem;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-top: 2rem;
+        }
+
+        #profile-upload {
+            display: none;
+        }
+
+        .profile-popup-box h1 {
+            line-height: 1.8;
+        }
+
+        .popup .close {
+            font-size: 1.6rem;
+            color: var(--color-white);
+            margin-left: .5rem;
+            margin-top: -1rem;
+        }
+
+        .page .popup {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        .caption .page .popup {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        .page i {
+            font-weight: bold;
+        }
+
+        .post-title {
+            display: flex;
+            flex-direction: column;
+            gap: .5rem;
+        }
+
+        .post-title label {
+            font-size: 1.4rem;
+            font-weight: 400;
+        }
+
+        .post-title input {
+            background: var(--color-light);
+            padding: var(--card-padding);
+            border-radius: var(--card-boder-radius);
+            font-size: 1.1rem;
+        }
+
+        .post-title input:focus {
+            border: 1px solid var(--color-gray);
+        }
+
+        .post-img {
+            display: flex;
+            flex-direction: column;
+            gap: .5rem;
+        }
+
+        .post-img input[type='file'] {
+            display: none;
+        }
+
+        .post-img img {
+            width: 6rem;
+            margin: auto;
+        }
+
+        .post-img .feed-upload-button {
+            padding: var(--card-padding);
+            border: 2px dashed var(--color-dark);
+            font-weight: bold;
+        }
+
+        .comment {
+            width: 80%;
+            border: 1px solid black;
+            border-radius: 25px;
+            height: 55px;
+            margin-top: 10px;
+            padding: 15px 15px 15px 20px;
+            resize: none;
+            overflow: hidden;
+        }
+
+        .btnSend {
+            width: 15%;
+            margin-top: -10px;
+            border-radius: 50px;
+            background: hsl(252, 75%, 60%);
+            padding-bottom: 15px;
+            color: white;
+            font-weight: bold;
+            border: 1px solid white;
+            float: left;
+            height: 55px;
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+
+        .comment-main {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .caption {
+            margin-top: 10px;
+            background: #faebd7;
+            padding: 10px 10px 10px 30px;
+            border-radius: 50px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .caption i {
+            font-weight: bold;
+        }
+
+        .caption img {
+            width: 100%;
+            display: block
+        }
+
+        .caption p {
+            margin-bottom: 0rem;
+        }
+
+        .info-user small img {
+            margin-top: 0px;
+        }
+
+            {
+            % comment %
+        }
+
+        đếm số lượng image {
+            % endcomment %
+        }
+
+        .image-count {
+
+
+            /* Điều chỉnh vị trí này để phù hợp */
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Màu nền làm mờ */
+            color: white;
+            /* Màu chữ */
+            padding: 5px 10px;
+            /* Điều chỉnh padding để phù hợp */
+            font-size: 1em;
+            /* Điều chỉnh cỡ chữ */
+            font-weight: bold;
+            /* Chữ đậm */
+            border-radius: 15px;
+            /* Bo góc của số lượng */
+            z-index: 2;
+        }
+
+        .imglist,
+        .image-container {
+            width: 100%;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .imglist img,
+        .image-container a img {
+            object-fit: contain;
+            max-height: 500px;
+        }
+
+            {
+            % comment %
+        }
+
+        .video-count {
+            height: 30px;
+            margin-left: -45px;
+            margin-top: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 5px 10px;
+            font-size: 1em;
+            font-weight: bold;
+            border-radius: 15px;
+            z-index: 2;
+        }
+
+        .image-container {
+            position: relative;
+            display: inline-block;
+            /* Hoặc block, tùy thuộc vào layout của bạn */
+            margin: 10px;
+            /* Khoảng cách giữa các hình ảnh */
+        }
+
+        .image-container a {
+            display: block;
+        }
+
+        .image-container img {
+            display: block;
+            /* Loại bỏ khoảng trắng dưới hình ảnh */
+            width: 100%;
+            /* Giả sử bạn muốn hình ảnh chiếm toàn bộ chiều rộng của container */
+            vertical-align: middle;
+            border-radius: 10px;
+            /* Bo góc của hình ảnh như trong ví dụ */
+        }
+
+        .image-count {
+            position: absolute;
+            top: 10px;
+            /* Điều chỉnh vị trí này để phù hợp */
+            right: 10px;
+            /* Điều chỉnh vị trí này để phù hợp */
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Màu nền làm mờ */
+            color: white;
+            /* Màu chữ */
+            padding: 5px 10px;
+            /* Điều chỉnh padding để phù hợp */
+            font-size: 1em;
+            /* Điều chỉnh cỡ chữ */
+            font-weight: bold;
+            /* Chữ đậm */
+            border-radius: 15px;
+            /* Bo góc của số lượng */
+            z-index: 2;
+        }
+
+        /* Thêm hiệu ứng làm mờ khi di chuột qua */
+        .image-container:hover img {
+            opacity: 0.7;
+        }
+
+        .form-edit-post label[for="id_content"],
+        .form-edit-post label[for='id_visibility'] {
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .form-edit-post label[for='id_visibility'] {
+            font-weight: bold;
+            font-size: 1rem;
+            margin-right: 60px;
+        }
+
+        .form-edit-post label[for='id_image'] {
+            font-weight: bold;
+            font-size: 1rem;
+            margin-right: 80px;
+        }
+
+        #id_image {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            width: 80%;
+        }
+
+        .form-edit-post #id_content {
+            margin-left: 75px;
+            margin-top: 30px;
+            max-height: 10rem;
+            max-width: 650px;
+            min-width: 649px;
+            font-weight: bold;
+            border-radius: var(--boder-radius);
+            padding: 15px 10px 0px 25px;
+            background: #e8e4f1;
+            display: table-cell;
+        }
+
+        #id_visibility {
+            margin-bottom: 45px;
+            width: 80%;
+            border: 1px solid rgb(196, 196, 196);
+            padding: 10px;
+            font-weight: bold;
+            background: #f6f1f1;
+            border-radius: var(--card-boder-radius);
+        }
+
+        .h1-editpost {
+            font-weight: bold;
+            font-size: 3rem;
+        }
+
+        .auther_comment {
+            display: none;
+            margin-bottom: 5px;
+        }
+
+        .input-edit-comment {
+            border: 1px solid var(--color-dark);
+            border-radius: var(--card-boder-radius);
+            padding: var(--card-padding);
+            width: 90%;
+            font-weight: bold;
+            display: none;
+            margin-bottom: 10px;
+        }
+
+        .edit-input-comment {
+            display: flex;
+        }
+
+        .btn-send {
+            float: left;
+            width: 10%;
+            border: 1px solid var(--color-white);
+            border-radius: var(--boder-radius);
+            background: var(--color-primary);
+            color: var(--color-white);
+            font-weight: bold;
+            font-size: 1rem;
+            max-height: 50px;
+            margin-left: 10px;
+        }
+
+        .form-edit-post label[for="id_content"],
+        .form-edit-post label[for='id_visibility'] {
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .form-edit-post label[for='id_visibility'] {
+            font-weight: bold;
+            font-size: 1rem;
+            margin-right: 60px;
+        }
+
+        .form-edit-post label[for='id_image'] {
+            font-weight: bold;
+            font-size: 1rem;
+            margin-right: 80px;
+        }
+
+        #id_image {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            width: 80%;
+        }
+
+        .form-edit-post #id_content {
+            margin-left: 75px;
+            margin-top: 30px;
+            max-height: 10rem;
+            max-width: 650px;
+            min-width: 649px;
+            font-weight: bold;
+            border-radius: var(--boder-radius);
+            padding: 15px 10px 0px 25px;
+            background: #e8e4f1;
+            display: table-cell;
+        }
+
+        #id_visibility {
+            margin-bottom: 45px;
+            width: 80%;
+            border: 1px solid rgb(196, 196, 196);
+            padding: 10px;
+            font-weight: bold;
+            background: #f6f1f1;
+            border-radius: var(--card-boder-radius);
+        }
+
+        .h1-editpost {
+            font-weight: bold;
+            font-size: 3rem;
+        }
+
+        .btnXoa {
+            padding: var(--btn-padding);
+            border-radius: var(--boder-radius);
+            background: var(--color-danger);
+            color: var(--color-white);
+            font-weight: bold;
+        }
+
+        .btnSua {
+            padding: var(--btn-padding);
+            border-radius: var(--boder-radius);
+            background: var(--color-success);
+            color: var(--color-white);
+            font-weight: bold;
+        }
+
+        .caption span {
+            font-size: 0.8rem;
+            margin-left: 12px;
+        }
+
+        .caption .edit-comment {
+            position: relative;
+            margin-right: 30px;
+        }
+
+        .caption .edit-comment img {
+            width: 1.6rem;
+        }
+
+        .edit-comment:hover .edit-item {
+            transform: scale(1);
+        }
+
+        .edit-comment .edit-item li {
+            display: flex;
+            gap: .5rem;
+            align-items: center;
+            font-size: 1rem;
+            color: var(--color-gray);
+            transition: 300ms ease all;
+        }
+
+        .edit-comment .edit-item {
+            background: var(--color-white);
+            padding: var(--card-padding);
+            border-radius: var(--card-boder-radius);
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+            position: absolute;
+            right: 0;
+            box-shadow: 0 0 0.2rem var(--color-primary);
+            top: 2.4rem;
+            transform: scale(0);
+            transition: 300ms all ease;
+            transform-origin: top right;
+        }
+
+        .edit-comment .edit-item li:hover {
+            color: var(--color-dark);
+        }
+
+        .edit-comment .edit-item li:last-child:hover {
+            color: var(--color-danger);
+        }
+
+        form p .input-comment {
+            border: 1px solid var(--color-dark);
+            border-radius: var(--card-boder-radius);
+            padding: var(--card-padding);
+            font-weight: bold;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        form p .input-comment {
+            border: 1px solid var(--color-dark);
+            border-radius: var(--card-boder-radius);
+            padding: var(--card-padding);
+            width: 100%;
+            font-weight: bold;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .form-comment {
+            max-width: 650px;
+            min-width: 649px;
+        }
+
+        .form-comment .input-comment {
+            width: 82%;
+            float: left;
+        }
+
+        .btn-Send {
+            width: 15%;
+            padding: var(--card-padding);
+            margin-left: 19px;
+            height: 50px;
+            margin-top: 10px;
+        }
+
+        /* ------------------------ */
+        .auther_comment {
+            display: none;
+            margin-bottom: 5px;
+        }
+
+        .btnXoa {
+            padding: var(--btn-padding);
+            border-radius: var(--boder-radius);
+            background: var(--color-danger);
+            color: var(--color-white);
+            font-weight: bold;
+        }
+
+        .btnSua {
+            padding: var(--btn-padding);
+            border-radius: var(--boder-radius);
+            background: var(--color-success);
+            color: var(--color-white);
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="posts-list">
+        <h3>Chi tiết bài viết</h3>
+        <div class="post">
+            <div class="post-content">
+                <div class="user-post">
+                    <div class="main-user-info">
+                        <img src="{{post.author.avatar.url}}" alt="{{post.author.avatar.url}}" class="post-img-user">
+                        <div class="info-user">
+                            <h4>{{post.author.first_name}} {{post.author.last_name}}</h4>
+                            <small>{{post.author.country}},<span> {{post.get_time_elapsed}}</span>
+                                {%if post.visibility == 'Public'%}
+                                <img src="/static/images/public_post.png" alt="/static/images/public_post.png"
+                                    style="width: 15px; display: inline-block;">
+                                {%else%}
+                                <img src="/static/images/friend_post.png" alt="/static/images/friend_post.png"
+                                    style="width: 15px; display: inline-block;">
+                                {%endif%}
+                            </small>
+                        </div>
+                    </div>
+                    <div class="edit">
+                        <img src="{%static 'images/svg/three-dots.svg'%}" alt="{%static 'images/svg/three-dots.svg'%}">
+                        <ul class="edit-menu">
+                            <li id="icon_edit{{post.id}}"><i class="fa fa-pen"></i>Edit</li>
+                            <li id="icon_delete{{post.id}}"><i class="fa fa-trash"></i>Delete</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="page">
+                    <!-- Modal delete post -->
+                    <div class="popup delete_post{{post.id}}">
+                        <div>
+                            <div class="popup-box delete_post-popup-box">
+                                <h1>Bạn có muốn xóa bài viết không?</h1>
+                                <!-----------------Font Size----------------->
+
+                                <!----------------Primary Colors---------------->
+
+                                <!----------------Background Colors---------------->
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="post_del_id" value="{{post.id}}">
+                                    <button type="submit" class="btnXoa">Delete</button>
+                                </form>
+                            </div>
+                            <span class="close close_{{post.id}}"><i class="fa fa-close"></i></span>
+                        </div>
+                    </div>
+                    <!-- Model edit post -->
+                    <div class="popup edit_post{{post.id}}">
+                        <div>
+                            <div class="popup-box edit_post-popup-box">
+                                <h1 class="h1-editpost">Edit post</h1>
+
+                                <form action="" enctype="multipart/form-data" method="post" class="form-edit-post">
+                                    {%csrf_token%}
+                                    <p><label for="id_content">Content:</label> <textarea name="content" cols="40"
+                                            rows="10" required="" id="id_content">{{post.content}}</textarea></p>
+                                    <p><label for="id_image">Image:</label>
+                                        <input type="file" name="image" id="id_image" multiple>
+                                    </p>
+                                    <p>
+                                        <label for="id_visibility">Visibility:</label>
+                                        <select name="visibility" id="id_visibility">
+                                            {%if post.visibility == "Public"%}
+                                            <option value="Public" selected="">Công khai</option>
+                                            <option value="Friend">Bạn bè</option>
+                                            {%else%}
+                                            <option value="Public">Công khai</option>
+                                            <option value="Friend" selected="">Bạn bè</option>
+                                            {%endif%}
+
+                                        </select>
+                                    </p>
+                                    <input type="hidden" name="post_edit_id" value="{{post.id}}">
+                                    <button type="submit" class="btnSua">Update</button>
+                                </form>
+                            </div>
+                            <span class="close close_{{post.id}}"><i class="fa fa-close"></i></span>
+                        </div>
+                    </div>
+                    <script>
+                        document.querySelector('#icon_delete{{post.id}}').addEventListener('click', () => {
+                            document.querySelector('.delete_post{{post.id}}').style.display = 'flex'
+                        });
+                        document.querySelector('#icon_edit{{post.id}}').addEventListener('click', () => {
+                            document.querySelector('.edit_post{{post.id}}').style.display = 'flex'
+
+                        });
+                        document.querySelectorAll('.close_{{post.id}}').forEach(AllCloser => {
+                            AllCloser.addEventListener('click', () => {
+                                document.querySelector('.delete_post{{post.id}}').style.display = 'none'
+                                document.querySelector('.edit_post{{post.id}}').style.display = 'none'
+
+                            })
+                        });
+                    </script>
+                </div>
+                <p>{{ post.content }}</p>
+                {% comment %} Có hình {% endcomment %}
+                {%if post.num_images_post != 0%}
+                <p class="imglist">
+                    <!-- Duy nhất 1 ảnh -->
+                    {%if post.num_images_post == 1 %}
+                    {%for image in post.images.all %}
+                    <!-- Kiểm tra image là video -->
+                    {% if image.get_image_extension == ".MP4" or post.get_image_extension == ".MOV"%}
+                    <a href="{{ image.image.url }}" data-fancybox="gallery{{ post.id }}" data-caption="1/1">
+                        <video width="250px" controls>
+                            <source src="{{image.url}}" type="video/mp4">
+                            <source src="{{image.image.url}}" type="video/ogg">
+                            Your browser does not support HTML video.
+                        </video>
+                    </a>
+                    <!-- Duy nhất 1 hình ảnh -->
+                    {%else%}
+                    <a href="{{ image.image.url }}" data-fancybox="gallery{{ post.id }}" data-caption="1/1">
+                        <img src="{{image.image.url}}" alt="{{image.image.url}}">
+                    </a>
+                    {%endif%}
+                    {%endfor%}
+                    <!-- Nhiều hơn 1 ảnh -->
+                    {%else%}
+
+                    <!-- Duyệt danh sách hình ảnh -->
+                    {%for image in post.images.all %}
+                    <!-- Do đây là 1/n
+                                                    lấy hình đầu tiên bỏ ra cho xem -->
+                    {%if forloop.counter == 1 %}
+                    {% if image.get_image_extension == ".MP4" or post.get_image_extension == ".MOV"%}
+                    <a href="{{ image.image.url }}" data-fancybox="gallery{{ post.id }}"
+                        data-caption="{{forloop.counter}}/{{post.num_images_post}}">
+                        <video width="250px" controls>
+                            <source src="{{image.url}}" type="video/mp4">
+                            <source src="{{image.image.url}}" type="video/ogg">
+                            Your browser does not support HTML video.
+                        </video>
+                    </a>
+
+                    {%else%}
+                    <a href="{{ image.image.url }}" data-fancybox="gallery{{ post.id }}"
+                        data-caption="{{forloop.counter}}/{{post.num_images_post}}">
+                        <img src="{{image.image.url}}" alt="{{image.image.url}}">
+                    </a>
+                    {%endif%}
+
+                    <!-- hình 2/n 
+                                            hiển thị số lượng hình còn lại-->
+                    {%elif forloop.counter == 2 %}
+                    {% if image.get_image_extension == ".MP4" or post.get_image_extension == ".MOV"%}
+                    <a href="{{ image.image.url }}" data-fancybox="gallery{{ post.id }}"
+                        data-caption="{{forloop.counter}}/{{post.num_images_post}}">
+                        <video width="250px" controls>
+                            <source src="{{image.url}}" type="video/mp4">
+                            <source src="{{image.image.url}}" type="video/ogg">
+
+                        </video>
+                        <span class="video-count">+{{post.num_images_post|add:"-2"}}</span>
+
+                    </a>
+
+                    {%else%}
+                <div class="image-container">
+                    <a href="{{ image.image.url }}" data-fancybox="gallery{{ post.id }}"
+                        data-caption="{{forloop.counter}}/{{post.num_images_post}}">
+                        <img src="{{image.image.url}}" alt="{{image.image.url}}">
+                        <span class="image-count">+{{post.num_images_post|add:"-2"}}</span>
+                    </a>
+                </div>
+
+                {%endif%}
+                <!-- ẩn phần còn lại-->
+                {%else%}
+                {% if image.get_image_extension == ".MP4" or post.get_image_extension == ".MOV"%}
+                <a href="{{ image.image.url }}" data-fancybox="gallery{{ post.id }}"
+                    data-caption="{{forloop.counter}}/{{post.num_images_post}}">
+                    <video width="250px" controls hidden>
+                        <source src="{{image.url}}" type="video/mp4">
+                        <source src="{{image.image.url}}" type="video/ogg">
+                        Your browser does not support HTML video.
+                    </video>
+                </a>
+
+                {%else%}
+                <a href="{{ image.image.url }}" data-fancybox="gallery{{ post.id }}"
+                    data-caption="{{forloop.counter}}/{{post.num_images_post}}" hidden>
+                    <img src="{{image.image.url}}" alt="{{image.image.url}}">
+                </a>
+                {%endif%}
+                {%endif%}
+
+
+                {%endfor%}
+                {%endif%}
+                </p>
+                {%endif%}
+                {% comment %} js fancybox {% endcomment %}
+                <script>
+                    $('[data-fancybox]').fancybox({
+                        // Options will go here
+                        buttons: [
+                            'close'
+                        ],
+                        wheel: false,
+                        transitionEffect: "slide",
+                        // thumbs          : false,
+                        // hash            : false,
+                        loop: true,
+                        // keyboard        : true,
+                        toolbar: false,
+                        // animationEffect : false,
+                        // arrows          : true,
+                        clickContent: false
+                    });
+                </script>
+
+
+
+                <!-- Feed Action Aria -->
+                <div class="action-button">
+                    <div class="interaction-button">
+
+                        <form action="{% url 'posts:like_post_view' %}" method="POST" class="like-form{{post.id}}"
+                            id="{{post.id}}">
+                            {%csrf_token%}
+                            <input type="hidden" name="post_id" value="{{post.id}}">
+                            <!-- Nếu người dùng chưa có trong danh sách like bài viết -->
+                            <button type="submit" class="like-btn like-btn{{post.id}}">
+                                <span>
+                                    {%if profile not in post.liked.all%}
+                                    <span><i class="fa fa-heart liked"></i></span>
+                                    {%else%}
+                                    <span><i class="fa fa-heart"></i></span>
+                                    {%endif%}
+                                </span>
+                            </button>
+                        </form>
+
+
+
+
+
+                        <!-- nút cmt: Tâm An-->
+                        <!-- Tạo cmt -->
+
+                        <form action="{%url 'posts:commented'%}" method="post"
+                            class="form-comment form-comment{{post.id}}" id="{{post.id}}">
+                            {% csrf_token %}
+                            {{ c_form.as_p }}
+                            <input type="hidden" name="post_id" value="{{ post.id }}">
+                            <input type="text" name="" class="input-comment" id="" placeholder="Bình luận bài viết">
+                            <button type="submit" name="submit_c_form" class="btn btn-primary btn-send-main"><i
+                                    class="fa-regular fa-paper-plane"></i></button>
+                        </form>
+                        <style>
+                            .input-comment{
+                                border: 1px solid black;
+                                border-radius: var(--boder-radius);
+                                height: 2rem;
+                                font-weight: bold;
+                                padding: 10px 10px 10px 10px;
+                                margin-right: 10px;
+                                width: 85%;
+                            }
+                        </style>
+                    </div>
+                </div>
+
+                <div class="liked-by liked-by{{post.id}}">
+                    <!-- Chưa thằng nào like -->
+                    {% if post.num_likes == 0 %}
+
+                    <!-- 1 thằng like -->
+                    {% elif post.num_likes == 1 %}
+
+                    <span><img src="{{post.get_likes.first.avatar.url}}"
+                            alt="{{post.get_likes.first.avatar.url}}"></span>
+                    <p><b>{{post.get_likes.first.first_name}} {{post.get_likes.first.last_name}}</b></p>
+                    <!-- Nhiều thằng like -->
+                    {% else%}
+
+                    <span><img src="{{post.get_likes.first.avatar.url}}"
+                            alt="{{post.get_likes.first.avatar.url}}"></span>
+                    {% for like in post.get_likes %}
+                    {% if forloop.counter == 2 %}
+                    <!-- Lấy phần tử thứ 2 -->
+                    <span><img src="{{like.avatar.url}}" alt="{%static 'images/user1.jpeg'%}"></span>
+                    {% endif %}
+                    {% endfor %}
+
+                    <p><b>{{post.get_likes.first.first_name}} {{post.get_likes.first.last_name}}</b>
+                        and <b>{{ post.num_likes|add:"-1" }}
+                            comments other</b></p>
+                    {% endif %}
+
+                </div>
+                {% comment %} js của like không cần load trang {% endcomment %}
+                <script>
+                    $(document).on('submit', '.like-form{{post.id}}', function (e) {
+                        e.preventDefault();
+                        const post_id = $(this).attr('id');
+                        const url = $(this).attr('action');
+
+                        // Gửi request AJAX
+                        $.ajax({
+                            type: 'POST',
+                            url: url,
+                            data: {
+                                'post_id': post_id,
+                                'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+                            },
+                            success: function (response) {
+                                // Tìm icon trong nút like
+                                const icon = $('.like-btn' + post_id).find('i.fa-heart');
+
+                                // Cập nhật class dựa trên giá trị response
+                                if (response.value == 'Like') {
+                                    icon.addClass('liked');
+                                } else {
+                                    icon.removeClass('liked');
+                                }
+
+                                // Cập nhật số lượng likes
+                                $('.like-count' + post_id).text(response.likes);
+
+
+
+
+
+                                // Cập nhật phần hiển thị người dùng đã like
+                                const likedByDiv = $('.liked-by{{post.id}}');
+                                let htmlContent = '';
+
+                                // Kiểm tra sự tồn tại của response.liked_users và nó phải là một mảng
+                                if (response.liked_users && Array.isArray(response.liked_users)) {
+                                    if (response.likes == 0) {
+                                        console.log(0)
+                                        // Không có ai like
+                                        htmlContent = '';
+                                    } else if (response.likes == 1) {
+                                        console.log(1)
+                                        // 1 người like
+                                        const user = response.liked_users[0];
+                                        htmlContent = `
+                                            <span><img src="${user.avatar_url}" alt="${user.first_name} ${user.last_name}"></span>
+                                            <p><b>${user.first_name} ${user.last_name}</b></p>
+                                        `;
+                                    } else {
+                                        // Nhiều người like
+                                        const firstUser = response.liked_users[0];
+                                        const secondUser = response.liked_users[1];
+                                        htmlContent = `
+                                            <span><img src="${firstUser.avatar_url}" alt="${firstUser.first_name} ${firstUser.last_name}"></span>
+                                            <span><img src="${secondUser.avatar_url}" alt="${secondUser.first_name} ${secondUser.last_name}"></span>
+                                            <p><b>${firstUser.first_name} ${firstUser.last_name}</b> and <b>${response.likes - 1} others</b></p>
+                                        `;
+                                    }
+                                } else {
+                                    // Trường hợp không có dữ liệu người dùng liked
+                                    htmlContent = ''; // Hoặc bạn có thể hiển thị một thông báo mặc định
+                                }
+
+                                likedByDiv.html(htmlContent);
+
+                            },
+                            error: function (response) {
+                                console.log('Error:', response);
+                            }
+                        });
+                    });
+
+
+
+                </script>
+
+                {% comment %} Container chứa toàn bộ comment của 1 bài viết {% endcomment %}
+                <div class="container-comment{{ post.id }}">
+                    {% for cmt in post.comment_set.all %}
+                    <div class="caption caption{{ cmt.id }}"
+                        style="background-color: antiquewhite; margin-bottom: 10px;">
+                        <p>
+                            <b>{{ cmt.user.first_name }} {{ cmt.user.last_name }}</b><span>
+                                {{cmt.get_time_comment}}</span>
+                            <br>
+                            {{ cmt.body }}
+                        </p>
+                        <div class="edit-comment">
+                            <img src="{%static 'images/svg/three-dots.svg'%}"
+                                alt="{%static 'images/svg/three-dots.svg'%}">
+                            <ul class="edit-item" style="z-index: 1;">
+                                <li class="icon_edit_comment{{cmt.id}}"><i class="fa fa-pen"></i> Edit</li>
+                                <li id="icon_delete_comment{{cmt.id}}"><i class="fa fa-trash"></i> Delete</li>
+                            </ul>
+                        </div>
+                        <div class="popup delete_cmt{{cmt.id}}">
+                            <div>
+                                <div class="popup-box delete_cmt-popup-box">
+                                    <h1>Bạn có muốn xóa bình luận không?</h1>
+
+                                    <form action="" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="cmt_del_id" value="{{cmt.id}}">
+                                        <button type="submit" class="btnXoa">Delete</button>
+                                    </form>
+                                </div>
+                                <span class="close close_{{cmt.id}}"><i class="fa fa-close"></i></span>
+                            </div>
+                        </div>
+                        <!-- js modal delete cmt -->
+                        <script>
+                            document.querySelector('#icon_delete_comment{{cmt.id}}').addEventListener('click', () => {
+                                document.querySelector('.delete_cmt{{cmt.id}}').style.display = 'flex'
+                            });
+
+                            document.querySelectorAll('.close_{{cmt.id}}').forEach(AllCloser => {
+                                AllCloser.addEventListener('click', () => {
+                                    document.querySelector('.delete_cmt{{cmt.id}}').style.display = 'none'
+                                    document.querySelector('.edit_cmt{{cmt.id}}').style.display = 'none'
+
+                                })
+                            });
+                        </script>
+                    </div>
+
+                    <!-- Sau khi nhấn edit > hiển thị đoạn này lên -->
+                    <b class="auther_comment auther_comment{{cmt.id}}">{{cmt.user.first_name}}
+                        {{cmt.user.last_name}}</b>
+
+                    <form action="" method="post">
+                        {%csrf_token%}
+                        <div class="edit-input-comment">
+
+
+                            <input name="body" required id="id_body"
+                                class="input-edit-comment input-edit-comment{{cmt.id}}" type="text"
+                                placeholder="Edit comment" value="{{cmt.body}}">
+
+
+                            <button type="submit" style="font-weight: bold; display: none;"
+                                class="btn-send btn-send{{cmt.id}}"><i class="fa-regular fa-paper-plane"></i></button>
+                        </div>
+                        <input type="hidden" name="edit_cmt_id" value="{{cmt.id}}">
+                    </form>
+
+
+
+
+                    <!-- js edit cmt -->
+                    <script>
+                        document.querySelectorAll('.icon_edit_comment{{cmt.id}}').forEach((iconEditComment, index) => {
+                            iconEditComment.addEventListener('click', () => {
+                                const caption = document.querySelectorAll('.caption{{cmt.id}}')[index];
+                                const autherComment = document.querySelectorAll('.auther_comment{{cmt.id}}')[index];
+                                const inputEditComment = document.querySelectorAll('.input-edit-comment{{cmt.id}}')[index];
+                                const btnSend = document.querySelectorAll('.btn-send{{cmt.id}}')[index];
+                                caption.style.display = 'none'; autherComment.style.display = 'flex';
+                                inputEditComment.style.display = 'flex';
+                                btnSend.style.display = 'block';
+                            });
+                        });
+                    </script>
+                    {%endfor%}
+                    <!-- js edit cmt -->
+                    <!-- Script xóa tất cả bình luận -->
+                    <script>
+                        document.getElementById('deleteAllComments{{ post.id }}').addEventListener('click', () => {
+                            fetch(`/post/{{ post.id }}/delete_comments/`, {
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRFToken': '{{ csrf_token }}'
+                                }
+                            })
+                                .then(response => response.json())
+                                .then(data => {
+                                    console.log(data.message);
+                                    // Thực hiện các hành động khác nếu cần sau khi xóa
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                });
+                        });
+                    </script>
+                    {% comment %} js không cần load trang {% endcomment %}
+                    <script>
+                        function createNewComment(userName, commentText) {
+                            var commentHtml = `<div class="caption" style="background-color: antiquewhite; margin-bottom: 10px;">
+                                        <p>
+                                            <b>${userName}</b><span>0 giây trước</span>
+                                            <br>
+                                            ${commentText}
+                                        </p>
+                                        <div class="edit-comment">
+                                            <img src="/static/images/svg/three-dots.svg" alt="/static/images/svg/three-dots.svg">
+                                            <ul class="edit-item" style="z-index: 1;">
+                                                <li class="icon_edit_comment  icon_edit_comment144"><i class="fa fa-pen"></i> Edit</li>
+                                                <li id="icon_delete_comment144"><i class="fa fa-trash"></i> Delete</li>
+                                            </ul>
+                                        </div>
+                                    </div>`;
+
+
+                            return commentHtml;
+                        }
+
+                        $(document).on('submit', '.form-comment{{post.id}}', function (e) {
+                            e.preventDefault();
+                            const post_id = $(this).attr('id');
+                            const url = $(this).attr('action');
+                            var bodyInput = $(this).find('input[name="body"]').val(); // Lấy giá trị từ input có tên là "body"
+                            var csrfToken = $(this).find('input[name="csrfmiddlewaretoken"]').val(); // Lấy CSRF token
+
+                            // Gửi AJAX request
+                            $.ajax({
+                                type: 'POST',
+                                url: url,
+                                data: {
+                                    'body': bodyInput,
+                                    'post_id': post_id,
+                                    'csrfmiddlewaretoken': csrfToken
+                                },
+                                success: function (response) {
+                                    //Tạo 1 cái cặp thẻ bình luận mới
+                                    var newComment = createNewComment(response.user_name_commented, bodyInput);
+                                    // Thêm bình luận mới vào danh sách
+                                    $('.container-comment{{post.id}}').prepend(newComment);
+
+                                    // Xóa trường nhập liệu
+                                    $('input[name="body"]').val('');
+                                },
+                                error: function (error) {
+                                    console.error("Có lỗi xảy ra: ", error);
+                                }
+                            });
+                        });
+                    </script>
+                    <!-- Comments: Thành -->
+                    <!-- <div class="comments text-gry">
+                View all comments
+                    </div> -->
+                </div>
+            </div>
+        </div>
+
+</body>
+
+</html>

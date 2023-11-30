@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group</title>
+    <link rel="stylesheet" href="styles.css">
+        
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<style>
+    
+    body{
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .group-cover img {
+        object-fit: fill;
+        width: 100%;
+        height: 400px;
+    }
+
+    .group-info {
+        text-align: center;
+        margin: 20px;
+    }
+
+    .avatar {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+    }
+
+    .member-images img {
+        object-fit: fill;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+
+    }
+
+    .sidebar {
+        position: fixed;
+        right: 0;
+        top: 0;
+        width: 200px;
+        background-color: #f0f0f0;
+        padding: 20px;
+        height: 100%;
+    }
+
+    .btn {
+        display: block;
+        margin: 10px auto;
+        padding: 10px;
+        background-color: blue;
+        color: white;
+        text-align: center;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%;
+    }
+
+    .group-posts {
+        padding: 20px;
+        width: 90%;
+    }
+
+    .post {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        width: 786px;
+        margin-left: 12%;
+        margin-right: 12%;
+        height: max-content;
+        margin-bottom: 20px;
+        padding: 15px;
+    }
+
+    .profile {
+        text-align: center;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #ddd;
+        margin-bottom: 20px;
+    }
+
+    .profile-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        margin-bottom: 10px;
+    }
+
+    .profile-name {
+        margin: 0;
+        font-size: 18px;
+    }
+
+    .join-date {
+        font-size: 14px;
+        color: #666;
+    }
+
+    .post-header {
+        display: flex;
+        padding: 10px;
+    }
+
+    .post-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+
+    .post-author-info {
+        flex-grow: 1;
+    }
+
+    .post-author-name {
+        margin: 0;
+    }
+
+    .post-author-country,
+    .post-time {
+        font-size: 12px;
+        color: #666;
+    }
+
+    .post-image img {
+        width: 100%;
+        height: auto;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .post-actions {
+        padding: 10px;
+    }
+
+    .action-btn {
+        background-color: white;
+        border: none;
+        padding: 5px 10px;
+        margin-right: 5px;
+        cursor: pointer;
+        margin-bottom: 15px
+    }
+
+    .action-btn span i {
+        font-size: 1rem;
+    }
+
+    .post-comments {
+        border-radius: 25px;
+        padding: .6rem 1rem;
+        padding: 10px;
+        width: max-content;
+    }
+
+    .comment {
+        display: flex;
+    }
+
+    .like-comment-img {
+        width: 1.4rem;
+        height: 1.4rem;
+        border-radius: 50%;
+        margin-left: -15px;
+        margin-top: 70px;
+        display: none;
+    }
+
+    .comment-avatar {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+
+    .comment-content {
+        flex-grow: 1;
+        background: antiquewhite;
+        border-radius: 25px;
+        padding: 1rem;
+    }
+
+    .comment-author {
+        margin: 0;
+    }
+
+    .comment-text {
+        font-size: 14px;
+    }
+
+    .post-form {
+        background-color: #f8f8f8;
+        padding: 20px;
+        margin-top: 20px;
+        width: 90%;
+        /* Điều chỉnh khoảng cách từ các thành phần trên */
+        border-radius: 5px;
+    }
+
+    .post-form form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .post-form label {
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    .post-form textarea {
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        resize: vertical;
+        /* Cho phép thay đổi kích thước theo chiều dọc */
+    }
+
+    .post-form select {
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .post-form input[type="file"] {
+        margin-bottom: 10px;
+    }
+
+    .post-btn {
+        padding: 10px 15px;
+        background-color: purple;
+        /* Màu sắc nút đăng bài */
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    /* ================================== */
+
+    .like {
+        font-weight: normal;
+    }
+
+    .liked {
+        color: red;
+    }
+
+    #input-comment {
+        width: 80%;
+        border: 2px solid black;
+        border-radius: 25px;
+        height: 30px;
+        padding: .6rem 1rem;
+        font-weight: bold;
+    }
+
+    .btncomment {
+        background: #6b4de6;
+        border-radius: 25px;
+        width: 15%;
+        margin-left: 2%;
+        border: 0px white solid;
+        font-weight: bold;
+        color: white;
+        font-size: 1.2rem;
+    }
+
+    .like-comment {
+        font-size: .8rem;
+        font-weight: bold;
+        margin-left: 60px;
+    }
+
+    .like-comment:hover {
+        border-bottom: 1px solid black;
+    }
+
+    .main1 {
+        width: 80%;
+        border-radius: 25px;
+        margin-left: 25px;
+        margin-right: 25px;
+        margin-top: 20px;
+    }
+
+    .main2 {
+        width: 20%;
+    }
+
+    /* ================================== */
+    .modal {
+        display: none; 
+        position: fixed; 
+        z-index: 1; 
+        left: 0;
+        top: 0;
+        width: 100%; 
+        height: 100%; 
+        overflow: auto; 
+        background-color: rgb(0,0,0); 
+        background-color: rgba(0,0,0,0.4); 
+    }
+    
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto; 
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%; 
+    }
+    
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+    
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .post-edit-delete-buttons {
+        text-align: right;
+        padding: 10px;
+    }
+    
+    .edit-post-btn, .delete-post-btn {
+        margin: 5px;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    
+    .edit-post-btn {
+        background-color: #4CAF50;
+        color: white;
+    }
+    
+    .delete-post-btn {
+        background-color: #f44336;
+        color: white;
+    }
+    .alert {
+        padding: 10px;
+        background-color: #f44336; /* Màu đỏ để thông báo nổi bật */
+        color: white;
+        margin-bottom: 15px;
+        border-radius: 5px;
+        text-align: center;
+        font-weight: bold;
+    }
+    
+    body a{
+        text-decoration: none;
+    }
+</style>
+</head>
+<body>
+    
+
+    <div class="main">
+        <div class="main1">
+            <div class="group-cover">
+                <img src="{{group.cover.url}}" alt="{{group.cover.url}}">
+            </div>
+            <div class="group-info">
+                <img class="avatar" src="{{group.avatar.url}}" alt="{{group.avatar.url}}">
+                <h1 class="group-name">{{group.name}}</h1>
+                <p class="group-description"><b>{{group.description}}</b></p>
+                <p class="member-count">Members: <b>{{group.get_count_members}}</b></p>
+                <p class="visibility">Nhóm <b>{{group.visibility}}</b> </p>
+                <!-- Kiểm tra nếu không phải là thành viên và nhóm ở chế độ Private -->
+                {% if not is_member and group.visibility == "Private" %}
+                <div class="group-info">
+                    <!-- Thông báo cho người dùng -->
+                    <p class="alert">This group is private. You must be a member to view its content.</div>
+                {% endif %}
+
+            </div>
+            {% comment %} là thành viên: có thể xem được thành viên {% endcomment %}
+            {% if is_member%}
+
+            <div class="member-images" style="display: flex; justify-content: space-between; width: 93%;">
+                <div class="imagemember" style="margin-left: 20px;">
+                    <!-- Member images here -->
+                    {% for profile in group.get_members%}
+                    <a href="{% url 'profiles:profile_detail_view' slug=profile.slug %}">
+
+                        <img src="{{profile.avatar.url}}" alt="Member 1">
+                    </a>
+
+                    {% endfor %}
+                </div>
+                <a href="{% url 'group:list_members_group' slug=group.slug %}" style="float: left; justify-content: space-between;"><button class="btn">All
+                        member</button></a>
+                <!-- More members -->
+            </div>
+            {% comment %} không là thành viên {% endcomment %}
+            {% else %}
+{% comment %} không là thành viên nhưng nhóm công khai > có thể xem thành viên nhóm {% endcomment %}
+            {% if group.visibility == "Public" %}
+
+                <div class="member-images" style="display: flex; justify-content: space-between; width: 93%;">
+                    <div class="imagemember" style="margin-left: 20px;">
+                        <!-- Member images here -->
+                        {% for profile in group.get_members%}
+                        <a href="{% url 'profiles:profile_detail_view' slug=profile.slug %}">
+    
+                            <img src="{{profile.avatar.url}}" alt="Member 1">
+                        </a>
+    
+                        {% endfor %}
+                    </div>
+                    <a href="{% url 'group:list_members_group' slug=group.slug %}" style="float: left; justify-content: space-between;"><button class="btn">All
+                            member</button></a>
+                    <!-- More members -->
+                </div>
+                {% endif %}
+            {% endif %}
+            <!-- Phần đăng bài : là thành viên của nhóm - có thể đăng bài-->
+            {% if is_member %}
+            <div class="post-form">
+                <form action="{% url 'group:new_post_group' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <label for="content">Content:</label>
+                    <textarea id="content" name="content" placeholder="Bạn đang nghĩ gì?" required></textarea>
+                    <label for="image">Image:</label>
+                    <input type="file" id="image" name="image" accept="image/*">
+                    <input type="hidden" name="group_id" value="{{group.id}}">
+                    <button type="submit" class="btn post-btn">Post</button>
+                </form>
+            </div>
+            {% endif %}
+            <div class="group-posts">
+                {% comment %} là thành viên của nhóm {% endcomment %}
+                {% if is_member %}
+                
+                {% for post in posts %}
+                    <div class="post">
+                        <div class="post-header">
+                            <img class="post-avatar" src="{{post.author.avatar.url}}" alt="Author Avatar">
+                            <div class="post-author-info">
+                                <h3 class="post-author-name">{{post.author.first_name}} {{post.author.last_name}}</h3>
+                                <p class="post-author-country">{{post.author.country}}</p>
+                                <p class="post-time">{{post.get_time_elapsed}}</p>
+                            </div>
+                            <!-- Nút Sửa và Xóa -->
+                        <div class="post-edit-delete-buttons">
+                            {% if post.author.username.id == request.user.id %}
+                            <button class="edit-post-btn" onclick="openEditModal({{post.id}})">Sửa</button>
+                            <button class="delete-post-btn" onclick="openDeleteModal({{post.id}})">Xóa</button>
+                            {% elif request.user in group.admins.all%}
+                            <button class="edit-post-btn" onclick="openEditModal({{post.id}})">Sửa</button>
+                            <button class="delete-post-btn" onclick="openDeleteModal({{post.id}})">Xóa</button>
+                            {% endif %}
+                        </div>
+                        </div>
+                        <div class="post-image">
+                            <p>{{post.content}}</p>
+                            {% if post.image %}
+                            <img src="{{post.image.url}}" alt="Post Image" style="max-height: 1000px; width: 100%;">
+                            {% endif %}
+                        </div>
+                        <div class="post-actions">
+                            {% comment %} Là thành viên nhóm mới được xem bài viết {% endcomment %}
+                            {% if is_member %}
+                            <form action="{% url 'group:like_unlike_post' %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="post_id" value="{{post.id}}">
+                                <input type="hidden" name="group_id" value="{{group.id}}">
+                                <button class="action-btn">
+
+                                    {%if profile in post.liked.all%}
+                                    <span><i class="fa fa-heart liked"></i></span>
+                                    {%else%}
+                                    <span><i class="fa fa-heart like"></i></span>
+                                    {%endif%}
+                                </button>
+                            </form>
+                            {% else %}
+                                <button class="action-btn">
+                                    <span><i class="fa fa-heart like"></i></span>
+                                </button>
+                            {% endif %}
+    
+                            <div class="comment">
+                                <form action="{% url 'group:cmt_post_group' %}" method="post" style="width: 100%;display: flex;">
+                                    {% csrf_token %}
+                                    <input type="text" name="content_cmt" id="input-comment" placeholder="Bình luận bài viết...">
+                                    <input type="hidden" name="post_id" value="{{post.id}}">
+                                    <input type="hidden" name="group_id" value="{{group.id}}">
+                                    <button class="btncomment"><i class="fa-regular fa-paper-plane"></i></button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="post-comments">
+                            {% for cmt in post.comments %}
+
+                            <div class="comment">
+                                <img class="comment-avatar" src="{{cmt.user.avatar.url}}" alt="Commenter Avatar">
+                                <div class="comment-content">
+                                    <h4 class="comment-author">{{cmt.user.first_name}} {{cmt.user.last_name}}</h4>
+                                    <p class="comment-text">{{cmt.body}}</p>
+                                </div>
+                                   <!-- Nút Sửa Bình Luận -->
+                                   {% comment %} Chủ bài vi {% endcomment %}
+                                   {% if request.user == post.author.username %}
+                                   
+                                   
+                                   
+                                   <button class="edit-comment-btn"
+                                   style="height: max-content; padding: 10px 20px;border-radius: 25px;background: #6b4de6;font-weight: bold;color: white;border: none; margin-left: 10px;"
+                                   onclick="openEditCommentModal({{cmt.id}})">Sửa</button>
+                                   {% elif is_admin %}
+                                   <button class="edit-comment-btn"
+                                   style="height: max-content; padding: 10px 20px;border-radius: 25px;background: #6b4de6;font-weight: bold;color: white;border: none; margin-left: 10px;"
+                                   onclick="openEditCommentModal({{cmt.id}})">Sửa</button>
+                                   {% elif request.user == cmt.user.username %}
+                                   <button class="edit-comment-btn"
+                                   style="height: max-content; padding: 10px 20px;border-radius: 25px;background: #6b4de6;font-weight: bold;color: white;border: none; margin-left: 10px;"
+                                   onclick="openEditCommentModal({{cmt.id}})">Sửa</button>
+                                   {% elif is_admin %}
+                                   <button class="edit-comment-btn"
+                                   style="height: max-content; padding: 10px 20px;border-radius: 25px;background: #6b4de6;font-weight: bold;color: white;border: none; margin-left: 10px;"
+                                   onclick="openEditCommentModal({{cmt.id}})">Sửa</button>
+                                   {% endif %}
+   
+                                <!-- Modal Sửa Bình Luận -->
+                                <div id="editCommentModal{{cmt.id}}" class="modal">
+                                    <div class="modal-content" style="box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.2); border-radius: 25px;">
+                                        <span class="close">&times;</span>
+                                        <form action="{% url 'group:edit_cmt_group' %}" method="post" style="width: 105%;">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="comment_id" value="{{cmt.id}}" >
+                                            <input type="hidden" name="group_id" value="{{group.id}}">
+                                            <textarea name="comment_content" style="margin-top: 50px; width: 90%;resize: none; border-radius: 25px;height: 50px;line-height:50px;padding: 0px 10px; border: 1px solid black;">{{cmt.body}}</textarea>
+                                            <button type="submit" class="btn" style="width: 15%;border-radius:25px;background: #6b4de6;font-weight: bold;font-size: 1rem; ">Lưu Thay Đổi</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <script>
+                                    document.querySelectorAll('.close').forEach(element => {
+                                        element.addEventListener('click', () => {
+                                            document.getElementById('editCommentModal{{cmt.id}}').style.display = 'none';
+                                        });
+                                    });
+                                </script>
+
+
+                            <!-- Nút Xóa Bình Luận -->
+                            {% if request.user == post.author.username %}
+                            <button class="delete-comment-btn" onclick="openDeleteCommentModal({{cmt.id}})"
+                            style="height: max-content; padding: 10px 20px;border-radius: 25px;background: #6b4de6;font-weight: bold;color: white;border: none; margin-left: 10px;">Xóa</button>     
+                            {% elif request.user == cmt.user.username %}
+
+                            <button class="delete-comment-btn" onclick="openDeleteCommentModal({{cmt.id}})"
+                            style="height: max-content; padding: 10px 20px;border-radius: 25px;background: #6b4de6;font-weight: bold;color: white;border: none; margin-left: 10px;">Xóa</button>     
+                            {% endif %}      
+                            {% comment %} <!-- Modal Xóa Bình Luận --> {% endcomment %}
+                            <div id="deleteCommentModal{{cmt.id}}" class="modal" >
+                                <div class="modal-content"style="box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.2); border-radius: 25px;">
+                                    <span class="close">&times;</span>
+                                    <form action="{% url 'group:del_cmt_post_group' %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="comment_id" value="{{cmt.id}}">
+                                        <input type="hidden" name="group_id" value="{{group.id}}">
+                                        <p style="text-align: center;font-weight: bold;margin-top: 45px;">Bạn có chắc muốn xóa bình luận này không?</p>
+                                        <button type="submit" class="btn" style="margin-bottom: 45px;width: 15%;border-radius:25px;background: #6b4de6;font-weight: bold;font-size: 1rem; ">Xóa Bình Luận</button>
+                                    </form>
+                                </div>
+                            </div>
+
+                            </div>
+                            <br>
+                            <script>function openEditCommentModal(commentId) {
+                                var modal = document.getElementById("editCommentModal" + commentId);
+                                modal.style.display = "block";
+                            }
+                            
+                            function openDeleteCommentModal(commentId) {
+                                var modal = document.getElementById("deleteCommentModal" + commentId);
+                                modal.style.display = "block";
+                            }
+                            
+                            window.onclick = function(event) {
+                                if (event.target.classList.contains('modal')) {
+                                    event.target.style.display = "none";
+                                }
+                            }
+                            
+                            // Đóng modal khi nhấn nút đóng (X)
+                            var closeButtons = document.getElementsByClassName("close");
+                            for (var i = 0; i < closeButtons.length; i++) {
+                                closeButtons[i].onclick = function() {
+                                    var modal = this.parentElement.parentElement;
+                                    modal.style.display = "none";
+                                }
+                            }
+                            </script>
+                            {% endfor %}
+                            <!-- Thêm comments ở đây -->
+                        </div>
+                    </div>
+                    <!-- Modal Sửa Bài Đăng -->
+
+                    <div id="editPostModal{{post.id}}" class="modal">
+                        <div class="modal-content">
+                            <span class="close">&times;</span>
+                            <form action="{% url 'group:edit_post_group' %}" method="post" enctype="multipart/form-data">
+
+                                {% csrf_token %}
+                                <input type="hidden" name="post_id" value="{{post.id}}">
+                                <input type="hidden" name="group_id" value="{{group.id}}">
+
+                                <h1 style="text-align: center; font-weight: bold;">Edit Post</h1>
+                                <div class="editContent" style="text-align: center; margin-bottom: 10px;">
+                                    <label for="edit_content" style="font-weight: bold;">Content:</label>
+                                    <textarea id="edit_content" name="content" rows="10" style="width: 80%;height: max-content;border-radius: 25px;padding: 15px;resize: none;" required>{{post.content}}</textarea>
+                                </div>
+                                <div class="editImage" style="text-align: center;">
+                                    <label for="edit_image" style="font-weight: bold;padding-right: 45px;">Image:</label>
+                                    <input type="file" id="edit_image" name="image" style="width: 80%;" accept="image/*">
+                                </div>
+                                <button type="submit" class="btn" style="width: 20%;font-weight: bol;border-radius: 25px; color: white; font-size: 1.1rem ;background: #4CAF50;">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                            <!-- Modal Xóa Bài Đăng -->
+                    <div id="deletePostModal{{post.id}}" class="modal">
+                        <div class="modal-content">
+                            <span class="close">&times;</span>
+                            <form action="{% url 'group:del_post_group' %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="post_del_id" value="{{post.id}}">
+                                <input type="hidden" name="group_id" value="{{group.id}}">
+                                <h1 style="font-weight: bold; text-align: center;">Delete Post</h1>
+                                <p style="text-align: center;">Bạn có chắc muốn xóa bài đăng này không?</p>
+                                <button type="submit" class="btn" style="width: 20%;background: red;font-weight: bold; font-size: 1.1rem; border-radius: 25px;">Xóa Bài Đăng</button>
+                            </form>
+                        </div>
+                    </div>
+                    <script>
+                        function openEditModal(postId) {
+                            // Thiết lập ID bài đăng cho form sửa
+                            var modal = document.getElementById("editPostModal" + postId);
+                            modal.style.display = "block";
+                        
+                            // Đóng modal khi nhấn nút đóng
+                            modal.querySelector(".close").onclick = function() {
+                                modal.style.display = "none";
+                            }
+                        }
+                        
+                        function openDeleteModal(postId) {
+                            // Thiết lập ID bài đăng cho form xóa
+                            var modal = document.getElementById("deletePostModal" + postId);
+                            modal.style.display = "block";
+                        
+                            // Đóng modal khi nhấn nút đóng
+                            modal.querySelector(".close").onclick = function() {
+                                modal.style.display = "none";
+                            }
+                        }
+                        
+                        // Đóng modal khi nhấn ngoài khu vực modal
+                        window.onclick = function(event) {
+                            if (event.target.classList.contains('modal')) {
+                                event.target.style.display = "none";
+                            }
+                        }
+                        
+                    </script>
+                    {% endfor %}
+                    {% else %}
+                        {% if group.visibility == "Public" %}
+                        {% for post in posts %}
+                        <div class="post">
+                            <div class="post-header">
+                                <img class="post-avatar" src="{{post.author.avatar.url}}" alt="Author Avatar">
+                                <div class="post-author-info">
+                                    <h3 class="post-author-name">{{post.author.first_name}} {{post.author.last_name}}</h3>
+                                    <p class="post-author-country">{{post.author.country}}</p>
+                                    <p class="post-time">{{post.get_time_elapsed}}</p>
+                                </div>
+                                <!-- Nút Sửa và Xóa -->
+                            <div class="post-edit-delete-buttons">
+                                {% if post.author.username.id == request.user.id %}
+                                <button class="edit-post-btn" onclick="openEditModal({{post.id}})">Sửa</button>
+                                <button class="delete-post-btn" onclick="openDeleteModal({{post.id}})">Xóa</button>
+                                {% elif request.user in group.admins.all%}
+                                <button class="edit-post-btn" onclick="openEditModal({{post.id}})">Sửa</button>
+                                <button class="delete-post-btn" onclick="openDeleteModal({{post.id}})">Xóa</button>
+                                {% endif %}
+                            </div>
+                            </div>
+                            <div class="post-image">
+                                <p>{{post.content}}</p>
+                                {% if post.image %}
+                                <img src="{{post.image.url}}" alt="Post Image" style="max-height: 1000px; width: 100%;">
+                                {% endif %}
+                            </div>
+                            <div class="post-actions">
+                                {% comment %} Là thành viên nhóm mới được xem bài viết {% endcomment %}
+                                {% if is_member %}
+                                <form action="{% url 'group:like_unlike_post' %}" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="post_id" value="{{post.id}}">
+                                    <input type="hidden" name="group_id" value="{{group.id}}">
+                                    <button class="action-btn">
+
+                                        {%if profile in post.liked.all%}
+                                        <span><i class="fa fa-heart liked"></i></span>
+                                        {%else%}
+                                        <span><i class="fa fa-heart like"></i></span>
+                                        {%endif%}
+                                    </button>
+                                </form>
+                                {% else %}
+                                    <button class="action-btn">
+                                        <span><i class="fa fa-heart like"></i></span>
+                                    </button>
+                                {% endif %}
+        
+                                <div class="comment">
+                                    <form action="" method="post" style="width: 100%;display: flex;">
+                                        <input type="text" name="" id="input-comment" placeholder="Bình luận bài viết...">
+                                        <button class="btncomment"><i class="fa-regular fa-paper-plane"></i></button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="post-comments">
+                                {% for cmt in post.comments %}
+                                
+                                <div class="comment">
+                                    <img class="comment-avatar" src="{{cmt.user.avatar.url}}" alt="Commenter Avatar">
+                                    <div class="comment-content">
+                                        <h4 class="comment-author">{{cmt.user.first_name}} {{cmt.user.last_name}}</h4>
+                                        <p class="comment-text">{{cmt.body}}</p>
+                                    </div>
+                                 
+
+                                </div>
+                                {% endfor %}
+                                <!-- Thêm comments ở đây -->
+                            </div>
+                        </div>
+                        <!-- Modal Sửa Bài Đăng -->
+
+                        <div id="editPostModal{{post.id}}" class="modal">
+                            <div class="modal-content">
+                                <span class="close">&times;</span>
+                                <form action="{% url 'group:edit_post_group' %}" method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="post_id" value="{{post.id}}">
+                                    <input type="hidden" name="group_id" value="{{group.id}}">
+
+                                    <h1 style="text-align: center; font-weight: bold;">Edit Post</h1>
+                                    <div class="editContent" style="text-align: center; margin-bottom: 10px;">
+                                        <label for="edit_content" style="font-weight: bold;">Content:</label>
+                                        <textarea id="edit_content" name="content" rows="10" style="width: 80%;height: max-content;border-radius: 25px;padding: 15px;resize: none;" required>{{post.content}}</textarea>
+                                    </div>
+                                    <div class="editImage" style="text-align: center;">
+                                        <label for="edit_image" style="font-weight: bold;padding-right: 45px;">Image:</label>
+                                        <input type="file" id="edit_image" name="image" style="width: 80%;" accept="image/*">
+                                    </div>
+                                    <button type="submit" class="btn" style="width: 20%;font-weight: bol;border-radius: 25px; color: white; font-size: 1.1rem ;background: #4CAF50;">Submit</button>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- Modal Xóa Bài Đăng -->
+                <div id="deletePostModal{{post.id}}" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <form action="{% url 'group:del_post_group' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="post_del_id" value="{{post.id}}">
+                            <input type="hidden" name="group_id" value="{{group.id}}">
+                            <h1 style="font-weight: bold; text-align: center;">Delete Post</h1>
+                            <p style="text-align: center;">Bạn có chắc muốn xóa bài đăng này không?</p>
+                            <button type="submit" class="btn" style="width: 20%;background: red;font-weight: bold; font-size: 1.1rem; border-radius: 25px;">Xóa Bài Đăng</button>
+                        </form>
+                    </div>
+                </div>
+                        <script>
+                            function openEditModal(postId) {
+                                // Thiết lập ID bài đăng cho form sửa
+                                var modal = document.getElementById("editPostModal" + postId);
+                                modal.style.display = "block";
+                            
+                                // Đóng modal khi nhấn nút đóng
+                                modal.querySelector(".close").onclick = function() {
+                                    modal.style.display = "none";
+                                }
+                            }
+                            
+                            function openDeleteModal(postId) {
+                                // Thiết lập ID bài đăng cho form xóa
+                                var modal = document.getElementById("deletePostModal" + postId);
+                                modal.style.display = "block";
+                            
+                                // Đóng modal khi nhấn nút đóng
+                                modal.querySelector(".close").onclick = function() {
+                                    modal.style.display = "none";
+                                }
+                            }
+                            
+                            // Đóng modal khi nhấn ngoài khu vực modal
+                            window.onclick = function(event) {
+                                if (event.target.classList.contains('modal')) {
+                                    event.target.style.display = "none";
+                                }
+                            }
+                            
+                        </script>
+                        {% endfor %}
+                        {% endif %}
+                    {% endif %}
+            </div>
+        </div>
+        <div class="main2">
+            <div class="sidebar">
+                <div class="profile">
+                    <img class="profile-avatar" src="{{profile.avatar.url}}" alt="User Avatar">
+                    {% if request.user in group.admins.all%}
+                    <h3 class="profile-name" style="color: #D32F2F;">{{profile.first_name}} {{profile.last_name}} - Admin</h3>
+                    {% else %}
+                    <h3 class="profile-name">{{profile.first_name}} {{profile.last_name}}</h3>
+
+                    {% endif %}
+                    <p class="join-date">{{joined_at}}</p>
+                </div>
+                {% if is_member %}
+
+                
+                {% if request.user in group.admins.all%}
+                <div class="admin">
+
+                    <button id="updateGroupBtn" class="btn" style="font-weight: bold;font-size: 1rem; background: #4CAF50;">Update Group</button>
+                    <button id="dissolveGroupBtn" class="btn" style="font-weight: bold;font-size: 1rem;background: red;">Dissolve Group</button>
+                    <!-- Modal cập nhật thông tin nhóm -->
+                    <div id="updateGroupModal" class="modal">
+                        <div class="modal-content" style="box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.2); border-radius: 25px;">
+                            <span class="close" id="closeModalUpdate">&times;</span>
+                            {% comment %} <form id="updateGroupForm" action="{% url 'group:update_group' %}" enctype="multipart/form-data" method="POST"> {% endcomment %}
+                                <form action="{% url 'group:update_group' %}" method="post" enctype="multipart/form-data" style="text-align: center;">
+                                    {% csrf_token %}
+                                    <h1 style="margin-top: 50px; text-align: center; font-weight: bold;">Update Group</h1>
+                                    <input type="hidden" name="group_id" value="{{group.id}}">
+                                    <label for="groupName" style="text-align: left; font-weight: bold;">Name:</label>
+                                    <input type="text" id="groupName" name="name" required value="{{group.name}}" style="width: 90%;border-radius: 25px;height: 30px;border: 1px solid black; padding: 10px 10px; margin-right: -30px;margin-bottom: 10px;">
+                                    <br>
+                                    <label for="groupAvatar" style="text-align: left; font-weight: bold;">Avatar:</label>
+                                    <input type="file" id="groupAvatar" name="avatar" accept="image/*" style="width: 90%; margin-right: -10px;margin-bottom: 10px;">
+                                    <br>
+                                    <label for="groupCover" style="text-align: left; font-weight: bold;">Cover:</label>
+                                    <input type="file" id="groupCover" name="cover" accept="image/*" style="width: 90%; margin-right:-10px;margin-bottom: 10px;">
+                                    <br>
+                                    <label for="groupDescription" style="text-align: left;font-weight: bold; ">Description:</label>
+                                    <textarea id="groupDescription"  name="description" required style="width: 90%;resize: none; height: 35px;border-radius: 25px;border: 1px solid black;margin-right: 10px;line-height: 35px;" >{{group.description}}</textarea>
+                                    <br>
+                                    <label for="groupVisibility" style="text-align: left; font-weight: bold;">Visibility:</label>
+                                    <select id="groupVisibility" name="visibility" style="width: 91%; margin-left: 13px; height: max-content;border-radius: 25px;border: 1px solid black; padding: 10px 10px; font-weight: bold;margin-bottom: 20px;margin-top: 10px;">
+                                        {% if group.visibility == "Công khai" %}
+                                        <option value="Public">Public</option>
+                                        <option value="Private">Private</option>
+                                        {% else %}
+                                        <option value="Private">Private</option>
+                                        <option value="Public">Public</option>
+                                        {% endif %}
+                                    </select>
+                                    <br>
+                                    <button type="submit" class="btn" style="width: 20%;margin-bottom: 30px;margin-top: 30px; font-size: 1.1rem;font-weight: bold; colo;">Submit</button>
+                                </form>
+                                    
+                            </form>
+                        </div>
+                    </div>
+                    <script>
+                        document.querySelector('.close').addEventListener('click',()=>{
+                            document.getElementById('updateGroupModal').style.display = 'none';
+                        });
+                    </script>
+                    <!-- Modal giải tán nhóm -->
+                    <div id="dissolveGroupModal" class="modal">
+                        <div class="modal-content" style="border-radius: 25px;box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.2);">
+                            <h2 style="text-align: center; margin-top: 50px;font-weight: bold;font-size:2rem;">Are you sure you want to dissolve this group?</h2>
+                            <form action="{% url 'group:dissolve_group' %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="group_id" value="{{ group.id }}">
+                                <button style="width: 20%; background: red;font-weight: bold;font-size: 1.1rem;" type="submit" class="btn">Yes, dissolve group</button>
+                                <button style="width: 20%; font-weight: bold;font-size: 1.1rem;" type="button" class="btn cancelBtn">Cancel</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <script>
+                        // Lấy modal
+            var modal = document.getElementById("updateGroupModal");
+            
+            // Lấy nút mở modal
+            var btn = document.getElementById("updateGroupBtn");
+            
+            // Lấy phần tử span đóng modal
+            var span = document.getElementsByClassName("close")[0];
+            
+            // Khi nút được click, hiển thị modal
+            btn.onclick = function() {
+                modal.style.display = "block";
+            }
+            
+            // Khi người dùng click vào <span> (x), đóng modal
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+            
+            // Khi người dùng click vào bất kỳ đâu ngoài modal, đóng nó lại
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+            
+           
+            
+
+
+            {% comment %} xóa gr {% endcomment %}
+            // Get the modal
+                        var dissolveModal = document.getElementById("dissolveGroupModal");
+
+                        // Get the button that opens the modal
+                        var dissolveBtn = document.getElementById("dissolveGroupBtn");
+
+                        // Get the <span> element that closes the modal
+                        var span = document.getElementsByClassName("close")[0];
+
+                        // Get the cancel button
+                        var cancelBtn = document.getElementsByClassName("cancelBtn")[0];
+
+                        // When the user clicks the button, open the modal 
+                        dissolveBtn.onclick = function() {
+                        dissolveModal.style.display = "block";
+                        }
+
+                        // When the user clicks on <span> (x), close the modal
+                        span.onclick = function() {
+                        dissolveModal.style.display = "none";
+                        }
+
+                        // When the user clicks on cancel button, close the modal
+                        cancelBtn.onclick = function() {
+                        dissolveModal.style.display = "none";
+                        }
+
+                        // When the user clicks anywhere outside of the modal, close it
+                        window.onclick = function(event) {
+                        if (event.target == dissolveModal) {
+                            dissolveModal.style.display = "none";
+                        }
+                        }
+
+                    </script>
+
+                    <a href="{% url 'group:view_group_join_requests' slug=group.slug %}">
+                        <button class="btn" style="font-weight: bold;font-size: .8rem;background: rgb(158, 199, 75);">View Group Join Requests</button>
+                    </a>
+                </div>
+                <hr>
+                {% endif %}
+                {% comment %} mời bạn bè {% endcomment %}
+                <button class="btn" style="font-weight: bold;font-size: 1rem;" id="btnInviteFriends">Invite Friends</button>
+                    <div id="InviteFriends" class="modal" style="display: none;">
+                        <div class="modal-content" style="box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.2); border-radius: 25px;">
+                            <span class="close" id="closeModal">&times;</span>
+                            <h1>Invite Friends</h1>
+                        </div>
+                    </div>
+                    <script>
+                        document.getElementById('btnInviteFriends').addEventListener('click',()=>{
+                            document.getElementById('InviteFriends').style.display = 'block';
+                        });
+                        document.getElementById('closeModal').addEventListener('click', () => {
+                            document.getElementById('InviteFriends').style.display = 'none';
+                        });
+                        document.getElementById('closeModalUpdate').addEventListener('click', () => {
+                            document.getElementById('updateGroupModal').style.display = 'none';
+                        });
+                        
+                    </script>
+{% comment %} add admin {% endcomment %}
+                    <button class="btn" style="font-weight: bold;font-size: 1rem;" id="btnAddAdmin">Add admin</button>
+                    <div id="AddAdmin" class="modal" style="display: none;">
+                        <div class="modal-content" style="box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.2); border-radius: 25px;">
+                            <span class="close" id="closeModalAddADmin">&times;</span>
+                            <h1>Add admin</h1>
+                        </div>
+                    </div>
+                    <script>
+                        document.getElementById('btnAddAdmin').addEventListener('click',()=>{
+                            document.getElementById('AddAdmin').style.display = 'block';
+                        });
+                        document.getElementById('closeModalAddADmin').addEventListener('click', () => {
+                            document.getElementById('AddAdmin').style.display = 'none';
+                        });
+                        
+                    </script>
+{% comment %}  {% endcomment %}
+                <form action="{% url 'group:leave_group' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="group_id" value="{{group.id}}">
+                    <button class="btn" style="background-color: #f44336;font-weight: bold;font-size: 1rem;">Leave Group</button>
+                </form>
+                {% else %}
+                {% comment %} chưa có lời mời {% endcomment %}
+                {% if  not join_request_sent%}
+                                    {% comment %} Chưa là thành viên nhóm {% endcomment %}
+                <form action="{% url 'group:request_joingroup' id=group.id %}" method="post">
+                    {% csrf_token %}
+                    <button class="btn">Join group</button>
+                </form>
+                {% else %}                      
+                <button class="btn">Wating</button>
+
+                {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    
+
+</body>
+</html>
+
+
+
+
+
+
+
+

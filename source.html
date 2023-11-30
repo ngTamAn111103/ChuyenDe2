@@ -1,0 +1,184 @@
+<!-- bài đăng cá nhân -->
+<div class="feed myfeed">
+    <!-- Feed Top -->
+    <div class="feed-top">
+        <div class="user">
+            <div class="profile-picture" id="my-profile-picture">
+                <img src="{{profile.avatar.url}}" alt="{{profile.avatar.url}}">
+            </div>
+            <div class="info">
+                <h3>{{profile.first_name}} {{profile.last_name}}</h3>
+                <div class="time text-gry">
+                    <small>{{profile.country}}, <span>Vừa xong</span></small>
+                </div>
+            </div>
+        </div>
+        <div class="edit">
+            <img src="{%static 'images/svg/three-dots.svg'%}" alt="">
+            <ul class="edit-menu">
+                <li><i class="fa fa-pen"></i>Edit</li>
+                <li><i class="fa fa-trash"></i>Delete</li>
+            </ul>
+        </div>
+    </div>
+    <h3>Biển đẹp quá</h3>
+    <!-- Feed Img -->
+    <div class="feed-img">
+        <img src="{%static 'images/post1.webp'%}" alt="{%static 'images/post1.webp'%}">
+    </div>
+    <!-- Feed Action Aria -->
+    <div class="action-button">
+        <div class="interaction-button">
+            <span><i class="fa fa-heart"></i></span>
+            <span><i class="fa fa-comment-dots"></i></span>
+        </div>
+    </div>
+    <textarea placeholder="Bình luận..." class="command" rows="1"></textarea>
+    <!-- Like By -->
+    <div class="liked-by">
+        <span><img src="images/user.jpg" alt=""></span>
+        <span><img src="images/user1.jpeg" alt=""></span>
+        <p><b>Jhon Wiliams</b>and <b>77 comments other</b></p>
+    </div>
+    <!-- Caption -->
+    <div class="caption">
+        <div class="title">Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere,
+            adipisci?</div>
+        <p></p><b>Lana White</b>Lorem ipsum dolor sit amet consectetur adipisicing.
+        <span class="hars-tag">#lifestyle</span> </p>
+    </div>
+    <!-- Comments -->
+    <div class="comments text-gry">
+        View all comments
+    </div>
+</div>
+
+
+--{%csrf_token%}
+<b class="auther_comment auther_comment{{cmt.id}}">{{cmt.user.first_name}}
+    {{cmt.user.last_name}}</b>
+<div class="edit-input-comment">
+    <input class="input-edit-comment input-edit-comment{{cmt.id}}" type="text"
+        placeholder="Edit comment" value="{{cmt.body}}">
+    <button style="font-weight: bold; display: none;"
+        class="btn-send btn-send{{cmt.id}}"><i
+            class="fa-regular fa-paper-plane"></i></button>
+</div>
+
+
+
+<input type="hidden" name="cmt_edit_id" value="{{cmt.id}}">
+<button style="font-weight: bold; display: none;" class="btn-send btn-send{{cmt.id}}"><i
+    class="fa-regular fa-paper-plane"></i></button>
+
+    ------------------Add
+Model change profile
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Chỉnh sửa thông tin</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <img src="{{ profile.avatar.url }}" alt="{{ profile.avatar.name }}">
+
+      <form action="" method="POST" enctype='multipart/form-data'>
+        <div class="modal-body">
+          {% csrf_token %}
+          {{form.as_p}}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+          <button type="submit" class="btn btn-primary">Xác nhận</button>
+        </div>
+      </form>
+
+
+
+    </div>
+  </div>
+</div>
+
+------------------ JS ở <main>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js">
+    $(document).ready(function () {
+        let display = false
+        $(".cmt_btn").click(function () {
+            if (display === false) {
+                $(this).next(".comment-box").show("slow");
+                display = true
+            } else {
+                $(this).next(".comment-box").hide("slow");
+                display = false
+            }
+        });
+
+        $('.like-form').submit(function (e) {
+            e.preventDefault()
+
+            const post_id = $(this).attr('id')
+
+            const likeText = $(`.like-btn${post_id}`).text()
+            const trim = $.trim(likeText)
+
+            const url = $(this).attr('action')
+
+            let res;
+            const likes = $(`.like-count${post_id}`).text()
+            const trimCount = parseInt(likes)
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {
+                    'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+                    'post_id': post_id,
+                },
+                success: function (response) {
+                    if (trim === 'Unlike') {
+                        $(`.like-btn${post_id}`).text('Like')
+                        res = trimCount - 1
+                    } else {
+                        $(`.like-btn${post_id}`).text('Unlike')
+                        res = trimCount + 1
+                    }
+
+                    $(`.like-count${post_id}`).text(res)
+                },
+                error: function (response) {
+                    console.log('error', response)
+                }
+            })
+
+        })
+    });
+</script>
+</main>
+
+------------------
+<div class="friend">
+    {% comment %} Chat 1-1 {% endcomment %}
+    {% if chatroom.group_chat == False %}
+    {% comment %} Tìm đối phương để bỏ ảnh vào {% endcomment %}
+    {% for participant in chatroom.participants %}
+    {% comment %} nếu participant không phải mình {% endcomment %}
+    {% if participant != profile %}
+    <img src="{{participant.avatar}}" alt="123" class="friend-avatar">
+
+    {% endif %}
+    {% endfor %}
+    {% comment %} chat 1-n {% endcomment %}
+    {% else %}
+    <img src="avatar_placeholder.jpg" alt="Avatar" class="friend-avatar">
+    {% endif %}
+    <div class="friend-info">
+        <div class="friend-name">Friend 2</div>
+        <div class="last-message">I'll call you later - 30m ago</div>
+    </div>
+</div>
+to_slug = slugify(self.convert_full_name(members[0].username.fist_name, members[0].username.last_name)  + "_" +self.convert_full_name(members[1].username.fist_name, members[1].username.last_name)) 

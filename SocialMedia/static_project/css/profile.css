@@ -1,0 +1,249 @@
+:root {
+    --primary-color-hue:252;
+    --color-dark-light-theme: 15%;
+    --color-light-light-theme: 92%;
+    --color-white-light-theme: 100%;
+    --color-white: hsl(255, 30%, var(--color-white-light-theme));
+    --color-light: hsl(255, 30%, var(--color-light-light-theme));
+    --color-gray: hsl(255, 15%, 60%);
+    --color-primary: hsl(var(--primary-color-hue), 75%, 60%);
+    --color-secondary: hsl(255, 100%, 90%);
+    --color-success: hsl(120, 95%, 60%);
+    --color-danger: hsl(0, 95%, 60%);
+    --color-dark: hsl(255, 30%, var(--color-dark-light-theme));
+    --color-black: hsl(255, 30%, 8%);
+
+    --boder-radius: 2rem;
+    --card-boder-radius: 1rem;
+    --search-padding: .6rem 1rem;
+    --card-padding: 1rem;
+    --btn-padding: .6rem 2rem;
+}
+.body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.myprofile{
+    padding: var(--card-padding);
+    border-radius: var(--card-boder-radius);
+    padding-bottom: 40px;
+    height: 400px;
+    margin: 1rem 1rem;
+    background-size: cover;
+}
+.wapper {
+    width: 100%;
+    margin: 1rem auto;
+    border-radius: 18px;
+    border: 1px gray solid;
+    padding-bottom: 20px;
+}
+
+.cover {
+    height: 300px;
+    width: 100%;
+}
+
+.cover img {
+    width: 100%;
+    height: 600px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.circle {
+    width: 300px;
+    height: 300px;
+    margin: auto;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    position: relative;
+    top: 110px;
+}
+
+.logo-profile {
+    width: 295px;
+    height: 295px;
+    border-radius: 50%;
+}
+
+.id {
+    font-size: 2rem;
+    position: relative;
+    text-align: center;
+    top:130px;
+}
+
+h5 {
+    color: rgb(56, 54, 54);
+    font-weight: bold;
+}
+
+.profile {
+    margin-left: 40px;
+    line-height: 2rem;
+}
+
+.profile label {
+    display: inline-block;
+    width: 150px;
+    margin-right: 10px;
+}
+.profile input,
+    .profile select,
+    .profile textarea{
+        width: 100%;
+        max-width: 300px; 
+    }
+.profile input {
+    border: 1px solid black;
+}
+
+#id_avatar {
+    border: none;
+}
+
+#id_cover {
+    border: none;
+}
+
+#id_bio,#id_country,#id_gender{
+    border: 1px solid black;
+}
+.id-sectio{
+    max-height: 150px;
+}
+.profile label{
+    font-weight: bold;
+}
+.btnSave{
+    margin-top: 20px;
+    margin-left: 400px;
+    font-weight: bold;
+    padding: 10px 20px;
+    background: #02fc23;
+    border-radius: 25px;
+}
+.btnSave a{
+    color: #fff;
+    font-weight: bold;
+    font-size: 1rem;
+}
+.btnSave:hover{
+    background: rgb(34, 180, 95);
+}
+.btn-editprofile{
+    background: var(--color-primary);
+    padding: var(--card-boder-radius);
+    padding: var(--card-padding);
+    font-weight: bold;
+    border-radius: 30px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    position: relative;
+    margin-top: 20px;
+    font-size: 1rem;
+}
+.btn-editprofile a{
+    color: #fff;
+}
+.btn-editprofile:hover{
+    opacity: 0.75;
+}
+.info-profile label{
+    display: inline-block;
+    width: 150px;
+    margin-right: 10px;
+    font-weight: bold;
+}
+.info-profile{
+    font-size: 1rem;
+    line-height: 2rem;
+    margin-left: 40px;
+    margin-top: 420px;
+}
+.profile1-edit{
+    background: var(--color-white);
+    padding: var(--card-padding);
+    border-radius: var(--card-boder-radius);
+    margin: 1rem auto;
+    height: 1000px;
+    padding-bottom: 40px;
+} 	
+.command{
+    border: 1px solid var(--color-dark);
+    border-radius: var(--card-boder-radius);
+    padding: var(--card-padding);
+    width: 100%;
+    font-weight: bold;
+}
+
+/* ---------------------------- SỬA FORM ---------------------------------------- */
+.form-edit-post label[for="id_content"],
+            .form-edit-post label[for='id_visibility'] {
+                font-weight: bold;
+                font-size: 1rem;
+            }
+
+            .form-edit-post label[for='id_visibility'] {
+                font-weight: bold;
+                font-size: 1rem;
+                margin-right: 60px;
+            }
+
+            .form-edit-post label[for='id_image'] {
+                font-weight: bold;
+                font-size: 1rem;
+                margin-right: 80px;
+            }
+
+            #id_image {
+                margin-top: 20px;
+                margin-bottom: 20px;
+                width: 80%;
+            }
+
+            .form-edit-post #id_content {
+                margin-left: 75px;
+                margin-top: 30px;
+                max-height: 3rem;
+                max-width: 650px;
+                min-width: 649px;
+                font-weight: bold;
+                border-radius: var(--boder-radius);
+                padding: 15px 10px 0px 25px;
+                background: #e8e4f1;
+                display: table-cell;
+            }
+
+            #id_visibility {
+                margin-bottom: 45px;
+                width: 80%;
+                border: 1px solid rgb(196, 196, 196);
+                padding: 10px;
+                font-weight: bold;
+                background: #f6f1f1;
+                border-radius: var(--card-boder-radius);
+            }
+
+            .h1-editpost {
+                font-weight: bold;
+                font-size: 3rem;
+            }
+
+            .form-comment {
+                max-width: 650px;
+                min-width: 649px;
+            }
+
+            .form-comment .input-comment {
+                width: 82%;
+                float: left;
+            }
+
+            .btn-send-main {
+                width: 15%;
+                padding: var(--card-padding);
+                margin-left: 19px;
+                height: 50px;
+                margin-top: 10px;
+            }

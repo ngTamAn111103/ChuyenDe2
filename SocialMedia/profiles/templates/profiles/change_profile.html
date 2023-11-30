@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change profile</title>
+    <style>
+        .success-message {
+            background-color: #ccffcc;
+            /* Màu sáng xanh cho khung thông báo */
+            border: 1px solid #00cc00;
+            /* Màu viền xanh đậm */
+            border-radius: 5px;
+            /* Góc bo tròn */
+            padding: 10px 20px;
+            /* Đệm cho khung thông báo */
+            margin: 20px 0;
+            /* Khoảng cách trên dưới */
+            text-align: center;
+            /* Căn giữa nội dung */
+        }
+
+        .success-message p {
+            margin: 0 0 10px 0;
+            /* Khoảng cách giữa dòng thông báo và liên kết */
+            color: #006600;
+            /* Màu xanh đậm cho chữ */
+        }
+
+        .success-message a {
+            color: #0033cc;
+            /* Màu xanh cho liên kết */
+            text-decoration: none;
+            /* Bỏ gạch chân của liên kết */
+            font-weight: bold;
+            /* Đặt chữ đậm */
+        }
+
+        .success-message a:hover {
+            text-decoration: underline;
+            /* Gạch chân khi rê chuột */
+        }
+
+
+
+        /* Style cho form */
+form {
+    background-color: #f9f9f9; /* Màu nền */
+    padding: 20px; /* Đệm xung quanh form */
+    border-radius: 8px; /* Góc bo tròn */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Bóng mờ */
+    max-width: 500px; /* Chiều rộng tối đa */
+    margin: 20px auto; /* Căn giữa form */
+}
+
+/* Style cho các trường nhập */
+form input[type="text"],
+form input[type="date"],
+form input[type="email"],
+form select,
+form textarea {
+    width: 100%; /* Chiều rộng tối đa */
+    padding: 10px; /* Đệm bên trong */
+    margin-bottom: 15px; /* Khoảng cách giữa các trường */
+    border: 1px solid #ccc; /* Viền */
+    border-radius: 4px; /* Góc bo tròn */
+}
+
+/* Style cho nút submit */
+form button[type="submit"] {
+    background-color: #4CAF50; /* Màu nền */
+    color: white; /* Màu chữ */
+    padding: 10px 15px; /* Đệm */
+    border: none; /* Không viền */
+    border-radius: 4px; /* Góc bo tròn */
+    cursor: pointer; /* Con trỏ chuột */
+    font-size: 16px; /* Cỡ chữ */
+}
+
+/* Hiệu ứng khi rê chuột lên nút */
+form button[type="submit"]:hover {
+    background-color: #45a049; /* Đổi màu nền */
+}
+
+/* Style cho label */
+form label {
+    display: block; /* Hiển thị block */
+    margin-bottom: 5px; /* Khoảng cách với trường nhập */
+}
+
+/* Điều chỉnh các khoảng cách và căn lề */
+form .form-group {
+    margin-bottom: 15px; /* Khoảng cách giữa các nhóm trường */
+}
+
+    </style>
+</head>
+
+<body>
+    <form action="" method="post" enctype="multipart/form-data">
+        {%csrf_token%}
+        {{form}}
+
+        <button type="submit">Update</button>
+    </form>
+
+    {%if confirm%}
+    <div class="success-message">
+        <p>Thông tin đã được cập nhật thành công!</p>
+        <a href="{%url 'profiles:my_profile_view'%}">Quay lại trang cá nhân</a>
+    </div>
+
+    {%endif%}
+</body>
+
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Approval</title>
+    <style>
+        /* style.css */
+body {
+    font-family: Arial, sans-serif;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+#selectAll {
+    margin-left: 5px;
+}
+
+button {
+    margin-top: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+button {
+    margin: 5px 10px 5px 0;
+    padding: 5px 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+.approve {
+    background-color: #4CAF50; /* Màu xanh lá */
+}
+
+.reject {
+    background-color: #f44336; /* Màu đỏ */
+}
+
+td form {
+    display: inline-block; /* Để 2 form nằm trên cùng một dòng */
+}
+
+
+    </style>
+</head>
+<body>
+    <table id="userTable">
+        <thead>
+            <tr>
+                <th><input type="checkbox" id="selectAll"></th>
+                <th>Avatar</th>
+                <th>Name</th>
+                <th>Bio</th>
+                <th>Country</th>
+                <th>Gender</th>
+                <th>Birthday</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for rq in  join_requests%}
+            <tr>
+                <td>
+                    <input type="checkbox" class="join-request-checkbox" data-profile-id="{{ rq.id }}">
+                </td>
+                <td><img src="{{rq.avatar.url}}" alt="Avatar" style="width:100px;height:100px;"></td>
+                <td>{{rq.first_name}} {{rq.last_name}}</td>
+                <td>{{rq.bio}}</td>
+                <td>{{rq.country}}</td>
+                <td>
+                    {% if rq.gender == 'female' %}
+                    Nữ
+                    {% else %}
+                    Nam
+                    {% endif %}
+                </td>
+                <td>{{rq.birthday}}</td>
+                <td>
+                    <form action="{% url 'group:accepted_join_requests' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="profile_id" value="{{rq.id}}">
+                        <input type="hidden" name="group_id" value="{{group.id}}">
+                        <button class="approve">Đồng ý</button>
+                    </form>
+                    <form action="{% url 'group:delete_join_requests' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="profile_id" value="{{rq.id}}">
+                        <input type="hidden" name="group_id" value="{{group.id}}">
+                        <button class="reject">Từ chối</button>
+                    </form>
+                </td>
+
+            </tr>
+            {% endfor %}
+
+
+
+
+        </tbody>
+        
+    </table>
+   
+        <button id="approveAll" class="approve" type="">Đồng ý tất cả</button>
+    <button id="rejectAll" class="reject">Từ chối tất cả</button>
+
+    <script>
+        document.getElementById('selectAll').addEventListener('click', function(e) {
+            let checkboxes = document.querySelectorAll('#userTable tbody input[type="checkbox"]');
+            for (let checkbox of checkboxes) {
+                checkbox.checked = e.target.checked;
+            }
+        });
+        
+          
+
+        
+        
+        
+        
+        
+        
+        
+        
+    </script>
+</body>
+</html>

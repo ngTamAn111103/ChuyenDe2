@@ -1,0 +1,107 @@
+/* Sửa mới toàn bộ: 14/10/2023 */
+:root {
+    --primary-color-hue: 252;
+    --color-dark-light-theme: 15%;
+    --color-light-light-theme: 92%;
+    --color-white-light-theme: 100%;
+    --color-white: hsl(255, 30%, var(--color-white-light-theme));
+    --color-light: hsl(255, 30%, var(--color-light-light-theme));
+    --color-gray: hsl(255, 15%, 60%);
+    --color-primary: hsl(var(--primary-color-hue), 75%, 60%);
+    --color-secondary: hsl(255, 100%, 90%);
+    --color-success: hsl(120, 95%, 60%);
+    --color-danger: hsl(0, 95%, 60%);
+    --color-dark: hsl(255, 30%, var(--color-dark-light-theme));
+    --color-black: hsl(255, 30%, 8%);
+
+    --boder-radius: 2rem;
+    --card-boder-radius: 1rem;
+    --search-padding: .6rem 1rem;
+    --card-padding: 1rem;
+    --btn-padding: .6rem 2rem;
+}
+
+.login {
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-size: 1rem;
+    background: url('../images/background_login.avif') no-repeat;
+    background-size: cover;
+}
+
+.h1-login {
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--color-white);
+    margin-bottom: 60px;
+}
+.h1-change {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--color-white);
+    margin-bottom: 60px;
+}
+
+.button-login {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: var(--card-boder-radius);
+    cursor: pointer;
+    width: 100%;
+
+}
+
+.button-login:hover {
+    opacity: 0.8;
+}
+
+.form-containerlogin {
+    text-align: center;
+    width: 300px;
+    padding: 20px;
+    border: 1px solid white;
+    border-radius: var(--card-boder-radius);
+}
+.form-containerchange {
+    text-align: center;
+    width: 500px;
+    padding: 20px;
+    border: 1px solid white;
+    border-radius: var(--card-boder-radius);
+}
+
+.form-containerlogin label
+ {
+    text-align: left;
+    margin-right: 150px;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+.form-containerchange label
+ {  
+    margin-right: 300px;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+#id_username,
+#id_password{
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    border: 1px solid var(--color-white-light-theme);
+    box-sizing: border-box;
+    border-radius: var(--card-boder-radius);
+}
+
+label[for="id_password_old"], label[for="id_password1"] {
+    margin-right:355px;
+}
